@@ -85,8 +85,8 @@ author:
   bio              : "Research and Teaching Assistant in Statistics at METU. Machine Learning and Deep Learning Enthisuasist."
   location         : "Ankara"
   employer         :
-  pubmed           : "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
-  googlescholar    : "http://yourfullgooglescholarurl.com"
+  pubmed           : #"https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
+  googlescholar    : "https://scholar.google.com.tr/citations?user=JnC6fesAAAAJ&hl=tr"
   email            :
   researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
   uri              :
@@ -96,20 +96,20 @@ author:
   flickr           :
   facebook         :
   foursquare       :
-  github           : "academicpages"
+  github           : "ozancanozdemir"
   google_plus      :
   keybase          :
   instagram        :
   impactstory      : #"https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
   lastfm           :
-  linkedin         :
-  orcid            : "http://orcid.org/yourorcidurl"
+  linkedin         : "https://www.linkedin.com/in/ozancan-%C3%B6zdemir-40b94768/"
+  orcid            : "http://orcid.org/0000-0002-7850-3885"
   pinterest        :
   soundcloud       :
   stackoverflow    : # http://stackoverflow.com/users/123456/username
   steam            :
   tumblr           :
-  twitter          : "https://twitter.com/OzancanOzdemir"
+  twitter          : "OzancanOzdemir"
   vine             :
   weibo            :
   xing             :
