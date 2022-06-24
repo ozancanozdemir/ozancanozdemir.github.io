@@ -1,7 +1,7 @@
 ---
 layout: archive
 title: "CV"
-permalink: /cv/
+permalink: [/cv/](https://github.com/ozancanozdemir/ozancanozdemir.github.io/raw/master/Ozancan%20Ozdemir%20CV.pdf)
 author_profile: true
 redirect_from:
   - /resume
