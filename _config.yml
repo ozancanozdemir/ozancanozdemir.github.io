@@ -9,7 +9,7 @@
 locale                   : "en-US"
 title                    : "Ozancan Ozdemir"
 title_separator          : "-"
-name                     : &name "Your Name"
+name                     : &name "Ozancan Ozdemir"
 description              : &description "personal description"
 url                      : https://ozancanozdemir.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
@@ -80,10 +80,10 @@ analytics:
 
 # Site Author
 author:
-  name             : "Your Sidebar Name"
+  name             : "Ozancan Ozdemir"
   avatar           : "profile.png"
   bio              : "Your biography for the left-hand sidebar"
-  location         : "Location"
+  location         : "Ankara"
   employer         :
   pubmed           : "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
   googlescholar    : "http://yourfullgooglescholarurl.com"
@@ -109,7 +109,7 @@ author:
   stackoverflow    : # http://stackoverflow.com/users/123456/username
   steam            :
   tumblr           :
-  twitter          : "replacethistwitterhandle"
+  twitter          : "https://twitter.com/OzancanOzdemir"
   vine             :
   weibo            :
   xing             :
