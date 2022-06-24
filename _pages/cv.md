@@ -23,15 +23,16 @@ Middle East Technical University
 
 Work experience
 ======
-* Summer 2015: Research Assistant
-  * Github University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
+* Co-Founder at VeriPie, April 2020-Present
 
-* Fall 2015: Research Assistant
-  * Github University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
+* Research and Teaching Assistant at Middle East Technical University Department of Statistics, November 2017-Present
+
+* Student Assistant at Middle East Technical University Department of Statistics, October 2016-May 2017
+
+* Summer Intern at Central Bank of Turkey Department of Banking and Financial Institution, July 2016 - a month
+
+* Summer Intern at Ministry of Treasury and Finance Department of Insurance and Actuarial Science, June 2016 - a month
+
   
 Skills
 ======
