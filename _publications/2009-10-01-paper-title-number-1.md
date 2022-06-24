@@ -1,15 +1,17 @@
 ---
-title: "Paper Title Number 1"
+title: "The impacts of COVID-19 lockdown on PM10 and SO2 concentrations and association with human mobility across Turkey"
 collection: publications
 permalink: /publication/2009-10-01-paper-title-number-1
 excerpt: 'This paper is about the number 1. The number 2 is left for future work.'
 date: 2009-10-01
 venue: 'Journal 1'
 paperurl: 'http://academicpages.github.io/files/paper1.pdf'
-citation: 'Your Name, You. (2009). &quot;Paper Title Number 1.&quot; <i>Journal 1</i>. 1(1).'
+citation: 'Nur H. Orak, Ozancan Ozdemir,
+The impacts of COVID-19 lockdown on PM10 and SO2 concentrations and association with human mobility across Turkey,
+Environmental Research, Volume 197, 2021, 111018, ISSN 0013-9351, https://doi.org/10.1016/j.envres.2021.111018.'
 ---
 This paper is about the number 1. The number 2 is left for future work.
 
-[Download paper here](http://academicpages.github.io/files/paper1.pdf)
+[Download paper here](https://www.sciencedirect.com/science/article/pii/S0013935121003121?via%3Dihub)
 
 Recommended citation: Your Name, You. (2009). "Paper Title Number 1." <i>Journal 1</i>. 1(1).
