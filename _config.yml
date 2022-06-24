@@ -85,10 +85,10 @@ author:
   bio              : "Research and Teaching Assistant in Statistics at METU. Machine Learning and Deep Learning Enthisuasist."
   location         : "Ankara"
   employer         :
-  pubmed           : #"https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
+  pubmed           : 
   googlescholar    : "https://scholar.google.com.tr/citations?user=JnC6fesAAAAJ&hl=tr"
   email            :
-  researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
+  researchgate     :  "https://www.researchgate.net/profile/Ozancan-Oezdemir"
   uri              :
   bitbucket        :
   codepen          :
