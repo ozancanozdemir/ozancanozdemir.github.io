@@ -1,7 +1,7 @@
 ---
 layout: archive
 title: "CV"
-permalink: [/cv/](https://github.com/ozancanozdemir/ozancanozdemir.github.io/raw/master/Ozancan%20Ozdemir%20CV.pdf)
+permalink: [/cv/]
 author_profile: true
 redirect_from:
   - /resume
@@ -9,11 +9,17 @@ redirect_from:
 
 {% include base_path %}
 
+[Download as pdf file.](https://github.com/ozancanozdemir/ozancanozdemir.github.io/raw/master/Ozancan%20Ozdemir%20CV.pdf) 
+
 Education
 ======
-* B.S. in GitHub, GitHub University, 2012
-* M.S. in Jekyll, GitHub University, 2014
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
+* Doctor of Philosophy in Statistics, GPA: 3.94 October 2020-Present
+Middle East Technical University
+* Master of Science in Statistics, Valedictorian, GPA: 4.00 September 2017- August 2020
+Middle East Technical University
+Thesis Title: Performance Comparison of Machine Learning Methods and Traditional Time Series Methods for forecasting,Under the supervision of Yozgatlıgil C.
+* Bachelor of Science in Statistics, Valedictorian, GPA: 3.74 September 2012- June 2017
+Middle East Technical University
 
 Work experience
 ======
