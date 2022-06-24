@@ -8,9 +8,7 @@ redirect_from:
   - /about.html
 ---
 
-I completed my BSc degree in Statistics at METU, the best technical university in Turkey, as the valedictorian of the 2017 cohort. In 2020, I completed
-Master of Science Program at METU as a valedictorian once again, with several publications and a winner price at a national statistics competition. My main research interests are machine learning and deep learning applications for sequetial data, especially time series. 
-
+I completed my BSc degree in Statistics at METU, the best technical university in Turkey, as the valedictorian of the 2017 cohort. In 2020, I completed the Master of Science Program at METU as a valedictorian once again, with several publications and a winner prize at a national statistics competition. My main research interests are machine learning and deep learning applications for sequential data, especially time series.
 
 
 This is the front page of a website that is powered by the [academicpages template](https://github.com/academicpages/academicpages.github.io) and hosted on GitHub pages. [GitHub pages](https://pages.github.com) is a free service in which websites are built and hosted from code and data stored in a GitHub repository, automatically updating when a new commit is made to the respository. This template was forked from the [Minimal Mistakes Jekyll Theme](https://mmistakes.github.io/minimal-mistakes/) created by Michael Rose, and then extended to support the kinds of content that academics have: publications, talks, teaching, a portfolio, blog posts, and a dynamically-generated CV. You can fork [this repository](https://github.com/academicpages/academicpages.github.io) right now, modify the configuration and markdown files, add your own PDFs and other content, and have your own site for free, with no ads! An older version of this template powers my own personal website at [stuartgeiger.com](http://stuartgeiger.com), which uses [this Github repository](https://github.com/staeiou/staeiou.github.io).
