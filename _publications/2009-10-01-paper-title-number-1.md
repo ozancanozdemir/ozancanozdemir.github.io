@@ -10,7 +10,6 @@ citation: 'Nur H. Orak, Ozancan Ozdemir,
 The impacts of COVID-19 lockdown on PM10 and SO2 concentrations and association with human mobility across Turkey,
 Environmental Research, Volume 197, 2021, 111018, ISSN 0013-9351, https://doi.org/10.1016/j.envres.2021.111018.'
 ---
-This paper is about the number 1. The number 2 is left for future work.
 
 [Download paper here](https://www.sciencedirect.com/science/article/pii/S0013935121003121?via%3Dihub)
 
