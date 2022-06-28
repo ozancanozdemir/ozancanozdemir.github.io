@@ -3,7 +3,7 @@ title: "Conference Report of Why R? Turkey 2021"
 collection: publications
 permalink: /publication/2010-10-01-paper-title-number-2
 excerpt: 'This paper is about the number 2. The number 3 is left for future work.'
-date: 2010-10-01
+date: June 2021
 venue: 'The R Journal'
 paperurl: 'https://journal.r-project.org/dev/news/RJ-2021-1-whyr2021/'
 citation: 'Cavus, et al., "The R Journal: Conference Report of Why R? Turkey 2021", {The R Journal}, 2021'
