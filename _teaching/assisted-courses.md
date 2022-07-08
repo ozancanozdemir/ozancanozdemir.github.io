@@ -9,6 +9,8 @@ location: "Department of Statistics, Middle East Technical University"
 ---
 
 
+
+
 + **STAT 111 - STATISTICS BY REAL LIFE EXAMPLES (Spring 2018, Spring 2020)**
 
 Readings and projects in areas of current statistical real life application including environmental science, industrial statistics, official statistics, actuarial statistics, business statistics, physical and social sciences, and medical statistics.
