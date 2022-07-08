@@ -60,3 +60,6 @@ Common theoretical distributions. Sampling distributions. Principles of point es
 + **STAT 304- MATHEMATICAL STATISTICS II (Spring 2022)**
 
 Region (interval) estimation. Hypothesis testing. Optimality properties for hypothesis testing. Likelihood ratio tests. Sequential tests.
+
+
+*Course descriptions are taken from the web page of Department of Statstics, METU. 
