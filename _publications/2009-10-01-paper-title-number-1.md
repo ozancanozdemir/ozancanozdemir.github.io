@@ -2,7 +2,7 @@
 title: "The impacts of COVID-19 lockdown on PM10 and SO2 concentrations and association with human mobility across Turkey"
 collection: publications
 permalink: /publication/2009-10-01-paper-title-number-1
-excerpt: 'This paper is about the number 1. The number 2 is left for future work.'
+excerpt: 
 date: June 2021
 venue: 'Environmental Research'
 paperurl: 'https://www.sciencedirect.com/science/article/pii/S0013935121003121?via%3Dihub'
