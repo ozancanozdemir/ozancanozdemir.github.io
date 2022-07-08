@@ -1,6 +1,12 @@
 ---
-layout: press
-title: "Teaching"
+layout: archive
+title: "Me in the press"
 permalink: /press/
 author_profile: true
 ---
+
+{% include base_path %}
+
+{% for post in site.teaching reversed %}
+  {% include archive-single.html %}
+{% endfor %}
