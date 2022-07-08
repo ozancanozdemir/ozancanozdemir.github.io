@@ -189,6 +189,9 @@ collections:
   talks:
     output: true
     permalink: /:collection/:path/
+  Me in the press:
+    output: true
+    permalink: /press
 
 
 # Defaults
