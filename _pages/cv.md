@@ -15,6 +15,7 @@ Education
 ======
 * Doctor of Philosophy in Statistics, GPA: 3.94 October 2020-Present
 Middle East Technical University
+* Bachelor of Science in Local Authorities, Anadolu University, Turkey, 2020-.
 * Master of Science in Statistics, Valedictorian, GPA: 4.00 September 2017- August 2020
 Middle East Technical University
 Thesis Title: Performance Comparison of Machine Learning Methods and Traditional Time Series Methods for forecasting,Under the supervision of Yozgatlıgil C.
@@ -36,12 +37,35 @@ Work experience
   
 Skills
 ======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
++ **Programming Skills**
+  R
+  R Shiny
+  Python
+  Pytorch
+  scikit-learn
+  TensorFlow
+  SQL
+  SPSS
+  MATLAB
+  SAS
+  Minitab
+  Tableau
+  Flourish
+  HTML
+  Latex
+  Adobe Photoshop
++ **Other Categories**
+
+  Time Series Analysis and Forecasting
+  Statistical Modelling
+  Machine Learning Applications
+  Deep Learning Applications
+  COVID-19 Data Analysis
+  Biostatistics
+  Data Visualization
+  Developing R and Python Applications
+  Data-Based Policy Development
+  Agile
 
 Publications
 ======
