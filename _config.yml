@@ -183,7 +183,7 @@ collections:
   publications:
     output: true
     permalink: /:collection/:path/
-  Me in the Press:
+  portfolio:
     output: true
     permalink: /:collection/:path/
   talks:
@@ -232,7 +232,7 @@ defaults:
   # _portfolio
   - scope:
       path: ""
-      type: Me in the Press
+      type: portfolio
     values:
       layout: single
       author_profile: true
