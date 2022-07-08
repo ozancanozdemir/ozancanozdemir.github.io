@@ -14,3 +14,14 @@ author_profile: true
 {% for post in site.publications reversed %}
   {% include archive-single.html %}
 {% endfor %}
+
+
+**Popular Science Publications**
+
++ [COVID-19 Aşıları ve Simpson Paradoksu](https://sarkac.org/2021/09/covid-19-asilari-ve-simpson-paradoksu/), Sarkaç, 4 Eylül 2021
+
++ [Yoksullaşıyoruz](https://ayrancim.org.tr/?p=9234), Ayrancım Gazetesi, 16 Eylül 2021
+
++ [Ankara Siyasetinde Kadının Adı Yok](https://ayrancim.org.tr/?p=8915), Ayrancım Gazetesi, Nisan 2021
+
++ [2020’yi geride bırakırken: Verilerle Ankara](https://ayrancim.org.tr/?p=8626), Ayrancım Gazetesi, Ocak 2021.
