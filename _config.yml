@@ -183,7 +183,7 @@ collections:
   publications:
     output: true
     permalink: /:collection/:path/
-  Me in the press:
+  portfolio:
     output: true
     permalink: /:collection/:path/
   talks:
