@@ -15,6 +15,7 @@ author_profile: true
   {% include archive-single.html %}
 {% endfor %}
 
+[**Medium Blog Posts**](https://medium.com/@ozancanozdemir)
 
 **Popular Science Publications (In Turkish)**
 
