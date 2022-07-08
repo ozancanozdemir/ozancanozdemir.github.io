@@ -69,6 +69,19 @@ Skills
   * Data-Based Policy Development
   * Agile
 
+Projects
+======
+
++ **Development of a Hand Robotic Mirror Therapy System Based on Motor Learning: (Work in progress)** In this project, we propose a robotic hand rehabilitation system for hemiplegia patients based on fine grip movement. Tech: Python, Pytorch
+
++ **Medium Term Wind Power Forecasting Using Deep Learning**: In this study, medium term wind power predictions are performed by using Gated Recurrent Unit(GRU), Long Short Term Memory with attention, a hybrid Convolutional Neural Network and Long Short Term Memory architecture and Autoregressive Convolutional Recurrent Neural Network on the real life hourly production data set of a power plant operator to outperform the company’s model. company. Tech: Python, Pytorch(January’22)
+
++ **House Price Prediction Using Machine Learning:** A Case in Iowa: In this project, we aim to developan accurate regression model using tree-based algorithms and explain the type of information which has an impact on the houseprice. Tech: Python, sklearn (January’22)
+
++ **Evaluation of Reading Skills in the Context of Gender:** An Analysis with PISA 2018 Data: Examining the reading proficiency of girls and boys in Turkey by analyzing data from the International Student Program (PISA) 2018. Tech: SPSS, R Studio. (July ’21)
+
++ **Visualization of Turkey Provinces:** Contribution a project in Ozyegin University by drawing Turkey Map in R Tech: R Studio (April’21)
+
 Publications
 ======
   <ul>{% for post in site.publications %}
