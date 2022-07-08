@@ -232,7 +232,7 @@ defaults:
   # _portfolio
   - scope:
       path: ""
-      type: portfolio
+      type: Me in the Press
     values:
       layout: single
       author_profile: true
