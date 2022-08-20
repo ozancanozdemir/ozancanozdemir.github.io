@@ -192,7 +192,7 @@ collections:
   Me in the press:
     output: true
     permalink: /:collection/:path/
-Projects:
+  Projects:
     output: true
     permalink: /:collection/:path/
 
