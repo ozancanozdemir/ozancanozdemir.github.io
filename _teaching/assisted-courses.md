@@ -1,9 +1,9 @@
 ---
 title: "Courses which I worked as Teaching Assistant"
 collection: teaching
-type: "."
+type: "Department of Statistics"
 permalink: /teaching/2014-spring-teaching-1
-venue: "Department of Statistics"
+venue: "Middle East Technical University"
 date: 1-1-2017
 location: 
 ---
