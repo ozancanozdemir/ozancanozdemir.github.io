@@ -3,8 +3,8 @@ title: "Courses which I worked as Teaching Assistant"
 collection: teaching
 type: "."
 permalink: /teaching/2014-spring-teaching-1
-venue: "."
-date:1-1-2017
+venue: "Department of Statistics"
+date: 1-1-2017
 location: 
 ---
 
