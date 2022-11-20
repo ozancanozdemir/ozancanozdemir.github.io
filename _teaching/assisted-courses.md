@@ -1,10 +1,10 @@
 ---
 title: "Courses which I worked as Teaching Assistant"
 collection: teaching
-type: ""
+type: "."
 permalink: /teaching/2014-spring-teaching-1
-venue: ""
-date: 
+venue: "."
+date:1-1-2017
 location: 
 ---
 
