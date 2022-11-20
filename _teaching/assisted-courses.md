@@ -8,6 +8,8 @@ date: 1-1-2017
 location: 
 ---
 
++
+
 + **STAT 112-INTRODUCTION TO DATA PROCESSING AND VISUALIZATION (Fall 2022)**
 
 Course web page: https://metustat112.github.io/
