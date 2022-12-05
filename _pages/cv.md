@@ -13,17 +13,19 @@ redirect_from:
 
 Education
 ======
-* Doctor of Philosophy in Statistics, GPA: 3.94 October 2020-Present
+* **Doctor of Philosophy in Statistics**, GPA: 3.94 October 2020-Present
 Middle East Technical University
-* Bachelor of Science in Local Authorities, Anadolu University, Turkey, 2020-.
-* Master of Science in Statistics, Valedictorian, GPA: 4.00 September 2017- August 2020
+* **Bachelor of Science in Local Authorities**, Anadolu University, Turkey, 2020-.
+* **Master of Science in Statistics**, **Valedictorian**, GPA: 4.00 September 2017- August 2020
 Middle East Technical University
 Thesis Title: Performance Comparison of Machine Learning Methods and Traditional Time Series Methods for forecasting,Under the supervision of Yozgatlıgil C.
-* Bachelor of Science in Statistics, Valedictorian, GPA: 3.74 September 2012- June 2017
+* **Bachelor of Science in Statistics, Valedictorian**, GPA: 3.74 September 2012- June 2017
 Middle East Technical University
 
 Work experience
 ======
+* Researcher at Turkish Scientific and Technological Research Council ARDEB 1001 Project, October 2021-Present
+
 * Co-Founder at VeriPie, April 2020-Present
 
 * Research and Teaching Assistant at Middle East Technical University Department of Statistics, November 2017-Present
