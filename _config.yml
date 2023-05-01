@@ -195,6 +195,9 @@ collections:
   Projects:
     output: true
     permalink: /:collection/:path/
+  Election2023:
+    output: true
+    permalink: https://ozancanozdemir.shinyapps.io/turkiyeninsecimi/
 
 # Defaults
 defaults:
