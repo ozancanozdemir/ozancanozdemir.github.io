@@ -13,9 +13,9 @@ redirect_from:
 
 Education
 ======
-* **Doctor of Philosophy in Statistics**, GPA: 3.94 October 2020-Present
-Middle East Technical University
-* **Bachelor of Science in Local Authorities**, Anadolu University, Turkey, 2020-.
+* **Doctor of Philosophy**, November 2023-Present
+Bernoulli Institute, University of Groningen
+* **Bachelor of Science in Local Authorities**, Anadolu University, Turkey, 2020-2022.
 * **Master of Science in Statistics**, **Valedictorian**, GPA: 4.00 September 2017- August 2020
 Middle East Technical University
 Thesis Title: Performance Comparison of Machine Learning Methods and Traditional Time Series Methods for forecasting,Under the supervision of Yozgatlıgil C.
@@ -24,6 +24,9 @@ Middle East Technical University
 
 Work experience
 ======
+
+* PhD Candidate  & Teaching Assistant at Bernoullı Institute, University of Groningen, November 2023-Present
+
 * Researcher at Turkish Scientific and Technological Research Council ARDEB 1001 Project, October 2021-Present
 
 * Co-Founder at VeriPie, April 2020-Present
@@ -95,6 +98,11 @@ Talks
   <ul>{% for post in site.talks %}
     {% include archive-single-talk-cv.html %}
   {% endfor %}</ul>
+
+Academic Reviewer
+======
+
+Türk Deprem Araştırma Dergisi, 2024. 
 
 Honors and Awards 
 ======
