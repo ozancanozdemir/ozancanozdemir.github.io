@@ -132,11 +132,10 @@ Teaching
 
 Volunteer Experience
 ======
++ **Event Organizer at UseR2024 Salzburg**
 + **Event Organizer at WhyR? Turkey 2021 Pre-Meeting, Turkey**: Organized the biggest online R event in Turkey by
 seminars being about the usage of R in different fields and delivered them reaching over 2000 participants.-April 2021
 + **Member of Organizing Committee at WhyR? Turkey 2022, Turkey**: Organized the first scientific conference specified
 for R in Turkey.-April 2022
   
-Service and leadership
-======
-* Currently signed in to 43 different slack teams
+
