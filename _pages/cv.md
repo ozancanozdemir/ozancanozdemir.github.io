@@ -18,7 +18,7 @@ Bernoulli Institute, University of Groningen
 * **Bachelor of Science in Local Authorities**, Anadolu University, Turkey, 2020-2022.
 * **Master of Science in Statistics**, **Valedictorian**, GPA: 4.00 September 2017- August 2020
 Middle East Technical University
-Thesis Title: Performance Comparison of Machine Learning Methods and Traditional Time Series Methods for forecasting,Under the supervision of Yozgatlıgil C.
+Thesis Title: Performance Comparison of Machine Learning Methods and Traditional Time Series Methods for forecasting, Under the supervision of Yozgatlıgil C.
 * **Bachelor of Science in Statistics, Valedictorian**, GPA: 3.74 September 2012- June 2017
 Middle East Technical University
 
