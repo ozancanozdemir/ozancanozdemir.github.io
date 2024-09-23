@@ -8,9 +8,9 @@ redirect_from:
   - /about.html
 ---
 
-I completed my BSc degree in Statistics at METU, the best technical university in Turkey, as the **valedictorian** of the 2017 cohort. In 2020, I completed the Master of Science Program at METU as a **valedictorian** once again, with several publications and a winner prize at a national statistics competition. Now, I am a PhD Candidate at the University of Groningen. My main research interests are machine learning and deep learning applications for sequential data, especially time series. I love living in **Ankara**, but I live in Groningen :) 
+I completed my BSc degree in Statistics at METU, the best technical university in Turkey, as the **valedictorian** of the 2017 cohort. In 2020, I completed the Master of Science Program at METU as a **valedictorian** once again, with several publications and a winning prize at a national statistics competition. Now, I am a PhD Candidate at the University of Groningen. My main research interests are machine learning and deep learning applications for sequential data, especially time series. I loved living in **Ankara**, but I love living in Groningen :) 
 
-[Check my latest article published on T24, an online newspaper in Turkey: Ankete inanma, anketsiz kalma](https://t24.com.tr/yazarlar/ozancan-ozdemir/ankete-inanma-anketsiz-kalma,45624)
+[Check my latest article published on T24, an online newspaper in Turkey](https://t24.com.tr/yazarlar/ozancan-ozdemir)
 
 <a class="twitter-timeline" data-width="400" data-height="300" data-theme="light" href="https://twitter.com/OzancanOzdemir?ref_src=twsrc%5Etfw">Tweets by OzancanOzdemir</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
