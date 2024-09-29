@@ -27,11 +27,11 @@ Work experience
 
 * PhD Candidate  & Teaching Assistant at Bernoullı Institute, University of Groningen, November 2023-Present
 
-* Researcher at Turkish Scientific and Technological Research Council ARDEB 1001 Project, October 2021-Present
+* Researcher at Turkish Scientific and Technological Research Council ARDEB 1001 Project, October 2021-November 2023
 
 * Co-Founder at VeriPie, April 2020-Present
 
-* Research and Teaching Assistant at Middle East Technical University Department of Statistics, November 2017-Present
+* Research and Teaching Assistant at Middle East Technical University Department of Statistics, November 2017-November 2023
 
 * Student Assistant at Middle East Technical University Department of Statistics, October 2016-May 2017
 
@@ -132,7 +132,7 @@ Teaching
 
 Volunteer Experience
 ======
-+ **Event Organizer at UseR2024 Salzburg**
++ **Event Organizer at UseR2024 Salzburg**: Organized one of the well-known event for R.
 + **Event Organizer at WhyR? Turkey 2021 Pre-Meeting, Turkey**: Organized the biggest online R event in Turkey by
 seminars being about the usage of R in different fields and delivered them reaching over 2000 participants.-April 2021
 + **Member of Organizing Committee at WhyR? Turkey 2022, Turkey**: Organized the first scientific conference specified
