@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ozancan Özdemir">
+
+<title>R’da ggplot2 paketi kullanarak Türkiye Haritası Çizdirmek</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="turkiye_harita_files/libs/clipboard/clipboard.min.js"></script>
+<script src="turkiye_harita_files/libs/quarto-html/quarto.js"></script>
+<script src="turkiye_harita_files/libs/quarto-html/popper.min.js"></script>
+<script src="turkiye_harita_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="turkiye_harita_files/libs/quarto-html/anchor.min.js"></script>
+<link href="turkiye_harita_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="turkiye_harita_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="turkiye_harita_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="turkiye_harita_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="turkiye_harita_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">R’da ggplot2 paketi kullanarak Türkiye Haritası Çizdirmek</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Ozancan Özdemir </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>2018 yılında hazırlamış olduğum <a href="https://users.metu.edu.tr/ozancan/harita.html"><strong>R’da ggplot2 ve maps Kutuphanelerini Kullanarak Harita Cizdirmek</strong></a> adlı yazımda, R’da ggplot2 ve maps paketlerini kullanarak harita çizdirmeyi anlatmıştım. Yıllar içinde oldukça fazla bu yazıyla ilgili mailler aldım, ancak aldığım son mailler bu yazıda kullandığım kodların, kullandığım veri kaynağı olan <strong>GADM</strong> platformunun paylaştığı veri içeriğini değiştirmesi nedeniyle istenilen sonucu vermediğine dairdi, o nedenle yıllar sonra bu içeriği güncellemek istedim. Bu içerikte de yine <strong>GADM</strong> de bu sefer JSON olarak paylaşılan verileri kullanarak bir Türkiye haritası oluşturacağız ve bir örnek üzerinden gradyan (gradient) renklendirmeler yapacağız.</p>
+<p>İlk olarak Türkiye’nin level-0 yani il düzeyindeki JSON formatındaki konumsal verilerine erişim sağlayacağız. Bu verileri bilgisayarınıza indirebileceğiniz gibi, direkt bağlantı üzerinden de erişim sağlayabilir ve lokal cihazınızda işleyebilirsiniz.</p>
+<p>İlk olarak gerekli paketlerimizi yükleyelim. Bu eğiticide ggplot2, sf, stringr ve dplyr paketlerini kullanacağız.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2) <span class="co">#veri görselleştirme için</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf) <span class="co">#konum verisini işlemek için</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0; sf_use_s2() is TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co">#veri manipülasyonu için</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr) <span class="co">#string işlemleri için</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Şimdi veri setimizi indirelim.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>veriniz <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_TUR_1.json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `gadm41_TUR_1' from data source 
+  `https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_TUR_1.json' 
+  using driver `GeoJSON'
+Simple feature collection with 81 features and 11 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 25.6651 ymin: 35.8154 xmax: 44.835 ymax: 42.1067
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+</div>
+<p>Bu veri seti içerisinde Türkiye’nin il düzeyindeki konum verileri bulunmaktadır. Bu veri setini inceleyelim.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(veriniz)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 11 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 29.6638 ymin: 36.5385 xmax: 44.4965 ymax: 41.0905
+Geodetic CRS:  WGS 84
+    GID_1 GID_0 COUNTRY   NAME_1      VARNAME_1 NL_NAME_1 TYPE_1 ENGTYPE_1 CC_1
+1 TUR.1_1   TUR  Turkey    Adana         Seyhan        NA     Il  Province   NA
+2 TUR.2_1   TUR  Turkey Adiyaman       Adıyaman        NA     Il  Province   NA
+3 TUR.3_1   TUR  Turkey    Afyon Afyonkarahisar        NA     Il  Province   NA
+4 TUR.4_1   TUR  Turkey     Agri  Ağri|Karaköse        NA     Il  Province   NA
+5 TUR.5_1   TUR  Turkey  Aksaray             NA        NA     Il  Province   NA
+6 TUR.6_1   TUR  Turkey   Amasya             NA        NA     Il  Province   NA
+  HASC_1 ISO_1                       geometry
+1  TR.AA TR-01 MULTIPOLYGON (((35.4143 36....
+2  TR.AD TR-02 MULTIPOLYGON (((38.1033 37....
+3  TR.AF    NA MULTIPOLYGON (((30.1946 37....
+4  TR.AG TR-04 MULTIPOLYGON (((43.102 39.3...
+5  TR.AK TR-68 MULTIPOLYGON (((33.2495 38....
+6  TR.AM TR-05 MULTIPOLYGON (((35.3708 40....</code></pre>
+</div>
+</div>
+<p>Bu veri setinde bizim için önemli olan sütunlar <code>NAME_1</code> ve <code>geometry</code> sütunlarıdır. <code>NAME_1</code> sütunu il isimlerini, <code>geometry</code> sütunu ise il sınırlarını içermektedir.</p>
+<p>Bu verinin bir avantajı görselleştirmeye hazır olmasıdır. Bu nedenle ggplot2 paketinden <code>geom_sf()</code> komutu ile bu veriyi görselleştirebiliriz.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> veriniz) <span class="sc">+</span><span class="fu">geom_sf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="turkiye_harita_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Bu kodu çalıştırdığınızda Türkiye haritasını göreceksiniz. Ancak bu harita üzerinde herhangi bir düzenleme (başlık, tema vs.) ve renklendirme yapmadık.</p>
+<p>Şimdi bu haritayı renklendirelim. İlk olarak gradyan renklendirme yapalım. Bunun için ben, geçtiğimiz sene Aralık ayında yayınlamış olduğum <code>turkeyelections</code> paketindeki hazır verilerden kullanacağım.</p>
+<p>İlk olarak gradyan renklendirme, yani sayısal değerlere göre belirli bir renk skalasında renk değişimi, uygulayacağım.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>secim_2023 <span class="ot">&lt;-</span> turkeyelections<span class="sc">::</span>genel_secim_2023_il</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>secim_2023 <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              Il Kayitli_Secmen_Sayisi Oy_Kullanan_Secmen_Sayisi
+1          ADANA               1615326                   1414930
+2       ADIYAMAN                399303                    327349
+3 AFYONKARAHİSAR                536910                    484075
+4           AĞRI                307114                    223699
+5        AKSARAY                296566                    257662
+6         AMASYA                256807                    236644
+  Gecerli_Oy_Toplami MILLET HAK-PAR  TKP TKH SOL_PARTI GENCPARTI MEMLEKET   BBP
+1            1378331   1411     873 1362 353      2290      4092    10733 12594
+2             314939    515     387  428 114       900       334     1401  3119
+3             471248    831     426  330 118       118         0     3716  5145
+4             212257    125     285  281 137      1342       188     1557   605
+5             250917    377     220  164  54       256       319     1727  5304
+6             230956    159     247  135  62       136       224     1289  1914
+  AK_Parti YENIDEN_REFAH    MHP YESIL_SOL_PARTI   TIP   AB ANAP  YP HKP
+1   412978         24556 149861          133770 31347 1406    0   0 866
+2   164067         15169  12754           38042     0    0    0 170 316
+3   205859         14013  75657            1507  1020    0    0 134 364
+4    51895          4186   4805          118684     0    0    0 356 199
+5   108422          6465  52466            1477   628  394    0 108 197
+6    90021          4133  38680             780   845    0  424  51 156
+  MILLI_YOL VATAN_PARTISI GBP    CHP IYI_Parti  AP ZAFER_PARTISI
+1         0          1804   0 392822    149935   0         29480
+2         0           304 257  58397         0   0          1955
+3         0           410 322  86842     59015   0         10604
+4         0           242   0  22638      3466 463             0
+5       158           271   0      0     63281   0          3379
+6         0           152 151  68337     16590 742          3486
+  SOSYALIST_GUC_BIRLIGI_ITTIFAKI CUMHUR_ITTIFAKI EMEK_VE_OZGURLUK_ITTIFAKI
+1                             45            8594                       310
+2                             21            1483                         0
+3                             32            3230                        16
+4                             20             588                         2
+5                             29            2199                        13
+6                              8            1550                         6
+  MILLET_ITTIFAKI ATA_ITTIFAKI BAGIMSIZ_TOPLAM_OY MILLET_% HAK-PAR_% TKP_%
+1            5823            8               1018     0.10      0.06  0.09
+2               0            0              14806     0.16      0.12  0.13
+3            1538            1                  0     0.17      0.09  0.07
+4             133            3                 57     0.05      0.13  0.13
+5               2            0               3007     0.15      0.08  0.06
+6             647           31                  0     0.06      0.10  0.05
+  TKH_% SOL_PARTI_% GENCPARTI_% MEMLEKET_% BBP_% AK_Parti_% YENIDEN_REFAH_%
+1  0.02        0.16        0.29       0.77  0.91      29.96            1.78
+2  0.03        0.28        0.10       0.44  0.99      52.09            4.81
+3  0.02        0.02        0.00       0.78  1.09      43.68            2.97
+4  0.06        0.63        0.08       0.73  0.28      24.44            1.97
+5  0.02        0.10        0.12       0.68  2.11      43.21            2.57
+6  0.02        0.05        0.09       0.55  0.82      38.97            1.78
+  MHP_% YESIL_SOL_PARTI_% TIP_% AB_% ANAP_% YP_% HKP_% MILLI_YOL_%
+1 10.87              9.70  2.27 0.10   0.00 0.00  0.06        0.00
+2  4.04             12.07  0.00 0.00   0.00 0.05  0.10        0.00
+3 16.05              0.31  0.21 0.00   0.00 0.02  0.07        0.00
+4  2.26             55.91  0.00 0.00   0.00 0.16  0.09        0.00
+5 20.90              0.58  0.25 0.15   0.00 0.04  0.07        0.06
+6 16.74              0.33  0.36 0.00   0.18 0.02  0.06        0.00
+  VATAN_PARTISI_% GBP_% CHP_% IYI_Parti_% AP_% ZAFER_PARTISI_%
+1            0.13  0.00 28.49       10.87 0.00            2.13
+2            0.09  0.08 18.54        0.00 0.00            0.62
+3            0.08  0.06 18.42       12.52 0.00            2.25
+4            0.11  0.00 10.66        1.63 0.21            0.00
+5            0.10  0.00  0.00       25.21 0.00            1.34
+6            0.06  0.06 29.58        7.18 0.32            1.50
+  SOSYALIST_GUC_BIRLIGI_ITTIFAKI_% CUMHUR_ITTIFAKI_%
+1                             0.00              0.62
+2                             0.00              0.47
+3                             0.00              0.68
+4                             0.00              0.27
+5                             0.01              0.87
+6                             0.00              0.67
+  EMEK_VE_OZGURLUK_ITTIFAKI_% MILLET_ITTIFAKI_% ATA_ITTIFAKI_%
+1                        0.02              0.42           0.00
+2                        0.00              0.00           0.00
+3                        0.00              0.32           0.00
+4                        0.00              0.06           0.00
+5                        0.00              0.00           0.00
+6                        0.00              0.28           0.01
+  BAGIMSIZ_TOPLAM_OY_%
+1                 0.07
+2                 4.70
+3                 0.00
+4                 0.02
+5                 1.19
+6                 0.00</code></pre>
+</div>
+</div>
+<p>İndirdiğimiz veri setinde <code>Il</code> sütunu il isimlerini, % işareti ile beraber yer alan parti isimleri ise o partinin oy oranının illere göre yüzde olarak dağılımını içermektedir.</p>
+<p><code>dplyr</code> paketi içinde yer alan <code>glimpse()</code> komutu ile de verideki değişkenlerin sınıflarını da görebiliriz.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>secim_2023 <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 87
+Columns: 64
+$ Il                                 &lt;chr&gt; "ADANA", "ADIYAMAN", "AFYONKARAHİSA…
+$ Kayitli_Secmen_Sayisi              &lt;dbl&gt; 1615326, 399303, 536910, 307114, 29…
+$ Oy_Kullanan_Secmen_Sayisi          &lt;dbl&gt; 1414930, 327349, 484075, 223699, 25…
+$ Gecerli_Oy_Toplami                 &lt;dbl&gt; 1378331, 314939, 471248, 212257, 25…
+$ MILLET                             &lt;dbl&gt; 1411, 515, 831, 125, 377, 159, 1124…
+$ `HAK-PAR`                          &lt;dbl&gt; 873, 387, 426, 285, 220, 247, 459, …
+$ TKP                                &lt;dbl&gt; 1362, 428, 330, 281, 164, 135, 3561…
+$ TKH                                &lt;dbl&gt; 353, 114, 118, 137, 54, 62, 552, 20…
+$ SOL_PARTI                          &lt;dbl&gt; 2290, 900, 118, 1342, 256, 136, 142…
+$ GENCPARTI                          &lt;dbl&gt; 4092, 334, 0, 188, 319, 224, 2023, …
+$ MEMLEKET                           &lt;dbl&gt; 10733, 1401, 3716, 1557, 1727, 1289…
+$ BBP                                &lt;dbl&gt; 12594, 3119, 5145, 605, 5304, 1914,…
+$ AK_Parti                           &lt;dbl&gt; 412978, 164067, 205859, 51895, 1084…
+$ YENIDEN_REFAH                      &lt;dbl&gt; 24556, 15169, 14013, 4186, 6465, 41…
+$ MHP                                &lt;dbl&gt; 149861, 12754, 75657, 4805, 52466, …
+$ YESIL_SOL_PARTI                    &lt;dbl&gt; 133770, 38042, 1507, 118684, 1477, …
+$ TIP                                &lt;dbl&gt; 31347, 0, 1020, 0, 628, 845, 0, 130…
+$ AB                                 &lt;dbl&gt; 1406, 0, 0, 0, 394, 0, 1111, 1109, …
+$ ANAP                               &lt;dbl&gt; 0, 0, 0, 0, 0, 424, 1810, 1936, 177…
+$ YP                                 &lt;dbl&gt; 0, 170, 134, 356, 108, 51, 0, 136, …
+$ HKP                                &lt;dbl&gt; 866, 316, 364, 199, 197, 156, 494, …
+$ MILLI_YOL                          &lt;dbl&gt; 0, 0, 0, 0, 158, 0, 623, 656, 635, …
+$ VATAN_PARTISI                      &lt;dbl&gt; 1804, 304, 410, 242, 271, 152, 1292…
+$ GBP                                &lt;dbl&gt; 0, 257, 322, 0, 0, 151, 778, 548, 6…
+$ CHP                                &lt;dbl&gt; 392822, 58397, 86842, 22638, 0, 683…
+$ IYI_Parti                          &lt;dbl&gt; 149935, 0, 59015, 3466, 63281, 1659…
+$ AP                                 &lt;dbl&gt; 0, 0, 0, 463, 0, 742, 2525, 2820, 3…
+$ ZAFER_PARTISI                      &lt;dbl&gt; 29480, 1955, 10604, 0, 3379, 3486, …
+$ SOSYALIST_GUC_BIRLIGI_ITTIFAKI     &lt;dbl&gt; 45, 21, 32, 20, 29, 8, 73, 52, 37, …
+$ CUMHUR_ITTIFAKI                    &lt;dbl&gt; 8594, 1483, 3230, 588, 2199, 1550, …
+$ EMEK_VE_OZGURLUK_ITTIFAKI          &lt;dbl&gt; 310, 0, 16, 2, 13, 6, 37, 83, 109, …
+$ MILLET_ITTIFAKI                    &lt;dbl&gt; 5823, 0, 1538, 133, 2, 647, 5201, 3…
+$ ATA_ITTIFAKI                       &lt;dbl&gt; 8, 0, 1, 3, 0, 31, 167, 170, 202, 2…
+$ BAGIMSIZ_TOPLAM_OY                 &lt;dbl&gt; 1018, 14806, 0, 57, 3007, 0, 562, 1…
+$ `MILLET_%`                         &lt;dbl&gt; 0.10, 0.16, 0.17, 0.05, 0.15, 0.06,…
+$ `HAK-PAR_%`                        &lt;dbl&gt; 0.06, 0.12, 0.09, 0.13, 0.08, 0.10,…
+$ `TKP_%`                            &lt;dbl&gt; 0.09, 0.13, 0.07, 0.13, 0.06, 0.05,…
+$ `TKH_%`                            &lt;dbl&gt; 0.02, 0.03, 0.02, 0.06, 0.02, 0.02,…
+$ `SOL_PARTI_%`                      &lt;dbl&gt; 0.16, 0.28, 0.02, 0.63, 0.10, 0.05,…
+$ `GENCPARTI_%`                      &lt;dbl&gt; 0.29, 0.10, 0.00, 0.08, 0.12, 0.09,…
+$ `MEMLEKET_%`                       &lt;dbl&gt; 0.77, 0.44, 0.78, 0.73, 0.68, 0.55,…
+$ `BBP_%`                            &lt;dbl&gt; 0.91, 0.99, 1.09, 0.28, 2.11, 0.82,…
+$ `AK_Parti_%`                       &lt;dbl&gt; 29.96, 52.09, 43.68, 24.44, 43.21, …
+$ `YENIDEN_REFAH_%`                  &lt;dbl&gt; 1.78, 4.81, 2.97, 1.97, 2.57, 1.78,…
+$ `MHP_%`                            &lt;dbl&gt; 10.87, 4.04, 16.05, 2.26, 20.90, 16…
+$ `YESIL_SOL_PARTI_%`                &lt;dbl&gt; 9.70, 12.07, 0.31, 55.91, 0.58, 0.3…
+$ `TIP_%`                            &lt;dbl&gt; 2.27, 0.00, 0.21, 0.00, 0.25, 0.36,…
+$ `AB_%`                             &lt;dbl&gt; 0.10, 0.00, 0.00, 0.00, 0.15, 0.00,…
+$ `ANAP_%`                           &lt;dbl&gt; 0.00, 0.00, 0.00, 0.00, 0.00, 0.18,…
+$ `YP_%`                             &lt;dbl&gt; 0.00, 0.05, 0.02, 0.16, 0.04, 0.02,…
+$ `HKP_%`                            &lt;dbl&gt; 0.06, 0.10, 0.07, 0.09, 0.07, 0.06,…
+$ `MILLI_YOL_%`                      &lt;dbl&gt; 0.00, 0.00, 0.00, 0.00, 0.06, 0.00,…
+$ `VATAN_PARTISI_%`                  &lt;dbl&gt; 0.13, 0.09, 0.08, 0.11, 0.10, 0.06,…
+$ `GBP_%`                            &lt;dbl&gt; 0.00, 0.08, 0.06, 0.00, 0.00, 0.06,…
+$ `CHP_%`                            &lt;dbl&gt; 28.49, 18.54, 18.42, 10.66, 0.00, 2…
+$ `IYI_Parti_%`                      &lt;dbl&gt; 10.87, 0.00, 12.52, 1.63, 25.21, 7.…
+$ `AP_%`                             &lt;dbl&gt; 0.00, 0.00, 0.00, 0.21, 0.00, 0.32,…
+$ `ZAFER_PARTISI_%`                  &lt;dbl&gt; 2.13, 0.62, 2.25, 0.00, 1.34, 1.50,…
+$ `SOSYALIST_GUC_BIRLIGI_ITTIFAKI_%` &lt;dbl&gt; 0.00, 0.00, 0.00, 0.00, 0.01, 0.00,…
+$ `CUMHUR_ITTIFAKI_%`                &lt;dbl&gt; 0.62, 0.47, 0.68, 0.27, 0.87, 0.67,…
+$ `EMEK_VE_OZGURLUK_ITTIFAKI_%`      &lt;dbl&gt; 0.02, 0.00, 0.00, 0.00, 0.00, 0.00,…
+$ `MILLET_ITTIFAKI_%`                &lt;dbl&gt; 0.42, 0.00, 0.32, 0.06, 0.00, 0.28,…
+$ `ATA_ITTIFAKI_%`                   &lt;dbl&gt; 0.00, 0.00, 0.00, 0.00, 0.00, 0.01,…
+$ `BAGIMSIZ_TOPLAM_OY_%`             &lt;dbl&gt; 0.07, 4.70, 0.00, 0.02, 1.19, 0.00,…</code></pre>
+</div>
+</div>
+<p>Bu eğiticide biz CHP’nin oy oranlarını harita renklendirme işlemi için kullanacağız, o yüzden bu veri setinden bir subset almamız gerekiyor.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>chp_data <span class="ot">&lt;-</span> secim_2023 <span class="sc">|&gt;</span> <span class="fu">select</span>(Il,<span class="st">`</span><span class="at">CHP_%</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>chp_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               Il CHP_%
+1           ADANA 28.49
+2        ADIYAMAN 18.54
+3  AFYONKARAHİSAR 18.42
+4            AĞRI 10.66
+5         AKSARAY  0.00
+6          AMASYA 29.58
+7        ANKARA-1 41.86
+8        ANKARA-2 20.38
+9        ANKARA-3 27.75
+10        ANTALYA 32.26
+11        ARDAHAN 29.62
+12         ARTVİN 29.74
+13          AYDIN 35.50
+14      BALIKESİR 31.33
+15         BARTIN 31.65
+16         BATMAN  7.91
+17        BAYBURT  0.00
+18        BİLECİK 26.54
+19         BİNGÖL  5.15
+20         BİTLİS  0.00
+21           BOLU 21.61
+22         BURDUR 31.02
+23        BURSA-1 26.93
+24        BURSA-2 21.07
+25      ÇANAKKALE 35.27
+26        ÇANKIRI  0.00
+27          ÇORUM 30.98
+28        DENİZLİ 31.82
+29     DİYARBAKIR  7.63
+30          DÜZCE 22.58
+31         EDİRNE 39.35
+32         ELAZIĞ 20.51
+33       ERZİNCAN 36.31
+34        ERZURUM  6.39
+35      ESKİŞEHİR 34.05
+36      GAZİANTEP 20.07
+37        GİRESUN 20.33
+38      GÜMÜŞHANE  0.00
+39        HAKKARİ  6.66
+40          HATAY 28.32
+41          IĞDIR  5.91
+42        ISPARTA 21.97
+43     İSTANBUL-1 31.63
+44     İSTANBUL-2 26.36
+45     İSTANBUL-3 26.15
+46        İZMİR-1 42.02
+47        İZMİR-2 40.13
+48  KAHRAMANMARAŞ 15.92
+49        KARABÜK 21.69
+50        KARAMAN 18.97
+51           KARS 16.07
+52      KASTAMONU 21.49
+53        KAYSERİ 16.87
+54      KIRIKKALE 26.46
+55     KIRKLARELİ 45.60
+56       KIRŞEHİR 29.12
+57          KİLİS 19.93
+58        KOCAELİ 23.72
+59          KONYA 13.22
+60        KÜTAHYA 16.42
+61        MALATYA 21.38
+62         MANİSA 29.26
+63         MARDİN  6.55
+64         MERSİN 30.83
+65          MUĞLA 37.62
+66            MUŞ  0.00
+67       NEVŞEHİR 17.13
+68          NİĞDE 23.95
+69           ORDU 24.01
+70       OSMANİYE 16.96
+71           RİZE 21.36
+72        SAKARYA 15.96
+73         SAMSUN 19.40
+74          SİİRT  7.15
+75          SİNOP 25.43
+76          SİVAS 15.97
+77      ŞANLIURFA  7.46
+78         ŞIRNAK  8.14
+79       TEKİRDAĞ 36.26
+80          TOKAT 20.37
+81        TRABZON 17.68
+82        TUNCELİ 32.12
+83           UŞAK 28.93
+84            VAN  8.20
+85         YALOVA 28.62
+86         YOZGAT  0.00
+87      ZONGULDAK 32.02</code></pre>
+</div>
+</div>
+<p>Bu veri setini <code>veriniz</code> veri seti ile birleştirmeden önce yapmamız gereken bazı işlemler var. İlk olarak <code>chp_data</code> veri setinde yer alan <code>Il</code> sütunundaki il isimlerini <code>veriniz</code> veri setindeki <code>NAME_1</code> sütunundaki il isimleri ile aynı hale getirmemiz gerekiyor. Üstelik <code>chp_data</code> veri setinde bazı illerde seçim bölgeleri birden fazla olduğu için örneğin Ankara ve Istanbul gibi, bu illeri birleştirmemiz gerekiyor. Burada illerin ortalama değerlerini alarak bu boyut küçültme işlemini gerçekleştirdim. Daha sonra ise il isimlerini, <code>veriniz</code> doyasıyla birleştirirken uygun olması için kolon adı değişikliği ve harf boyutu değişiklikleriyle güncelledim.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>chp_data <span class="ot">&lt;-</span> chp_data <span class="sc">|&gt;</span>  <span class="fu">mutate</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">NAME_1 =</span> stringr<span class="sc">::</span><span class="fu">str_extract</span>(Il, <span class="st">"^[A-Za-zÇĞÖŞÜİ]+"</span>) <span class="co">#sayısal değerleri çıkarttık </span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span>   <span class="fu">group_by</span>(NAME_1) <span class="sc">%&gt;%</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Aynı şehirlerin ortalama CHP_%% değerini hesapla</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">CHP_oy =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">CHP_%</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span>  <span class="fu">mutate</span>(</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">NAME_1 =</span> stringr<span class="sc">::</span><span class="fu">str_to_sentence</span>(NAME_1)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>chp_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 81 × 2
+   NAME_1         CHP_oy
+   &lt;chr&gt;           &lt;dbl&gt;
+ 1 Adana            28.5
+ 2 Adiyaman         18.5
+ 3 Afyonkarahi̇sar   18.4
+ 4 Aksaray           0  
+ 5 Amasya           29.6
+ 6 Ankara           30.0
+ 7 Antalya          32.3
+ 8 Ardahan          29.6
+ 9 Artvi̇n           29.7
+10 Aydin            35.5
+# ℹ 71 more rows</code></pre>
+</div>
+</div>
+<p>Verimiz birleştirmeye hazır (mı?)</p>
+<p>Henüz değil. Çünkü yaptığımız harf dönüşümü sonrasında <strong>i</strong> harfi ile ilgili bir sorun var. Bu sorunu çözmek için <code>str_replace_all()</code> fonksiyonunu kullanarak <strong>i</strong> harfini <strong>i</strong> harfine dönüştürmemiz gerekiyor.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>chp_data<span class="sc">$</span>NAME_1<span class="ot">&lt;-</span>stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(chp_data<span class="sc">$</span>NAME_1,<span class="st">"i̇"</span>,<span class="st">"i"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Bir sorunumuz daha var, iki veri setindeki il isimleri arasında uyuşmazlık gösterenler var? Örneğin <code>veriniz</code> dosyasında Zonguldak ili Zinguldak olarak kodlanmış durumda ya da Kırıkkale, Kinkkale olarak kodlanmış.</p>
+<p>Aşağıdaki kod, bu uyuşmazlıkları çözmek için kullanılabilir.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>veriniz<span class="sc">$</span>NAME_1<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"Adana"</span>, <span class="st">"Adiyaman"</span>, <span class="st">"Afyonkarahisar"</span>, <span class="st">"Ağri"</span>, <span class="st">"Aksaray"</span>, <span class="st">"Amasya"</span>,  <span class="st">"Ankara"</span>, <span class="st">"Antalya"</span>, <span class="st">"Ardahan"</span>, <span class="st">"Artvin"</span>, <span class="st">"Aydın"</span>, <span class="st">"Balıkesir"</span>, </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a> <span class="st">"Bartın"</span>, <span class="st">"Batman"</span>, <span class="st">"Bayburt"</span>, <span class="st">"Bilecik"</span>, <span class="st">"Bingöl"</span>, <span class="st">"Bitlis"</span>,   <span class="st">"Bolu"</span>, <span class="st">"Burdur"</span>, <span class="st">"Bursa"</span>, <span class="st">"Çanakkale"</span>, <span class="st">"Çankırı"</span>, <span class="st">"Çorum"</span>, <span class="st">"Denizli"</span>, <span class="st">"Diyarbakır"</span>, <span class="st">"Düzce"</span>, <span class="st">"Edirne"</span>, <span class="st">"Elazığ"</span>, <span class="st">"Erzincan"</span>, <span class="st">"Erzurum"</span>, <span class="st">"Eskişehir"</span>, <span class="st">"Gaziantep"</span>, <span class="st">"Giresun"</span>, <span class="st">"Gümüşhane"</span>, <span class="st">"Hakkari"</span>, <span class="st">"Hatay"</span>, <span class="st">"Iğdır"</span>, <span class="st">"Isparta"</span>, <span class="st">"İstanbul"</span>, <span class="st">"İzmir"</span>,  <span class="st">"Kahramanmaraş"</span>, <span class="st">"Karabük"</span>, <span class="st">"Karaman"</span>, <span class="st">"Kars"</span>, <span class="st">"Kastamonu"</span>, <span class="st">"Kayseri"</span>, <span class="st">"Kilis"</span>,<span class="st">"Kirikkale"</span>, <span class="st">"Kirklareli"</span>, <span class="st">"Kırşehir"</span>, <span class="st">"Kocaeli"</span>, <span class="st">"Konya"</span>,  <span class="st">"Kütahya"</span>, <span class="st">"Malatya"</span>, <span class="st">"Manisa"</span>, <span class="st">"Mardin"</span>, <span class="st">"Mersin"</span>, <span class="st">"Muğla"</span>,  <span class="st">"Muş"</span>, <span class="st">"Nevşehir"</span>, <span class="st">"Niğde"</span>, <span class="st">"Ordu"</span>, <span class="st">"Osmaniye"</span>, <span class="st">"Rize"</span>, <span class="st">"Sakarya"</span>,  <span class="st">"Samsun"</span>, <span class="st">"Şanlıurfa"</span>, <span class="st">"Siirt"</span>, <span class="st">"Sinop"</span>, <span class="st">"Şırnak"</span>, <span class="st">"Sivas"</span>,  <span class="st">"Tekirdağ"</span>, <span class="st">"Tokat"</span>, <span class="st">"Trabzon"</span>, <span class="st">"Tunceli"</span>, <span class="st">"Uşak"</span>, <span class="st">"Van"</span>, </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="st">"Yalova"</span>, <span class="st">"Yozgat"</span>, <span class="st">"Zonguldak"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Evet, şimdi hazırız!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>veriniz_joined <span class="ot">&lt;-</span> <span class="fu">left_join</span>(veriniz, chp_data, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"NAME_1"</span> <span class="ot">=</span> <span class="st">"NAME_1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>veriniz_joined <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 12 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 29.6638 ymin: 36.5385 xmax: 44.4965 ymax: 41.0905
+Geodetic CRS:  WGS 84
+    GID_1 GID_0 COUNTRY         NAME_1      VARNAME_1 NL_NAME_1 TYPE_1
+1 TUR.1_1   TUR  Turkey          Adana         Seyhan        NA     Il
+2 TUR.2_1   TUR  Turkey       Adiyaman       Adıyaman        NA     Il
+3 TUR.3_1   TUR  Turkey Afyonkarahisar Afyonkarahisar        NA     Il
+4 TUR.4_1   TUR  Turkey           Ağri  Ağri|Karaköse        NA     Il
+5 TUR.5_1   TUR  Turkey        Aksaray             NA        NA     Il
+6 TUR.6_1   TUR  Turkey         Amasya             NA        NA     Il
+  ENGTYPE_1 CC_1 HASC_1 ISO_1 CHP_oy                       geometry
+1  Province   NA  TR.AA TR-01  28.49 MULTIPOLYGON (((35.4143 36....
+2  Province   NA  TR.AD TR-02  18.54 MULTIPOLYGON (((38.1033 37....
+3  Province   NA  TR.AF    NA  18.42 MULTIPOLYGON (((30.1946 37....
+4  Province   NA  TR.AG TR-04  10.66 MULTIPOLYGON (((43.102 39.3...
+5  Province   NA  TR.AK TR-68   0.00 MULTIPOLYGON (((33.2495 38....
+6  Province   NA  TR.AM TR-05  29.58 MULTIPOLYGON (((35.3708 40....</code></pre>
+</div>
+</div>
+<p>Şimdi haritamızı çizdirebiliriz. Bu koroplet haritada renk skalasında genellikle bilinenin aksine, yüksekten düşüğe geçişi mavi-turuncu renk skalasında gerçekleştireceğiz.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> veriniz_joined) <span class="sc">+</span><span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> CHP_oy))<span class="sc">+</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">high =</span> <span class="st">"steelblue"</span>, <span class="at">low =</span> <span class="st">"darkorange"</span>,<span class="at">mid=</span><span class="st">"white"</span>, <span class="at">midpoint =</span> <span class="fu">mean</span>(veriniz_joined<span class="sc">$</span>CHP_oy,<span class="at">na.rm=</span>T))<span class="sc">+</span><span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"CHP'nin 2023 Seçim Sonuçları Oy Dağılımı"</span>, <span class="at">fill =</span> <span class="st">"CHP Oy Oranı"</span>,<span class="at">caption =</span> <span class="st">"Haritayı Hazırlayan: Ozancan Özdemir"</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>,<span class="at">face=</span><span class="st">"bold"</span>), <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>,<span class="at">face=</span><span class="st">"bold"</span>), <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>,<span class="at">face=</span><span class="st">"bold"</span>),<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="turkiye_harita_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Bu komutta <code>ggplot2</code> paketinden <code>geom_sf()</code> fonksiyonu ile haritayı çizdik. <code>aes()</code> fonksiyonu ile renklendirme yapacağımız sütunu belirledik. <code>scale_fill_gradient2()</code> fonksiyonu ile renk skalasını belirledik. <code>theme_void()</code> fonksiyonu ile arka planı beyaz yaptık. <code>labs()</code> fonksiyonu ile başlık ve eksen isimlerini belirledik. <code>theme()</code> fonksiyonu ile başlık ve eksen isimlerinin boyutunu ve fontunu belirledik.</p>
+<p>Sonuçta bu kodu çalıştırdığınızda Türkiye haritası üzerinde CHP’nin 2023 seçim sonuçlarına göre illere göre oy oranlarını göreceksiniz.</p>
+<p>Umarım faydalı bir içerik olmuştur!</p>
+<p>Bu dökümandaki kodlara <a href="https://github.com/ozancanozdemir/R-da-ggplot2-kullanarak-Turkiye-Haritas-Cizdirmek-Draw-Turkey-s-Map-in-R-with-ggplot2">ilgili GitHub reposundan</a> ulaşabilirsiniz.</p>
+<p>Soru ve görüşleriniz için ozancanozdemir@gmail.com adresine e-mail yollayabilirsiniz.</p>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
