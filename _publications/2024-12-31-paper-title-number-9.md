@@ -1,7 +1,7 @@
 ---
 title: "Forecasting Drought Phenomena Using a Statistical and Machine Learning-Based Analysis for the Central Anatolia Region, Turkey"
 collection: publications
-permalink: /publication/2024-12-31-paper-title-number-8
+permalink: /publication/2024-12-31-paper-title-number-9
 date: December 2024
 venue: 'International Journal of Climatology'
 paperurl: 'https://doi.org/10.1002/joc.8742'
