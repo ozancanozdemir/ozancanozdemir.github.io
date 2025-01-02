@@ -12,10 +12,10 @@ main:
   - title: "Me in the Press"
     url: /press/
         
-  - title: "Blog Posts"
+  - title: "Contents & Posts"
     url: /year-archive/
     
-  - title: "Projects/Portfolio"
+  - title: "Projects & Portfolio"
     url: /projects/
     
   - title: "CV"
