@@ -12,6 +12,8 @@ Environmental Research, Volume 197, 2021, 111018, ISSN 0013-9351, https://doi.or
 ---
 
 [Download paper here](https://www.sciencedirect.com/science/article/pii/S0013935121003121?via%3Dihub)
-![](https://ars.els-cdn.com/content/image/1-s2.0-S0013935121003121-gr4.jpg)
+
+
+![](https://ars.els-cdn.com/content/image/1-s2.0-S0013935121003121-gr4.jpg) { width: 200px; }
 
 Recommended citation: Your Name, You. (2009). "Paper Title Number 1." <i>Journal 1</i>. 1(1).
