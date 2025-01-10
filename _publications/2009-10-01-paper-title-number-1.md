@@ -1,4 +1,5 @@
 ---
+:![https://ars.els-cdn.com/content/image/1-s2.0-S0013935121003121-gr4.jpg]
 title: "The impacts of COVID-19 lockdown on PM10 and SO2 concentrations and association with human mobility across Turkey"
 collection: publications
 permalink: /publication/2009-10-01-paper-title-number-1
