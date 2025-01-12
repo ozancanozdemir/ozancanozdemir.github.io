@@ -9,6 +9,8 @@ paperurl: 'https://journal.r-project.org/dev/news/RJ-2021-1-whyr2021/'
 citation: 'Cavus, et al., "The R Journal: Conference Report of Why R? Turkey 2021", {The R Journal}, 2021'
 ---
 
+<img width="424" alt="image" src="https://github.com/user-attachments/assets/bc4964e9-f292-483f-9fee-729c200ef7a8" />
+
 [Download paper here](https://journal.r-project.org/archive/2021-1/whyr2021.pdf)
 
 Recommended citation: Your Name, You. (2010). "Paper Title Number 2." <i>Journal 1</i>. 1(2).
