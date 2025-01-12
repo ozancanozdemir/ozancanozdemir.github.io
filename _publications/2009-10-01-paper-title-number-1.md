@@ -11,8 +11,7 @@ The impacts of COVID-19 lockdown on PM10 and SO2 concentrations and association 
 Environmental Research, Volume 197, 2021, 111018, ISSN 0013-9351, https://doi.org/10.1016/j.envres.2021.111018.'
 ---
 
-![image](https://github.com/user-attachments/assets/c6f49cdb-ccec-4bf1-8512-8030b100479b){width=50%}
-
+![image](https://github.com/user-attachments/assets/c6f49cdb-ccec-4bf1-8512-8030b100479b)
 
 
 [Download paper here](https://www.sciencedirect.com/science/article/pii/S0013935121003121?via%3Dihub)
