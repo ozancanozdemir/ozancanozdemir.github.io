@@ -27,6 +27,8 @@ Work experience
 
 * PhD Candidate  & Teaching Assistant at Bernoullı Institute, University of Groningen, November 2023-Present
 
+* Weekly Columnist, T24, June 2024-Present
+
 * Researcher at Turkish Scientific and Technological Research Council ARDEB 1001 Project, October 2021-November 2023
 
 * Co-Founder at VeriPie, April 2020-Present
@@ -64,6 +66,7 @@ Skills
 + **Other Categories**
 
   * Time Series Analysis and Forecasting
+  * Stock Market Analysis
   * Statistical Modelling
   * Machine Learning Applications
   * Deep Learning Applications
