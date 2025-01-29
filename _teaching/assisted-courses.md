@@ -1,13 +1,18 @@
 ---
-title: "Courses which I worked as Teaching Assistant"
+title: "Courses I Assisted as a Teaching Assistant"
 collection: teaching
-type: "Department of Statistics"
+type: ""
 permalink: /teaching/2014-spring-teaching-1
-venue: "Middle East Technical University"
-date: 1-1-2017
+venue: "METU & RUG "
+date: 2017-Today
 location: 
 ---
 
+## Bernoulli Institute, University of Groningen 
+
++ **WBCS032-05- Introduction to Machine Learning (2024/25-2A)**
+
+## Middle East Technical University, Department of Statistics 
 
 + **STAT 112-INTRODUCTION TO DATA PROCESSING AND VISUALIZATION (Fall 2022)**
 
