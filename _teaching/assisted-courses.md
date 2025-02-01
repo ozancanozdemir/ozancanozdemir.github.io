@@ -8,7 +8,8 @@ date: 2017-Today
 location: 
 ---
 
-## Bernoulli Institute, University of Groningen 
+
+## Bernoulli Institute, University of Groningen 
 
 + **WBCS032-05- Introduction to Machine Learning (2024/25-2A)**
 
