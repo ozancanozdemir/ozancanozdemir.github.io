@@ -1,12 +1,4 @@
----
-title: "Courses I Assisted as a Teaching Assistant"
-collection: teaching
-type: ""
-permalink: /teaching/2014-spring-teaching-1
-venue: "METU & RUG "
-date: 2017-Today
-location: 
----
+
 
 
 ## Bernoulli Institute, University of Groningen 
