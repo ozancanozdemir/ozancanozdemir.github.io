@@ -1,5 +1,5 @@
 ---
-title: "Courses I Assisted as a Teaching Assistant"
+title: "Click here to see a detailed list for the courses that I Assisted"
 collection: teaching
 type: ""
 permalink: /teaching/2014-spring-teaching-1
@@ -13,13 +13,8 @@ location:
 
 
 -------------------------------------------------
-## Bernoulli Institute, University of Groningen 
-
------------------------------------------------
 
 ## Bernoulli Institute, University of Groningen 
-
-+ **WBCS032-05- Introduction to Machine Learning (2024/25-2A)**
   
 + **WBCS032-05- Introduction to Machine Learning (2024/25-2A)**
 
