@@ -4,7 +4,7 @@ collection: teaching
 type: ""
 permalink: /teaching/2014-spring-teaching-1
 venue: "METU & RUG "
-date: 2017-Today
+date: 01-01-2025
 location: 
 ---
 
