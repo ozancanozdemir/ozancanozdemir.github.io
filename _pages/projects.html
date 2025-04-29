@@ -9,26 +9,108 @@ author_profile: true
 
 I have listed my publicly available projects here.
 
-<be> 
+<style>
+  .project-section {
+    margin-bottom: 50px;
+  }
 
-<h1> R Packages </h1>
+  .hex-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+  }
 
-<a href="https://cran.r-project.org/web/packages/turkeyelections/index.html" target = "_blank"> "turkeyelections: The Most Comprehensive R Package for Turkish Election Results" </a><br>
- 
-<a href="https://cran.r-project.org/web/packages/izmir/index.html" target = "_blank"> "izmir: R Wrapper for Izmir Municipality Open Data Portal" </a><br>
- 
-<a href="https://cran.r-project.org/web/packages/bursa/index.html" target = "_blank"> "bursa: R Wrapper for Bursa Municipality Open Data Portal" </a><br>
- 
-<a href="https://cran.r-project.org/web/packages/konya/index.html" target = "_blank"> "konya: R Wrapper for Konya Municipality Open Data Portal" </a><br>
- 
-<a href="https://github.com/ozancanozdemir/ggpowerbi" target = "_blank"> "ggpowerbi: It converts your ggplot object appearance to PowerBI. " </a><be>
+  .hex-item {
+    width: 180px;
+    text-align: center;
+  }
 
+  .hex-img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
 
+  .hex-img:hover {
+    transform: scale(1.05);
+  }
 
-<h1> R Shiny Applications </h1>
-<a href="https://secim2028.shinyapps.io/secim2028/" target = "_blank"> "Seçim 2028 Anket Takip Portalı" </a><br>
-<a href="https://secimtahmin2024.shinyapps.io/secimtahmin2024/" target = "_blank"> "Turkey Local Election Prediction Games" </a><br>
-<a href="https://ozancanozdemir.shinyapps.io/turkiyeninsecimi/" target = "_blank"> "Turkey Election 2023 Tracking (In Turkish)/R Shiny App" </a><br>
-<a href="https://ozancanozdemir.shinyapps.io/sepet/" target = "_blank"> "TUIK Sepet" </a><br>
-<a href="https://users.metu.edu.tr/home402/ozancan/wwwhome/corona_ilil.html" target = "_blank"> "COVID-19 Dashboard for Turkey" </a><br>
-<a href="https://users.metu.edu.tr/home402/ozancan/wwwhome/ankarayemekleri.html" target = "_blank"> "Ankara Yemek Rehberi" </a><br>
+  .shiny-list {
+    list-style: none;
+    padding: 0;
+    font-size: 16px;
+  }
+
+  .shiny-list li {
+    margin: 10px 0;
+  }
+
+  .shiny-list a {
+    text-decoration: none;
+    color: #007acc;
+  }
+
+  .shiny-list a:hover {
+    text-decoration: underline;
+  }
+
+  h2 {
+    border-bottom: 2px solid #eee;
+    padding-bottom: 6px;
+  }
+</style>
+
+<div class="project-section">
+  <h2>R Packages</h2>
+  <div class="hex-container">
+    <div class="hex-item">
+      <a href="https://cran.r-project.org/web/packages/turkeyelections/index.html" target="_blank">
+        <img src="https://private-user-images.githubusercontent.com/33122288/293576771-68f73024-fbf5-4316-bda4-00d055cc6eaa.png" alt="turkeyelections" class="hex-img">
+        <div>turkeyelections</div>
+      </a>
+    </div>
+
+    <div class="hex-item">
+      <a href="https://cran.r-project.org/web/packages/izmir/index.html" target="_blank">
+        <img src="https://user-images.githubusercontent.com/33122288/221560558-b9bf8ad0-003f-44c3-8a18-0366ab195663.png" alt="izmir" class="hex-img">
+        <div>izmir</div>
+      </a>
+    </div>
+
+    <div class="hex-item">
+      <a href="https://cran.r-project.org/web/packages/bursa/index.html" target="_blank">
+        <img src="https://private-user-images.githubusercontent.com/33122288/264577191-da50adfe-0778-49c2-8660-b75c0dc57014.png" alt="bursa" class="hex-img">
+        <div>bursa</div>
+      </a>
+    </div>
+
+    <div class="hex-item">
+      <a href="https://cran.r-project.org/web/packages/konya/index.html" target="_blank">
+        <img src="https://private-user-images.githubusercontent.com/33122288/266251700-3a0fc3a9-8411-4e6a-9bbb-6cc729a980cb.png" alt="konya" class="hex-img">
+        <div>konya</div>
+      </a>
+    </div>
+
+    <div class="hex-item">
+      <a href="https://github.com/ozancanozdemir/ggpowerbi" target="_blank">
+        <img src="https://www.r-project.org/logo/Rlogo.png" alt="ggpowerbi" class="hex-img">
+        <div>ggpowerbi</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="project-section">
+  <h2>R Shiny Applications</h2>
+  <ul class="shiny-list">
+    <li><a href="https://secim2028.shinyapps.io/secim2028/" target="_blank">Seçim 2028 Anket Takip Portalı</a></li>
+    <li><a href="https://secimtahmin2024.shinyapps.io/secimtahmin2024/" target="_blank">Turkey Local Election Prediction Games</a></li>
+    <li><a href="https://ozancanozdemir.shinyapps.io/turkiyeninsecimi/" target="_blank">Turkey Election 2023 Tracking (In Turkish)</a></li>
+    <li><a href="https://ozancanozdemir.shinyapps.io/sepet/" target="_blank">TUIK Sepet</a></li>
+    <li><a href="https://users.metu.edu.tr/home402/ozancan/wwwhome/corona_ilil.html" target="_blank">COVID-19 Dashboard for Turkey</a></li>
+    <li><a href="https://users.metu.edu.tr/home402/ozancan/wwwhome/ankarayemekleri.html" target="_blank">Ankara Yemek Rehberi</a></li>
+  </ul>
+</div>
+
