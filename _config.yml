@@ -189,7 +189,7 @@ collections:
   talks:
     output: true
     permalink: /:collection/:path/
-  Me in the press:
+  Press Coverage:
     output: true
     permalink: /:collection/:path/
   Projects:
