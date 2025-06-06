@@ -313,3 +313,64 @@ b, i, strong, em, blockquote, p, q, span, figure, img, h1, h2, header, input, a,
   -webkit-transition: $global-transition;
   transition: $global-transition;
 }
+
+
+/* Blog posts 
+============== */
+
+/* Add the following at the end of your CSS file */
+
+.blog-post-listing {
+  margin: 20px 0;
+}
+
+.post {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+}
+
+.left {
+  flex: 0 0 100px;
+  margin-right: 20px;
+}
+
+.small-image {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.right {
+  flex: 1;
+}
+
+.right h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.right p {
+  font-size: 16px;
+  color: #555;
+}
+
+.right a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.right a:hover {
+  text-decoration: underline;
+}
+
+.larger-image {
+  flex: 0 0 200px;  /* Adjust the size as needed */
+  margin-left: 20px;
+}
+
+.large-image {
+  width: 100%;
+  border-radius: 8px;
+}
+
