@@ -2,6 +2,7 @@
 layout: page
 title: "Blog Posts for R"
 permalink: /blog-posts-for-r/
+author_profile: true
 ---
 
 ## Blog Posts for R
