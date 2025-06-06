@@ -1,14 +1,17 @@
 ---
-layout: page
+layout: archive
 title: "Blog Posts for R"
 permalink: /blog-posts-for-r/
 author_profile: true
 ---
 
-## Blog Posts for R
-
-Welcome to my collection of blog posts about R programming. Here, you will find posts, tutorials, and resources related to R.
-
-- [Post 1 Title](#)
-- [Post 2 Title](#)
-- [Post 3 Title](#)
+<div class="blog-post-layout">
+  <div class="left">
+    <img src="/assets/images/r-blog-image.jpg" alt="R Blog Image" class="post-image" />
+  </div>
+  <div class="right">
+    <h2>Blog Post Title</h2>
+    <p>This is a brief introduction to the blog post about R programming. Learn how to get started with R, explore its capabilities, and find useful resources to boost your R skills.</p>
+    <a href="#">Read more...</a>
+  </div>
+</div>
