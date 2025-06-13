@@ -28,40 +28,6 @@
 @import "footer";
 @import "syntax";
 
-/* ===== Dropdown in masthead ===== */
-.has-dropdown { position: relative; }
-
-.has-dropdown > a::after {           /* minik ▼ ok */
-  content: " ▼";
-  font-size: 0.6em;
-}
-
-.dropdown {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  min-width: 180px;
-
-  background: var(--mm-background, #fff);   /* tema değişkeni yoksa #fff */
-  border: 1px solid var(--mm-border, #ccc);
-  z-index: 1000;
-}
-
-.dropdown li a {
-  display: block;
-  padding: 0.5rem 1rem;
-  white-space: nowrap;
-}
-
-.has-dropdown:hover   > .dropdown,
-.has-dropdown:focus-within > .dropdown {   /* klavye + dokunma */
-  display: block;
-}
-
 
 @import "forms";
 
