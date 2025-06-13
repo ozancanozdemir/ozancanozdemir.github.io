@@ -13,6 +13,13 @@ main:
 
   - title: "Contents & Posts"
     url: /year-archive/
+     children:
+      - title: "Blog Posts for R"
+        url: /blog-posts-for-r/
+      - title: "Blog Posts for Python"
+        url: /blog-posts-for-python/
+   
+  # diğer başlıklar...
 
 
 
@@ -22,11 +29,7 @@ main:
   - title: "CV"
     url: /cv/
 
-blog:                    # <<< yeni grup (sidebar'da kullanılacak)
-  - title: "Blog Posts for R"
-    url: /blog-posts-for-r/
-  - title: "Blog Posts for Python"
-    url: /blog-posts-for-python/
+
   # New Menu Items
 #  - title: "Blog Posts for R"
 #    url: /blog-posts-for-r/
