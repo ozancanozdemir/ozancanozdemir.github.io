@@ -11,14 +11,13 @@ main:
   - title: "Press Coverage"
     url: /press/
 
-  - title: "Contents & Posts"
+ - title: "Contents & Posts"
     url: /year-archive/
-     children:
+    children:
       - title: "Blog Posts for R"
         url: /blog-posts-for-r/
       - title: "Blog Posts for Python"
         url: /blog-posts-for-python/
-   
   # diğer başlıklar...
 
 
