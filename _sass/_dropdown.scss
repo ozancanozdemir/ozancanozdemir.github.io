@@ -1,59 +1,35 @@
-/* ===== Dropdown: gizli, hover/focus ile açılır ===== */
+/* === Dropdown düzgün çalışsın === */
 
-/* 1 — dropdown'ı gizle */
+/* 1 — Liste öğesinin tamamını tetikleyici yap */
+.has-dropdown { position: relative; }        /* referans noktası */
+
+/* 2 — Alt menü: ilk etapta gizli, en üste gelsin */
 .dropdown {
-  display: none !important;   /* "Primer" teması kendi .dropdown'ını block yapıyor — ezdik  */
+  display: none;
   position: absolute;
-  top: 100%;
-  left: 0;
-  margin: 0;
-  padding: 0;
+  top: 100%; left: 0;
+  background: #fff;
+  border: 1px solid #ccc;
   list-style: none;
+  margin: 0; padding: 0;
   min-width: 180px;
-
-  background: #ffffff;
-  border: 1px solid #cccccc;
-  z-index: 1000;
+  z-index: 2000;              /* her şeyin üstünde */
 }
 
-/* 2 — açılma tetikleyicisi */
-.has-dropdown:hover > .dropdown,
-.has-dropdown:focus-within > .dropdown {
-  display: block !important;
+/* 3 — Açık tut: hem üst öğe + alt liste hover’da */
+.has-dropdown:hover   > .dropdown,
+.has-dropdown:focus-within > .dropdown,
+.dropdown:hover {                     /* İPUCU: imleç dropdown içindeyken de açık kalsın */
+  display: block;
 }
 
-/* 3 — alt linklerin görünümü */
+/* 4 — Linklerin tıklanabilir olması için */
 .dropdown li a {
   display: block;
   padding: .5rem 1rem;
   white-space: nowrap;
 }
 
-/* 4 — ok işareti */
-.has-dropdown > a::after {
-  content: " ▼";
-  font-size: .6em;
-}
-
-/* 5 — masthead overflow engeli */
+/* 5 — Masthead overflow engelini kaldır */
 .greedy-nav,
-.greedy-nav .visible-links {
-  overflow: visible !important;
-}
-
-/* === 1. Hover alanını genişlet, alt menü üstte kalsın === */
-.greedy-nav__item {            /* <li class="has-dropdown …"> */
-  position: relative;          /* referans noktası */
-}
-
-.dropdown {
-  z-index: 2000 !important;    /* her şeyin üstünde */
-  pointer-events: auto;        /* tıklamaya izin ver */
-}
-
-/* === 2. Menü açık kalmalı === */
-.has-dropdown:hover > .dropdown,
-.has-dropdown:focus-within > .dropdown {
-  display: block !important;
-}
-
+.greedy-nav .visible-links { overflow: visible !important; }
