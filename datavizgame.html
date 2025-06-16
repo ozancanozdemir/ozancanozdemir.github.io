@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İyi mi Kötü mü?</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+        body {
+            font-family: 'Press Start 2P', monospace;
+            background: #1a1a2e;
+            background-image: 
+                radial-gradient(circle at 20% 80%, #16213e 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, #16213e 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, #0f3460 0%, transparent 50%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: #00ff41;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 4px solid #00ff41;
+            border-radius: 0;
+            background: #0f0f23;
+            box-shadow: 0 0 20px #00ff41;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px;
+            background: #16213e;
+            border-bottom: 4px solid #00ff41;
+            position: relative;
+        }
+        
+        .language-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #1a1a2e;
+            border: 2px solid #00ff41;
+            color: #00ff41;
+            padding: 8px 12px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+        
+        .language-switch:hover {
+            background: #00ff41;
+            color: #1a1a2e;
+            box-shadow: 0 0 15px #00ff41;
+        }
+        
+        .header h1 {
+            font-size: 2em;
+            margin: 0;
+            color: #00ff41;
+            text-shadow: 2px 2px 0px #004d0f;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 2px 2px 0px #004d0f, 0 0 10px #00ff41; }
+            to { text-shadow: 2px 2px 0px #004d0f, 0 0 20px #00ff41, 0 0 30px #00ff41; }
+        }
+        
+        .progress-info, .score-info {
+            text-align: center;
+            font-size: 12px;
+            color: #00ff41;
+            margin: 15px 0;
+            background: #1a1a2e;
+            padding: 10px;
+            border: 2px solid #00ff41;
+            margin: 15px 20px;
+        }
+        
+        .chart-container {
+            background: #0f0f23;
+            border: 4px solid #00ff41;
+            padding: 20px;
+            margin: 20px;
+            text-align: center;
+            box-shadow: inset 0 0 20px rgba(0, 255, 65, 0.1);
+        }
+        
+        .chart-image {
+            max-width: 100%;
+            max-height: 400px;
+            border: 2px solid #00ff41;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+        }
+        
+        .source-info {
+            font-size: 10px;
+            color: #00aa00;
+            margin-top: 15px;
+        }
+        
+        .buttons {
+            text-align: center;
+            margin: 30px 0;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            background: #1a1a2e;
+            color: #00ff41;
+            border: 3px solid #00ff41;
+            padding: 15px 25px;
+            margin: 0 10px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:hover {
+            background: #00ff41;
+            color: #1a1a2e;
+            box-shadow: 0 0 20px #00ff41;
+            transform: translateY(-2px);
+        }
+        
+        .btn.bad {
+            border-color: #ff0040;
+            color: #ff0040;
+        }
+        
+        .btn.bad:hover {
+            background: #ff0040;
+            color: #1a1a2e;
+            box-shadow: 0 0 20px #ff0040;
+        }
+        
+        .btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .feedback {
+            background: #0f0f23;
+            border: 3px solid #00ff41;
+            padding: 20px;
+            margin: 20px;
+            font-size: 14px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            position: relative;
+        }
+        
+        .feedback.show {
+            opacity: 1;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-20px); }
+            to { transform: translateY(0); }
+        }
+        
+        .feedback.success {
+            border-color: #00ff41;
+            color: #00ff41;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+        }
+        
+        .feedback.error {
+            border-color: #ff0040;
+            color: #ff0040;
+            box-shadow: 0 0 15px rgba(255, 0, 64, 0.3);
+        }
+        
+        .improvement-suggestion {
+            background: #0f0f23;
+            border: 3px solid #ffaa00;
+            padding: 20px;
+            margin: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            box-shadow: 0 0 15px rgba(255, 170, 0, 0.3);
+        }
+        
+        .improvement-suggestion.show {
+            opacity: 1;
+        }
+        
+        .improvement-suggestion img {
+            border: 2px solid #ffaa00;
+            box-shadow: 0 0 10px rgba(255, 170, 0, 0.3);
+        }
+        
+        .next-btn, .restart-btn {
+            background: #1a1a2e;
+            color: #00aa00;
+            border: 2px solid #00aa00;
+            padding: 10px 20px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            text-transform: uppercase;
+        }
+        
+        .next-btn:hover, .restart-btn:hover {
+            background: #00aa00;
+            color: #1a1a2e;
+            box-shadow: 0 0 15px #00aa00;
+        }
+        
+        .final-score {
+            background: #0f0f23;
+            border: 4px solid #00ff41;
+            padding: 30px;
+            margin: 20px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+            animation: finalGlow 1s ease-in-out infinite alternate;
+        }
+        
+        @keyframes finalGlow {
+            from { box-shadow: 0 0 20px rgba(0, 255, 65, 0.3); }
+            to { box-shadow: 0 0 30px rgba(0, 255, 65, 0.6); }
+        }
+        
+        .copyright {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #0f0f23;
+            border: 2px solid #00ff41;
+            padding: 10px 15px;
+            font-size: 8px;
+            color: #00aa00;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+            font-family: 'Press Start 2P', monospace;
+        }
+        
+        /* Scanlines effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 65, 0.03) 2px,
+                rgba(0, 255, 65, 0.03) 4px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+        
+        /* Pixel effect */
+        .chart-image, .improvement-suggestion img {
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="language-switch" onclick="toggleLanguage()" id="langSwitch">EN</button>
+            <h1 id="mainTitle">İyi mi Kötü mü?</h1>
+            <p id="subtitle" style="font-size: 10px; margin-top: 15px; color: #00aa00;">Hadi veri görselleştirme algını ölçelim</p>
+        </div>
+        
+        <div class="progress-info" id="progressInfo">
+            <span id="questionText">Soru</span> <span id="currentQuestion">1</span> / 10
+        </div>
+        
+        <div class="score-info" id="scoreInfo">
+            <span id="scoreText">Skor:</span> <span id="currentScore">0</span> / 10
+        </div>
+        
+        <div class="chart-container" id="chartContainer">
+            <img id="chartImage" class="chart-image" src="" alt="Veri Görselleştirme Örneği">
+            <div class="source-info" id="sourceInfo"></div>
+        </div>
+        
+        <div class="buttons" id="buttons">
+            <button class="btn" onclick="answer('good')" id="goodBtn">İyi</button>
+            <button class="btn bad" onclick="answer('bad')" id="badBtn">Kötü</button>
+        </div>
+        
+        <div class="feedback" id="feedback"></div>
+        
+        <div class="improvement-suggestion" id="improvement"></div>
+        
+        <div style="text-align: center;">
+            <button class="next-btn" onclick="nextQuestion()" style="display: none;" id="nextBtn">
+                Sonraki Soru
+            </button>
+            <button class="restart-btn" onclick="restart()" style="display: none;" id="restartBtn">
+                Tekrar Oyna
+            </button>
+        </div>
+        
+        <div class="final-score" id="finalScore" style="display: none;">
+            <h2 id="gameOverText">Oyun Bitti!</h2>
+            <p><span id="totalScoreText">Toplam Skorunuz:</span> <span id="finalScoreValue"></span> / 10</p>
+            <p id="finalMessage"></p>
+        </div>
+        
+        <div class="copyright">
+            © 2024 Ozancan Özdemir - Veri Görselleştirme Eğitimi
+        </div>
+    </div>
+
+    <script>
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answered = false;
+        let currentLanguage = 'tr';
+        
+        const texts = {
+            tr: {
+                title: "İyi mi Kötü mü?",
+                subtitle: "Hadi veri görselleştirme algını ölçelim",
+                question: "Soru",
+                score: "Skor:",
+                good: "İyi",
+                bad: "Kötü",
+                nextQuestion: "Sonraki Soru",
+                restart: "Tekrar Oyna",
+                gameOver: "Oyun Bitti!",
+                totalScore: "Toplam Skorunuz:",
+                congratulations: "Harika! Süper! 🎉",
+                congratulationsGood: "Mükemmel! Bu gerçekten iyi bir görselleştirme! 🌟",
+                needHelp: "Sanırım veri görselleştirme konusunda yardıma ihtiyacın var. Sanırım Ozancan Özdemir'den yardım almalısın. 📊",
+                correctAnswerTitle: "Doğru cevap! İşte neden kötü ve düzeltilmiş hali:",
+                improvedVersion: "Düzeltilmiş Versiyon:",
+                source: "Kaynak:",
+                excellent: "Mükemmel! Veri görselleştirme konusunda gerçekten uzman seviyesiniz! 🏆",
+                great: "Harika! Çok iyi bir performans sergiledıniz! 🌟",
+                notBad: "Fena değil! Biraz daha pratikle mükemmel olacaksınız! 👍",
+                getHelp: "Ozancan Özdemir'le iletişime geçmenizi öneriyorum! 😊",
+                copyright: "© 2024 Ozancan Özdemir - Veri Görselleştirme Eğitimi"
+            },
+            en: {
+                title: "Good or Bad?",
+                subtitle: "Let's measure your data visualization perception",
+                question: "Question",
+                score: "Score:",
+                good: "Good",
+                bad: "Bad",
+                nextQuestion: "Next Question",
+                restart: "Play Again",
+                gameOver: "Game Over!",
+                totalScore: "Your Total Score:",
+                congratulations: "Amazing! Super! 🎉",
+                congratulationsGood: "Excellent! This is really good visualization! 🌟",
+                needHelp: "I think you need help with data visualization. I suggest you contact Ozancan Özdemir. 📊",
+                correctAnswerTitle: "Correct answer! Here's why it's bad and the improved version:",
+                improvedVersion: "Improved Version:",
+                source: "Source:",
+                excellent: "Excellent! You're truly an expert in data visualization! 🏆",
+                great: "Great! You showed excellent performance! 🌟",
+                notBad: "Not bad! With a bit more practice you'll be perfect! 👍",
+                getHelp: "I recommend contacting Ozancan Özdemir! 😊",
+                copyright: "© 2024 Ozancan Özdemir - Data Visualization Training"
+            }
+        };
+        
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'tr' ? 'en' : 'tr';
+            updateTexts();
+            document.getElementById('langSwitch').textContent = currentLanguage === 'tr' ? 'EN' : 'TR';
+        }
+        
+        function updateTexts() {
+            const t = texts[currentLanguage];
+            document.getElementById('mainTitle').textContent = t.title;
+            document.getElementById('subtitle').textContent = t.subtitle;
+            document.getElementById('questionText').textContent = t.question;
+            document.getElementById('scoreText').textContent = t.score;
+            document.getElementById('goodBtn').textContent = t.good;
+            document.getElementById('badBtn').textContent = t.bad;
+            document.getElementById('nextBtn').textContent = t.nextQuestion;
+            document.getElementById('restartBtn').textContent = t.restart;
+            document.getElementById('gameOverText').textContent = t.gameOver;
+            document.getElementById('totalScoreText').textContent = t.totalScore;
+            document.querySelector('.copyright').textContent = t.copyright;
+        }
+        
+        const questions = [
+            {
+                type: 'bad',
+                image: 'https://cdn.prod.website-files.com/61488f4f65be16b5ebbd450b/65ccf42ff14d759a662a3e08_y_TEk3yWkP9Apz7Hf9FRaDqI6hqfyD4v_K-aRN3o77JGak8aItVxoAxmP0J7AOcse9AiaN_2hwrSi4aMzDQ7dXZG4PhrcyRK6I2ug1FU7HA4nheE2eMBauy8BmukXsg7_q8seGxb.webp',
+                correctImage: 'https://ozancanozdemir.github.io/plot_game/correctplot1.png',
+                source: 'Polymer',
+                explanationTR: 'Pasta grafiğinde yüzdeler yazmıyor, kıyaslama çok zor! Bar grafiği ile yüzdeler gösterilirse çok daha anlaşılır olur. Yüzdeler gösterildiğinde Y ekseninde sayılar yazmaya gerek yok.',
+                explanationEN: 'The pie chart shows no percentages, making comparison very difficult! A bar chart showing percentages would be much clearer. When percentages are shown, there\'s no need for numbers on the Y-axis.'
+            },
+            {
+                type: 'bad',
+                image: 'https://ozancanozdemir.github.io/plot_game/kotuornek2.png',
+                correctImage: 'https://ozancanozdemir.github.io/plot_game/correctplot2.png',
+                explanationTR: 'Bar grafiğinde sayılar büyükten küçüğe sıralanmalı ve legend genellikle üstte olmalı. Ancak bir kıyaslama yapmayacaksan eğer seriyal renklendirme yerine tek bir renk kullanmak mantıklı.',
+                explanationEN: 'In bar charts, numbers should be sorted from largest to smallest and legend should usually be at the top. However, if you\'re not making comparisons, using a single color instead of serial coloring makes more sense.'
+            },
+            {
+                type: 'bad',
+                image: 'https://ozancanozdemir.github.io/plot_game/kotuornek3.png',
+                correctImage: 'https://ozancanozdemir.github.io/plot_game/correctplot3.png',
+                explanationTR: 'Grafik doğru gibi görünse de Y ekseni 70\'ten başlıyor, oysa 0\'dan başlamalı. İlk bakışta kategoriler arası büyük fark varmış gibi görünürken, 0-100 aralığında öyle olmadığı anlaşılıyor.',
+                explanationEN: 'While the chart looks correct, the Y-axis starts from 70 instead of 0. At first glance, there seems to be a big difference between categories, but when viewed on a 0-100 scale, it\'s not that significant.'
+            },
+            {
+                type: 'bad',
+                image: 'https://ozancanozdemir.github.io/plot_game/kotuornek4.png',
+                correctImage: 'https://ozancanozdemir.github.io/plot_game/correctplot4.png',
+                explanationTR: 'Çok düzensiz ve anlaşılmaz! Grafik karmaşık, renkler uyumsuz ve veri yapısı net değil. Daha sade ve düzenli bir yaklaşım gerekli.',
+                explanationEN: 'Very messy and incomprehensible! The chart is confusing, colors are inconsistent, and the data structure is unclear. A cleaner and more organized approach is needed.'
+            },
+            {
+                type: 'bad',
+                image: 'https://ozancanozdemir.github.io/plot_game/kotuornek5.png',
+                correctImage: 'https://ozancanozdemir.github.io/plot_game/correctplot5.png',
+                explanationTR: 'Bu tür grafikler çok kullanılsa da yorumlaması zor ve kıyaslamak da zor. Segmented total bar grafik alternatifi var - böylece kategoriler arası ve içi kıyaslamak çok kolay!',
+                explanationEN: 'Although these types of charts are widely used, they\'re hard to interpret and compare. There\'s a segmented total bar chart alternative - this makes comparing between and within categories much easier!'
+            },
+            {
+                type: 'good',
+                image: 'https://ozancanozdemir.github.io/plot_game/iyiornek1.png'
+            },
+            {
+                type: 'good',
+                image: 'https://ozancanozdemir.github.io/plot_game/iyiornek2.png'
+            },
+            {
+                type: 'good',
+                image: 'https://ozancanozdemir.github.io/plot_game/iyiornek3.png'
+            },
+            {
+                type: 'good',
+                image: 'https://ozancanozdemir.github.io/plot_game/iyiornek4.png',
+                source: 'Fundamental of Data Visualization'
+            },
+            {
+                type: 'good',
+                image: 'https://ozancanozdemir.github.io/plot_game/iyiornek5.png'
+            }
+        ];
+        
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+        
+        function loadQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                showFinalScore();
+                return;
+            }
+            
+            const question = questions[currentQuestionIndex];
+            
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            document.getElementById('chartImage').src = question.image;
+            document.getElementById('sourceInfo').textContent = texts[currentLanguage].source + ' ' + question.source;
+            
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('improvement').className = 'improvement-suggestion';
+            document.getElementById('improvement').innerHTML = '';
+            document.getElementById('nextBtn').style.display = 'none';
+            
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => btn.disabled = false);
+            
+            answered = false;
+        }
+        
+        function answer(userAnswer) {
+            if (answered) return;
+            
+            const question = questions[currentQuestionIndex];
+            const feedback = document.getElementById('feedback');
+            const improvement = document.getElementById('improvement');
+            const buttons = document.querySelectorAll('.btn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            answered = true;
+            buttons.forEach(btn => btn.disabled = true);
+            
+            if (question.type === 'bad' && userAnswer === 'bad') {
+                feedback.textContent = texts[currentLanguage].congratulations;
+                feedback.className = 'feedback success show';
+                
+                if (question.correctImage) {
+                    const explanation = currentLanguage === 'tr' ? question.explanationTR : question.explanationEN;
+                    const improvedText = texts[currentLanguage].improvedVersion;
+                    improvement.innerHTML = '<div style="text-align: left;"><strong>' + texts[currentLanguage].correctAnswerTitle + '</strong><br><br><div style="background: #1a1a2e; padding: 15px; border-left: 3px solid #ffaa00; margin: 15px 0; font-size: 11px; line-height: 1.5; color: #ffaa00;">' + explanation + '</div><div style="text-align: center; margin-top: 20px;"><strong style="color: #00ff41;">' + improvedText + '</strong><br><br><img src="' + question.correctImage + '" alt="Düzeltilmiş Görsel" style="max-width: 100%; border: 2px solid #00ff41;"><div style="font-size: 10px; color: #00aa00; margin-top: 10px;">' + texts[currentLanguage].source + ' ' + question.source + '</div></div></div>';
+                    improvement.className = 'improvement-suggestion show';
+                }
+                score++;
+            } else if (question.type === 'good' && userAnswer === 'good') {
+                feedback.textContent = texts[currentLanguage].congratulationsGood;
+                feedback.className = 'feedback success show';
+                score++;
+            } else {
+                feedback.textContent = texts[currentLanguage].needHelp;
+                feedback.className = 'feedback error show';
+            }
+            
+            document.getElementById('currentScore').textContent = score;
+            
+            setTimeout(() => {
+                nextBtn.style.display = 'inline-block';
+            }, 1500);
+        }
+        
+        function nextQuestion() {
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+        
+        function showFinalScore() {
+            document.getElementById('chartContainer').style.display = 'none';
+            document.getElementById('buttons').style.display = 'none';
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('improvement').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('progressInfo').style.display = 'none';
+            document.getElementById('scoreInfo').style.display = 'none';
+            
+            const finalScore = document.getElementById('finalScore');
+            const finalScoreValue = document.getElementById('finalScoreValue');
+            const finalMessage = document.getElementById('finalMessage');
+            const restartBtn = document.getElementById('restartBtn');
+            
+            const t = texts[currentLanguage];
+            finalScoreValue.textContent = score;
+            
+            if (score >= 8) {
+                finalMessage.textContent = t.excellent;
+            } else if (score >= 6) {
+                finalMessage.textContent = t.great;
+            } else if (score >= 4) {
+                finalMessage.textContent = t.notBad;
+            } else {
+                finalMessage.textContent = t.getHelp;
+            }
+            
+            finalScore.style.display = 'block';
+            restartBtn.style.display = 'inline-block';
+        }
+        
+        function restart() {
+            currentQuestionIndex = 0;
+            score = 0;
+            answered = false;
+            
+            shuffleArray(questions);
+            
+            document.getElementById('chartContainer').style.display = 'block';
+            document.getElementById('buttons').style.display = 'block';
+            document.getElementById('feedback').style.display = 'block';
+            document.getElementById('improvement').style.display = 'block';
+            document.getElementById('progressInfo').style.display = 'block';
+            document.getElementById('scoreInfo').style.display = 'block';
+            document.getElementById('finalScore').style.display = 'none';
+            document.getElementById('restartBtn').style.display = 'none';
+            
+            document.getElementById('currentScore').textContent = '0';
+            
+            loadQuestion();
+        }
+        
+        shuffleArray(questions);
+        loadQuestion();
+        updateTexts();
+    </script>
+</body>
+</html>
