@@ -40,3 +40,20 @@
 .greedy-nav .visible-links {
   overflow: visible !important;
 }
+
+/* === 1. Hover alanını genişlet, alt menü üstte kalsın === */
+.greedy-nav__item {            /* <li class="has-dropdown …"> */
+  position: relative;          /* referans noktası */
+}
+
+.dropdown {
+  z-index: 2000 !important;    /* her şeyin üstünde */
+  pointer-events: auto;        /* tıklamaya izin ver */
+}
+
+/* === 2. Menü açık kalmalı === */
+.has-dropdown:hover > .dropdown,
+.has-dropdown:focus-within > .dropdown {
+  display: block !important;
+}
+
