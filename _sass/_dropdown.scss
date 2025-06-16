@@ -1,0 +1,42 @@
+/* ===== Dropdown: gizli, hover/focus ile açılır ===== */
+
+/* 1 — dropdown'ı gizle */
+.dropdown {
+  display: none !important;   /* "Primer" teması kendi .dropdown'ını block yapıyor — ezdik  */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  min-width: 180px;
+
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  z-index: 1000;
+}
+
+/* 2 — açılma tetikleyicisi */
+.has-dropdown:hover > .dropdown,
+.has-dropdown:focus-within > .dropdown {
+  display: block !important;
+}
+
+/* 3 — alt linklerin görünümü */
+.dropdown li a {
+  display: block;
+  padding: .5rem 1rem;
+  white-space: nowrap;
+}
+
+/* 4 — ok işareti */
+.has-dropdown > a::after {
+  content: " ▼";
+  font-size: .6em;
+}
+
+/* 5 — masthead overflow engeli */
+.greedy-nav,
+.greedy-nav .visible-links {
+  overflow: visible !important;
+}
