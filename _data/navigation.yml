@@ -21,6 +21,9 @@ main:
 
   - title: "Projects & Portfolio"
     url: /projects/
+    
+  - title: "DV Game"
+    url: /datavizgame.html
 
   - title: "CV"
     url: /cv/
