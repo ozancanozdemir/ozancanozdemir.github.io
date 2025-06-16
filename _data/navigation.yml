@@ -12,12 +12,12 @@ main:
     url: /press/
 
   - title: "Contents & Posts"
-    url: /year-archive/
-    children:
-      - title: "Blog Posts for R"
-        url: /blog-posts-for-r/
-      - title: "Blog Posts for Python"
-        url: /blog-posts-for-python/
+   # url: /year-archive/
+    #children:
+     # - title: "Blog Posts for R"
+      #  url: /blog-posts-for-r/
+     # - title: "Blog Posts for Python"
+      #  url: /blog-posts-for-python/
 
   - title: "Projects & Portfolio"
     url: /projects/
