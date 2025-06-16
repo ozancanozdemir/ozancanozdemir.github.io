@@ -276,7 +276,7 @@ permalink: /:categories/:title/
 # paginate_path: /page:num/
 timezone: America/Los_Angeles # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
-
+remote_theme: "mmistakes/minimal-mistakes@4.24.0"
 # Plugins
 plugins:
   - jekyll-paginate
@@ -284,6 +284,10 @@ plugins:
   - jekyll-gist
   - jekyll-feed
   - jekyll-redirect-from
+  - jekyll-seo-tag
+  - jekyll-include-cache   # <— masthead override'ı için gerekli
+
+  
 # mimic GitHub Pages with --safe
 whitelist:
   - jekyll-paginate
