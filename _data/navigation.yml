@@ -12,6 +12,35 @@ main:
     url: /press/
 
   - title: "Contents & Posts"
+    url: /year-archive/
+    children:
+      - title: "Blog Posts for R"
+        url: /blog-posts-for-r/
+      - title: "Blog Posts for Python"
+        url: /blog-posts-for-python/
+
+  - title: "Projects & Portfolio"
+    url: /projects/
+
+  - title: "CV"
+    url: /cv/
+
+
+
+#main:
+#  - title: "Publications"
+#    url: /publications/
+
+#  - title: "Talks"
+#    url: /talks/
+
+#  - title: "Teaching"
+#    url: /teaching/
+
+#  - title: "Press Coverage"
+ #   url: /press/
+
+ # - title: "Contents & Posts"
    # url: /year-archive/
     #children:
      # - title: "Blog Posts for R"
@@ -19,11 +48,10 @@ main:
      # - title: "Blog Posts for Python"
       #  url: /blog-posts-for-python/
 
-  - title: "Projects & Portfolio"
-    url: /projects/
-
-  - title: "CV"
-    url: /cv/
+ # - title: "Projects & Portfolio"
+  #  url: /projects/
+# - title: "CV"
+  #  url: /cv/
 
 
 
