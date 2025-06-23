@@ -1,21 +1,13 @@
 ---
-layout: archive
+layout: archive          # Minimal-Mistakes listesini kullan
 title: "Blog Posts for R"
 permalink: /blog-posts-for-r/
 author_profile: true
+tag: r                   # veya category: r  ← hangisini kullandıysan
+entries_layout: list     # (isteğe bağlı) kart yerine sade liste görünümü
 ---
 
-{: .blog-post-listing}  <!-- dış sarmal -->
-
-### Post 1
-{: .post}
-
-![R Post Image](/assets/images/small-r-image.jpg){: .small-image .left }
-
-Lorem ipsum.
-
-[Read more…](#){: .right }
-
-![Large R Post Image](/assets/images/large-r-image.jpg){: .large-image .larger-image }
-
----
+{% comment %}
+Bu sayfada başka içerik yazmak istersen front-matter altında Markdown ekleyebilirsin;
+liste otomatik olarak altına gelecektir.
+{% endcomment %}
