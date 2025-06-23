@@ -2,7 +2,7 @@
 title: "Introduction to ```ggsegmentedtotalbar```"
 tags: [r]
 categories: [r]
-author_profile: false   # true yaparsan kenar bar’da profil çıkar
+author_profile: true   # true yaparsan kenar bar’da profil çıkar
 layout: single          # Academic Pages varsayılanı
 read_time: true
 ---
