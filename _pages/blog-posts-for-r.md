@@ -1,13 +1,17 @@
 ---
-layout: tag          # <-- archive yerine tag
+layout: archive          # veya mevcut temanızda çalışan başka bir layout
 title:  "Blog Posts for R"
 permalink: /blog-posts-for-r/
-tag: r               # “r” etiketli yazıları getirir
 author_profile: true
-entries_layout: list # isteğe bağlı
+entries_layout: list
 ---
 
 {% comment %}
-Bu sayfada başka içerik yazmak istersen front-matter altında Markdown ekleyebilirsin;
-liste otomatik olarak altına gelecektir.
+Bu sayfa, tags: [r] içeren tüm yazıları manual Liquid döngüyle listeler.
+Temada “layout: tag” eksik olsa bile çalışır.
 {% endcomment %}
+
+{% assign r_posts = site.tags.r | sort: "date" | reverse %}
+{% for post in r_posts %}
+  {% include archive-single.html %}
+{% endfor %}
