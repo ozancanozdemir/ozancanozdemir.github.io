@@ -1,10 +1,10 @@
 ---
-layout: archive          # Minimal-Mistakes listesini kullan
-title: "Blog Posts for R"
+layout: tag          # <-- archive yerine tag
+title:  "Blog Posts for R"
 permalink: /blog-posts-for-r/
+tag: r               # “r” etiketli yazıları getirir
 author_profile: true
-tag: r                  # veya category: r  ← hangisini kullandıysan
-entries_layout: list     # (isteğe bağlı) kart yerine sade liste görünümü
+entries_layout: list # isteğe bağlı
 ---
 
 {% comment %}
