@@ -1,7 +1,8 @@
----       # front-matter açılışı
-layout: null
-permalink: /feedR.xml
----<?xml version="1.0" encoding="utf-8"?>
+---          # satır 1
+layout: null          # satır 2
+permalink: /feedR.xml # satır 3
+---                   # satır 4
+<?xml version="1.0" encoding="utf-8"?>   <!-- satır 5 -->
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>{{ site.title }} — R Posts</title>
