@@ -1,0 +1,30 @@
+<!--  feedR.xml  -->
+---
+layout: null          # Tema şablonu uygulanmasın
+permalink: /feedR.xml # https://ozancanozdemir.github.io/feedR.xml
+---
+
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ site.title }} — R Posts</title>
+    <description>R-related posts from {{ site.title }}</description>
+    <link>{{ site.url }}{{ site.baseurl }}/blog-posts-for-r/</link>
+    <atom:link href="{{ site.url }}{{ site.baseurl }}/feedR.xml"
+               rel="self" type="application/rss+xml" />
+
+    {% for post in site.posts %}
+      {% unless post.draft %}
+        {% if post.tags contains "r" or post.categories contains "r" %}
+          <item>
+            <title>{{ post.title | xml_escape }}</title>
+            <description>{{ post.excerpt | strip_html | strip_newlines | xml_escape }}</description>
+            <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
+            <link>{{ site.url }}{{ post.url }}</link>
+            <guid isPermaLink="true">{{ site.url }}{{ post.url }}</guid>
+          </item>
+        {% endif %}
+      {% endunless %}
+    {% endfor %}
+  </channel>
+</rss>
