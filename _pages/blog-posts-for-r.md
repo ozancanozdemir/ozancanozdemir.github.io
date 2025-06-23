@@ -15,3 +15,6 @@ Temada “layout: tag” eksik olsa bile çalışır.
 {% for post in r_posts %}
   {% include archive-single.html %}
 {% endfor %}
+
+
+* I'm pleased to be a contributor to [R-Bloggers](https://www.r-bloggers.com) 
