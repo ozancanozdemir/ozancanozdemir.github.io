@@ -3,7 +3,7 @@ layout: archive          # Minimal-Mistakes listesini kullan
 title: "Blog Posts for R"
 permalink: /blog-posts-for-r/
 author_profile: true
-tag: [r]                  # veya category: r  ← hangisini kullandıysan
+tag: r                  # veya category: r  ← hangisini kullandıysan
 entries_layout: list     # (isteğe bağlı) kart yerine sade liste görünümü
 ---
 
