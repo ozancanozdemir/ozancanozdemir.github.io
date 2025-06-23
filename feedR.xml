@@ -3,6 +3,7 @@ layout: null        # hiçbir Jekyll şablonu uygulanmasın
 permalink: /feedR.xml
 ---
 
+
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
@@ -10,7 +11,7 @@ permalink: /feedR.xml
     <link>{{ site.url }}{{ site.baseurl }}/blog-posts-for-r/</link>
     <description>{{ site.description | xml_escape }}</description>
 
-    {% assign rPosts = site.posts | where_exp: "post", "post.categories contains 'r'" %}
+    {% assign rPosts = site.posts | where_exp:"p","p.tags contains 'r' or p.categories contains 'r'" %}
     {% for post in rPosts %}
       <item>
         <title>{{ post.title | xml_escape }}</title>
