@@ -1,6 +1,5 @@
 ---
 title: "Chat with LLMs on your R environment"
-author: "[Ozancan Ozdemir](mailto:ozancanozdemir@gmail.com)"
 tags: [r]
 categories: [r]
 author_profile: true  
