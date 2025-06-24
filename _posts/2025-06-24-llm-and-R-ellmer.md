@@ -7,7 +7,6 @@ layout: single
 read_time: true
 ---
 
-## Chat with LLM's on R
 
 LLM provides many advantages to the users, especially for coding. Once user had to switch the windows from the coding environment to the browser to search for the solution. But now, thanks to the newly advancements, users can chat with the LLM and get the solution for their queries on the same coding environment in R.
 
