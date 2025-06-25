@@ -23,7 +23,7 @@ tidyquant package has a built-in function used to create a candlestick chart as 
 
 Constructing a candlestick chart with ggplot2
 
-```
+```{r}
 ## call libraries
 library(ggplot2)
 library(tidyquant)
@@ -33,12 +33,12 @@ library(plotly)
 
 After calling the libraries, we can retrieve the historical stock prices of a company from Yahoo Finance using the getSymbols() function from the quantmod package. In this example, we will retrieve the historical stock prices of Apple Inc. (AAPL) and store them in a data frame.
 
-```
+```{r}
 ## retrieve historical stock prices
 getSymbols("AAPL", src = "yahoo")
 ```
 
-```
+```{r}
 AAPL
 ```
 
