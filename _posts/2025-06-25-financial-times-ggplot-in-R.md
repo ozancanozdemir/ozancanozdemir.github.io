@@ -23,12 +23,12 @@ I will draw an inflation rate of Turkey. You can access the data from [here.](ht
 
 Let’s read data at first.
 
-```
+```{r}
 inflation<-readxl::read_xlsx("inflation_rate.xlsx")
 head(inflation)
 ```
 
-```
+```{r}
 # A tibble: 6 x 2
   Date                 Rate
   <dttm>              <dbl>
@@ -42,7 +42,7 @@ head(inflation)
 
 Then, draw a line plot using ```geom_line``` geometric function.
 
-```
+```{r}
 library(ggplot2)
 ggplot(inflation,aes(x = Date,
                      y = Rate))+
@@ -53,7 +53,7 @@ ggplot(inflation,aes(x = Date,
 
 Now, we will start to manipulate the appearance of the plot by adding title and caption.
 
-```
+```{r}
 ggplot(inflation,aes(x = Date,
                      y = Rate))+
   geom_line()+
@@ -68,7 +68,7 @@ The Inflation rate in Turkey is at the peak of the last 17 years !",
 
 Then, change the background color, change the color and tickness of the line and remove the vertical grid lines. We will use theme function in ggplot2 and ```col``` and ```size```arguments in ```geom_line``` function.
 
-```
+```{r}
 ggplot(inflation,aes(x = Date,
                      y = Rate))+
   geom_line(col = "#f20656", size = 1.2)+
@@ -89,7 +89,7 @@ The Inflation rate in Turkey is at the peak of the last 17 years !",
 
 After that, we will manipulate the texts on the plot. In other words, we will change the color and family of the texts. We will add the necessary arguments in ```theme``` function.
 
-```
+```{r}
 ggplot(inflation,aes(x = Date,
                      y = Rate))+
   geom_line(col = "#f20656", size = 1.2)+
@@ -119,7 +119,7 @@ Next, we’ll put the y-axis values to the right of the graph. Also, we will pas
 
 Lastly, we will add the second caption on the lower left corner of the plot, which may be the hardest part of this process. For this purpose, we will use annotate_custom function. We know that the input of this function is grob object. Thus, we will consider ```ggpubr``` package to produce a grob text object. Then, we will clip off using ```coord_cartesian```.
 
-```
+```{r}
 caption2<-ggpubr::text_grob("Source: CBRT", family = "Tw Cen MT",face = "bold", color = "#92959e", size =10)
 
 ggplot(inflation,aes(x = Date,
