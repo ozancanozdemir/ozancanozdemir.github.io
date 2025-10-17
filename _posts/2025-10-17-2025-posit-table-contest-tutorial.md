@@ -1,5 +1,11 @@
-# Tutorial for Developing An Advanced Stock Dashboard for the S&P 500 for the 2025 Posit Table Contest"
-
+---
+title: "Tutorial for Developing an Advanced Stock Dashboard for the S&P 500 for the 2025 Posit Table Contest"
+tags: [r]
+categories: [r]
+author_profile: true
+layout: single
+read_time: true
+---
 
 This tutorial breaks down the development of an R Shiny application titled **S&P 500 Monitoring Dashboard** for the 2025 Posit Table Dashboard. This app effectively combines interactive financial data visualization (`plotly`), beautiful data tables (`gt`, `gtExtras`), web scraping (`rvest`), and external API integration (`riingo`, `ellmer`/Gemini AI) within a custom, sleek dark theme.
 You can access the app through this [link](https://ozancanozdemir.shinyapps.io/sp500-monitoring-dashboard/)
