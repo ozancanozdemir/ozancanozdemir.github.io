@@ -7,7 +7,7 @@ entries_layout: list
 ---
 
 {% comment %} Tüm postları tarihe göre tersten sırala {% endcomment %}
-{% assign all_posts = site.posts | sort: "date" | reverse %}
+{% assign all_posts = site.posts.blog | sort: "date" | reverse %}
 
 {% for post in all_posts %}
   {% include archive-single.html %}
