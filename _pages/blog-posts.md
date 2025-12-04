@@ -6,16 +6,28 @@ author_profile: true
 entries_layout: list
 ---
 
-{% comment %} Tüm postları tarihe göre tersten sırala {% endcomment %}
-{% assign all_posts = site.posts.blog | sort: "date" | reverse %}
+---
+layout: archive
+title: "Blog"
+permalink: /blog/
+author_profile: true
+entries_layout: grid
+---
 
-{% for post in all_posts %}
-  {% include archive-single.html %}
-{% endfor %}
-
-<p>
+<p align="right">
   <a href="/blog-feed.xml" class="btn btn--warning btn--small">
     <i class="fas fa-rss"></i> RSS Abone Ol
   </a>
 </p>
+
+<div class="grid__wrapper">
+  {% assign all_posts = site.posts | sort: "date" | reverse %}
+  
+  {% for post in all_posts %}
+    {% comment %} R etiketli değilse göster {% endcomment %}
+    {% unless post.tags contains 'r' %}
+      {% include archive-single.html %}
+    {% endunless %}
+  {% endfor %}
+</div>
 
