@@ -14,7 +14,7 @@ main:
   - title: "Contents & Posts"
     url: /year-archive/
     children:
-      -title: "Articles"
+      - title: "Articles"
         url: /blog-posts/
       - title: "Blog Posts for R"
         url: /blog-posts-for-r/
