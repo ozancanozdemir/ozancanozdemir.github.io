@@ -6,13 +6,6 @@ author_profile: true
 entries_layout: list
 ---
 
----
-layout: archive
-title: "Blog"
-permalink: /blog/
-author_profile: true
-entries_layout: grid
----
 
 <p align="right">
   <a href="/blog-feed.xml" class="btn btn--warning btn--small">
