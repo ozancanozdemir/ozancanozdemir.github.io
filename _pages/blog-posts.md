@@ -1,1 +1,17 @@
+---
+layout: archive          # veya mevcut temanızda çalışan başka bir layout
+title:  "Blog Posts"
+permalink: /blog-posts/
+author_profile: true
+entries_layout: list
+---
+
+{% comment %} Tüm postları tarihe göre tersten sırala {% endcomment %}
+{% assign all_posts = site.posts | sort: "date" | reverse %}
+
+{% for post in all_posts %}
+  {% include archive-single.html %}
+{% endfor %}
+
+
 
