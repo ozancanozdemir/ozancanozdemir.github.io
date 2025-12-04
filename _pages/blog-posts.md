@@ -13,5 +13,9 @@ entries_layout: list
   {% include archive-single.html %}
 {% endfor %}
 
-
+<p>
+  <a href="/blog-feed.xml" class="btn btn--warning btn--small">
+    <i class="fas fa-rss"></i> RSS Abone Ol
+  </a>
+</p>
 
