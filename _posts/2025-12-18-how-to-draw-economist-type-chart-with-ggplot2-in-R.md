@@ -14,7 +14,7 @@ In this tutorial, we are going to create an Economist-style graph in R by using 
 
 So, let's begin with loading the necessary libraries and the dataset.
 
-```
+```{r}
 library(ggplot2)
 library(readxl)
 library(ggtext)
@@ -24,17 +24,17 @@ library(showtext)
 
 Before plotting the data, I will import the font that the magazine uses. They use their own characteristic font:  Econ Sans. You can download the font from [here](https://github.com/hrbrmstr/hrbrthemes/tree/master/inst/fonts/econ-sans). However, this font does not support the Turkish characters such as **ü,ş,i,ğ**. So, I will import a font which resembles the Econ Sans from [**Google Fonts**](https://fonts.google.com/). 
 
-```
+```{r}
 font_add_google("Commissioner","Commissioner") ## import font from Google
 showtext_auto() ## activate showtext
 ```
 
-```
+```{r}
 df <- read_excel("poverty_minwage_turkey.xlsx") ## load the dataset
 df |> head() ## preview the dataset
 ```
 
-```
+```{r}
 # A tibble: 6 × 8
   tarih               mon          asgari           aclik  fark       
   <dttm>              <chr>         <dbl>           <dbl> <dbl>          
@@ -48,24 +48,24 @@ df |> head() ## preview the dataset
 
 Since I would like to show the difference between powerty line and minimum wage by color, where red shows the months that minimum wage is below the poverty line and green shows the months that minimum wage is above the poverty line, I will create a new variable called **color** in the dataset.
 
-```
+```{r}
 df$color <- ifelse(df<0,"#E3120B","forestgreen")
 ```
 
 In addition to the color, I will also get use of some numbers to represent the difference between poverty line and minimum wage. However, I am not using the numbers with ```-```sign which may disturb the audience's eyes. So, I will add one more column called ```label``` that represents difference without minus sign.
 
-```
+```{r}
 df$label <- gsub("-","",as.character(df$fark))
 ``` 
 When I represent the numbers on the plot, it is not wise to show them all since I have 143 observations. Therefore, I will take a subset of the dataset by random selection. But I will add the time points where the difference between these two terms is maximum in both directions on purpose. 
 
-```
+```{r}
 df_text <- df[c(sample(1:143,40),143,121),] # take a random sample 
 ```
 
 Now, we are ready to plot the data. In contrast to the conventinal way, which is the line plot, I will choose bar plot. 
 
-```
+```{r}
 df |>     
   ggplot(aes(x = tarih, y = fark, fill = color)) + 
   geom_bar(stat = "identity", width = 25 * 24 * 60 * 60)
@@ -78,19 +78,20 @@ It is necessary to use ```identity``` in ```geom_bar``` since we already have th
 
 As you see, even if we use ```fill``` argument, the bars are filled by the default colors of ggplot2. To activate this argument, use ```scale_fill_identity()```
 
-```
+```{r}
 df |>     
   ggplot(aes(x = tarih, y = fark, fill = color)) + 
   geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
   scale_fill_identity()
 ```
+<img width="1150" height="858" alt="p2" src="https://github.com/user-attachments/assets/4f3ac1be-65b5-42c2-8344-8bd9671e6dd8" />
 
-![Uploading p2.png…]()
+
 
 
 Now, let's add our text labels on the bars by using ```geom_text``` function. I will use the ```df_text``` dataset that we created before for this purpose. 
 
-```
+```{r}
 df |>     
   ggplot(aes(x = tarih, y = fark, fill = color)) + 
   geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
@@ -110,7 +111,7 @@ Here, I would like to particularly mention about the usage of ```hjust``` argume
 
 Now, I would like to emphasize the 0 line by using ```geom_hline``` function.
 
-```
+```{r}
 df |>     
   ggplot(aes(x = tarih, y = fark, fill = color)) + 
   geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
@@ -129,7 +130,7 @@ df |>
 
 When you use the label on your plot, i.e you use some or all values of your y axis, it is better to your y axis text to reduce crowd in your design. However, I aim to emphasize the 0 line. For doing both, I can use ```scale_y_continuous``` function with ```breaks``` argument.
 
-```
+```{r}
 df |>     
   ggplot(aes(x = tarih, y = fark, fill = color)) + 
   geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
@@ -153,7 +154,7 @@ df |>
 
 We can make our design more informative by adding arrows that represents the area where the poverty line is above the minimum wage or vice versa. In doing so, I can get use of ```annotate``` command to add arrows and texts on the plot.
 
-```
+```{r}
 df |>     
   ggplot(aes(x = tarih, y = fark, fill = color)) + 
   geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
@@ -204,7 +205,7 @@ annotate("text",
 Let's add more information! I will also show the poverty line and minimum age at the first and last time points. Again, I employ annotate to add text on the plot, but I will use ```geom_curve``` to add arrows since I want to draw curved arrows. 
 
 
-```
+```{r}
 df |>     
   ggplot(aes(x = tarih, y = fark, fill = color)) + 
   geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
@@ -321,7 +322,7 @@ Finally, we can enhance the overall appearance of the plot by customizing the th
 Let's start with adding title, subtitle and caption. 
 
 
-```
+```{r}
 df |>     
   ggplot(aes(x = tarih, y = fark, fill = color)) + 
   geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
@@ -438,7 +439,7 @@ x = "",y="",caption  = "Net asgari ücret değeri dikkate alınmıştır.
 
 If you check the code above carefully, you can realize that I used ** sign in subtitle to use bold text. However, it does not work directly, but don't worry! We will handle this in ```theme``` section. However, before that, I would like make one more modification on the x axis. On the x axis, I would like to show months and years rather than 3 year points. Therefore, I will use ```scale_x_datetime``` function to customize the x axis.
 
-```
+```{r}
 df |>     
   ggplot(aes(x = tarih, y = fark, fill = color)) + 
   geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
@@ -556,7 +557,7 @@ x = "",y="",caption  = "Net asgari ücret değeri dikkate alınmıştır.
 
 Now, it is time to finalize this plot by setting up theme settings. I will use ```theme_fivethirtyeight``` first, then I will update these theme settings. 
 
-```
+```{r}
 df |>     
   ggplot(aes(x = tarih, y = fark, fill = color)) + 
   geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
@@ -677,7 +678,7 @@ x = "",y="",caption  = "Net asgari ücret değeri dikkate alınmıştır.
 Now, let's use theme function.
 
 
-```
+```{r}
 df |>     
   ggplot(aes(x = tarih, y = fark, fill = color)) + 
   geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
