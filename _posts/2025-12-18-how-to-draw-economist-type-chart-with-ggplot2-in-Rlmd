@@ -1,0 +1,792 @@
+---
+title: "How to draw the Economist-style graph with ggplot2 in R?"
+tags: [r]
+categories: [r]
+author_profile: true
+layout: single
+read_time: true
+---
+
+I think everyone agrees on the fact that the Economist magazine produces very-well designed graphics, sometimes the best in the world. The success behind their graph lies on the ability of explaining complex matters in a simpler way by employing traditional data visualization techniques such as line graph or bar plot. They put emphasis on the message they want to convey rather than the aesthetics of the graph itself. They also have a clear hiearchy in their plots and use colors, fonts and lines which represents the brand identity of the magazine.
+
+
+In this tutorial, we are going to create an Economist-style graph in R by using ```ggplot2```, ```ggthemes```, ```showtext```, ```ggtext```and ```grid``` packages. I am going to use a dataset that I have been collecting since 2014 about the poverty line and minimum wage in Turkey, but you can adopt these codes to any dataset you want to visualize. 
+
+So, let's begin with loading the necessary libraries and the dataset.
+
+```
+library(ggplot2)
+library(readxl)
+library(ggtext)
+library(ggthemes)
+library(showtext)
+```
+
+Before plotting the data, I will import the font that the magazine uses. They use their own characteristic font:  Econ Sans. You can download the font from [here](https://github.com/hrbrmstr/hrbrthemes/tree/master/inst/fonts/econ-sans). However, this font does not support the Turkish characters such as **ü,ş,i,ğ**. So, I will import a font which resembles the Econ Sans from [**Google Fonts**](https://fonts.google.com/). 
+
+```
+font_add_google("Commissioner","Commissioner") ## import font from Google
+showtext_auto() ## activate showtext
+```
+
+```
+df <- read_excel("poverty_minwage_turkey.xlsx") ## load the dataset
+df |> head() ## preview the dataset
+```
+
+```
+# A tibble: 6 × 8
+  tarih               mon          asgari           aclik  fark       
+  <dttm>              <chr>         <dbl>           <dbl> <dbl>          
+1 2014-01-01 00:00:00 Ocak 2014       846            1099  -253  
+2 2014-02-01 00:00:00 Şubat 2014      846            1130  -284   
+3 2014-03-01 00:00:00 Mart 2014       846            1149  -303  
+4 2014-04-01 00:00:00 Nisan 2014      846            1167  -321 
+5 2014-05-01 00:00:00 Mayıs 2014      846            1158  -312 
+6 2014-06-01 00:00:00 Haziran 2014    846            1158  -312 
+```
+
+Since I would like to show the difference between powerty line and minimum wage by color, where red shows the months that minimum wage is below the poverty line and green shows the months that minimum wage is above the poverty line, I will create a new variable called **color** in the dataset.
+
+```
+df$color <- ifelse(df<0,"#E3120B","forestgreen")
+```
+
+In addition to the color, I will also get use of some numbers to represent the difference between poverty line and minimum wage. However, I am not using the numbers with ```-```sign which may disturb the audience's eyes. So, I will add one more column called ```label``` that represents difference without minus sign.
+
+```
+df$label <- gsub("-","",as.character(df$fark))
+``` 
+When I represent the numbers on the plot, it is not wise to show them all since I have 143 observations. Therefore, I will take a subset of the dataset by random selection. But I will add the time points where the difference between these two terms is maximum in both directions on purpose. 
+
+```
+df_text <- df[c(sample(1:143,40),143,121),] # take a random sample 
+```
+
+Now, we are ready to plot the data. In contrast to the conventinal way, which is the line plot, I will choose bar plot. 
+
+```
+df |>     
+  ggplot(aes(x = tarih, y = fark, fill = color)) + 
+  geom_bar(stat = "identity", width = 25 * 24 * 60 * 60)
+```
+
+It is necessary to use ```identity``` in ```geom_bar``` since we already have the values in the dataset. Also, I set the width of the bars to 25 days in seconds to avoid overlapping.
+
+
+
+As you see, even if we use ```fill``` argument, the bars are filled by the default colors of ggplot2. To activate this argument, use ```scale_fill_identity()```
+
+```
+df |>     
+  ggplot(aes(x = tarih, y = fark, fill = color)) + 
+  geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
+  scale_fill_identity()
+```
+
+Now, let's add our text labels on the bars by using ```geom_text``` function. I will use the ```df_text``` dataset that we created before for this purpose. 
+
+```
+df |>     
+  ggplot(aes(x = tarih, y = fark, fill = color)) + 
+  geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
+  scale_fill_identity() + geom_text(data = df_text,
+    aes(x=tarih,y=fark,label = paste(label,"TL")),
+    fontface = "bold",
+    size =4,
+    angle =90,
+    hjust= ifelse(df$fark<0,1,-0.1),
+    family="Commissioner") 
+```
+
+Here, I would like to particularly mention about the usage of ```hjust``` argument. Since I have both positive and negative values, I would like to position the labels differently according to the sign of the values. Therefore, I used ```ifelse``` function to set the ```hjust``` value conditionally.
+
+Now, I would like to emphasize the 0 line by using ```geom_hline``` function.
+
+
+```
+df |>     
+  ggplot(aes(x = tarih, y = fark, fill = color)) + 
+  geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
+  scale_fill_identity() + geom_text(data = df_text,
+    aes(x=tarih,y=fark,label = paste(label,"TL")),
+    fontface = "bold",
+    size =4,
+    angle =90,
+    hjust= ifelse(df$fark<0,1,-0.1),
+    family="Commissioner") +
+    geom_hline(yintercept=0, size = 1) 
+```
+
+When you use label on your plot, i.e you use some or all values of your y axis, it is better to your y axis text to reduce crowd in your design. However, I aim to emphasize the 0 line. For doing both, I can use ```scale_y_continuous``` function with ```breaks``` argument.
+
+```
+df |>     
+  ggplot(aes(x = tarih, y = fark, fill = color)) + 
+  geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
+  scale_fill_identity() + geom_text(data = df_text,
+    aes(x=tarih,y=fark,label = paste(label,"TL")),
+    fontface = "bold",
+    size =4,
+    angle =90,
+    hjust= ifelse(df$fark<0,1,-0.1),
+    family="Commissioner") +
+    geom_hline(yintercept=0, size = 1) +
+    scale_y_continuous(
+    breaks = 0,
+    labels = "0",
+    limits = c(min(df$fark) - 1000, max(df$fark) + 1000)
+  )
+```
+
+We can make our design more informative by adding arrows that represents the area where the poverty line is above the minimum wage or vice versa. In doing so, I can get use of ```annotate``` command to add arrows and texts on the plot.
+
+```
+df |>     
+  ggplot(aes(x = tarih, y = fark, fill = color)) + 
+  geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
+  scale_fill_identity() + geom_text(data = df_text,
+    aes(x=tarih,y=fark,label = paste(label,"TL")),
+    fontface = "bold",
+    size =4,
+    angle =90,
+    hjust= ifelse(df$fark<0,1,-0.1),
+    family="Commissioner") +
+    geom_hline(yintercept=0, size = 1) +
+    scale_y_continuous(
+    breaks = 0,
+    labels = "0",
+    limits = c(min(df$fark) - 1000, max(df$fark) + 1000)
+  ) +
+  ## arrow for below
+  annotate("segment", 
+         x = min(df$tarih) + 60*60*24*30, 
+         xend = min(df$tarih) + 60*60*24*30,
+         y = -500, yend = -1000,
+         arrow = arrow(length = unit(0.3, "cm")),
+         color = "#E3120B", size = 1) +
+annotate("text", 
+         x = min(df$tarih) + 60*60*24*60, 
+         y = -1500, 
+         label = "Asgari ücret, açlık sınırının altında.", 
+         color = "#E3120B", fontface = "bold", 
+         family = "Commissioner", size = 6, hjust = 0) +
+### arrow for upper 
+annotate("segment", 
+         x = min(df$tarih) + 60*60*24*30, 
+         xend = min(df$tarih) + 60*60*24*30,
+         y = 300, yend = 900,
+         arrow = arrow(length = unit(0.3, "cm")),
+         color = "forestgreen", size = 1) +
+annotate("text", 
+         x = min(df$tarih) + 60*60*24*60, 
+         y = 1500, 
+         label = "Asgari ücret, açlık sınırından fazla.", 
+         color = "forestgreen", fontface = "bold", 
+         family = "Commissioner", size = 6, hjust = 0)
+```
+
+Let's add more information! I will also show the poverty line and minimum age at the first and last time points. Again, I employ annotate to add text on the plot, but I will use ```geom_curve``` to add arrows since I want to draw curved arrows. 
+
+
+```
+df |>     
+  ggplot(aes(x = tarih, y = fark, fill = color)) + 
+  geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
+  scale_fill_identity() + geom_text(data = df_text,
+    aes(x=tarih,y=fark,label = paste(label,"TL")),
+    fontface = "bold",
+    size =4,
+    angle =90,
+    hjust= ifelse(df$fark<0,1,-0.1),
+    family="Commissioner") +
+    geom_hline(yintercept=0, size = 1) +
+    scale_y_continuous(
+    breaks = 0,
+    labels = "0",
+    limits = c(min(df$fark) - 1000, max(df$fark) + 1000)
+  ) +
+  ## arrow for below
+  annotate("segment", 
+         x = min(df$tarih) + 60*60*24*30, 
+         xend = min(df$tarih) + 60*60*24*30,
+         y = -500, yend = -1000,
+         arrow = arrow(length = unit(0.3, "cm")),
+         color = "#E3120B", size = 1) +
+annotate("text", 
+         x = min(df$tarih) + 60*60*24*60, 
+         y = -1500, 
+         label = "Asgari ücret, açlık sınırının altında.", 
+         color = "#E3120B", fontface = "bold", 
+         family = "Commissioner", size = 6, hjust = 0) +
+### arrow for upper 
+annotate("segment", 
+         x = min(df$tarih) + 60*60*24*30, 
+         xend = min(df$tarih) + 60*60*24*30,
+         y = 300, yend = 900,
+         arrow = arrow(length = unit(0.3, "cm")),
+         color = "forestgreen", size = 1) +
+annotate("text", 
+         x = min(df$tarih) + 60*60*24*60, 
+         y = 1500, 
+         label = "Asgari ücret, açlık sınırından fazla.", 
+         color = "forestgreen", fontface = "bold", 
+         family = "Commissioner", size = 6, hjust = 0) + 
+         geom_curve(aes(x = max(dfgeom_curve(aes(x = max(df$tarih) - 60*60*24*30, 
+  y = -8000,
+   xend = max(df$tarih) - 5*60*60*24*30, 
+   yend = -8500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = -0.4
+  )+
+  annotate("text", 
+         x = max(df$tarih) - 25*60*60*24*30, 
+         y = -8500, 
+         label = "Kasım 2025\n Açlık Sınırı:29898 TL \n Asgari Ücret: 22104 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0) +
+  
+  geom_curve(aes(x = min(df$tarih) - 60*60*24*30, 
+  y = -200,
+   xend = min(df$tarih) + 3*60*60*24*30, 
+   yend = -2500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = 0.4
+  ) +
+  annotate("text", 
+         x = min(df$tarih) + 3*60*60*24*30, 
+         y = -2700, 
+         label = "Ocak 2014\n Açlık Sınırı:1089 TL \n Asgari Ücret: 846 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0)$tarih) - 60*60*24*30, 
+  y = -8000,
+   xend = max(df$tarih) - 5*60*60*24*30, 
+   yend = -8500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = -0.4
+  )+
+  
+  annotate("text", 
+         x = max(df$tarih) - 25*60*60*24*30, 
+         y = -8500, 
+         label = "Kasım 2025\n Açlık Sınırı:29898 TL \n Asgari Ücret: 22104 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0) +
+  
+  geom_curve(aes(x = min(df$tarih) - 60*60*24*30, 
+  y = -200,
+   xend = min(df$tarih) + 3*60*60*24*30, 
+   yend = -2500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = 0.4
+  ) +
+  annotate("text", 
+         x = min(df$tarih) + 3*60*60*24*30, 
+         y = -2700, 
+         label = "Ocak 2014\n Açlık Sınırı:1089 TL \n Asgari Ücret: 846 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0)
+```
+
+Here, we add two curved arrows pointing to the first and last time points, along with text annotations providing the poverty line and minimum wage values for those months.
+
+Finally, we can enhance the overall appearance of the plot by customizing the theme to match the Economist style. This includes adjusting text sizes, colors, and removing unnecessary grid lines. 
+
+Let's start with adding title, subtitle and caption. 
+
+
+
+```
+df |>     
+  ggplot(aes(x = tarih, y = fark, fill = color)) + 
+  geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
+  scale_fill_identity() + geom_text(data = df_text,
+    aes(x=tarih,y=fark,label = paste(label,"TL")),
+    fontface = "bold",
+    size =4,
+    angle =90,
+    hjust= ifelse(df$fark<0,1,-0.1),
+    family="Commissioner") +
+    geom_hline(yintercept=0, size = 1) +
+    scale_y_continuous(
+    breaks = 0,
+    labels = "0",
+    limits = c(min(df$fark) - 1000, max(df$fark) + 1000)
+  ) +
+  ## arrow for below
+  annotate("segment", 
+         x = min(df$tarih) + 60*60*24*30, 
+         xend = min(df$tarih) + 60*60*24*30,
+         y = -500, yend = -1000,
+         arrow = arrow(length = unit(0.3, "cm")),
+         color = "#E3120B", size = 1) +
+annotate("text", 
+         x = min(df$tarih) + 60*60*24*60, 
+         y = -1500, 
+         label = "Asgari ücret, açlık sınırının altında.", 
+         color = "#E3120B", fontface = "bold", 
+         family = "Commissioner", size = 6, hjust = 0) +
+### arrow for upper 
+annotate("segment", 
+         x = min(df$tarih) + 60*60*24*30, 
+         xend = min(df$tarih) + 60*60*24*30,
+         y = 300, yend = 900,
+         arrow = arrow(length = unit(0.3, "cm")),
+         color = "forestgreen", size = 1) +
+annotate("text", 
+         x = min(df$tarih) + 60*60*24*60, 
+         y = 1500, 
+         label = "Asgari ücret, açlık sınırından fazla.", 
+         color = "forestgreen", fontface = "bold", 
+         family = "Commissioner", size = 6, hjust = 0) + 
+         geom_curve(aes(x = max(dfgeom_curve(aes(x = max(df$tarih) - 60*60*24*30, 
+  y = -8000,
+   xend = max(df$tarih) - 5*60*60*24*30, 
+   yend = -8500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = -0.4
+  )+
+  annotate("text", 
+         x = max(df$tarih) - 25*60*60*24*30, 
+         y = -8500, 
+         label = "Kasım 2025\n Açlık Sınırı:29898 TL \n Asgari Ücret: 22104 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0) +
+  
+  geom_curve(aes(x = min(df$tarih) - 60*60*24*30, 
+  y = -200,
+   xend = min(df$tarih) + 3*60*60*24*30, 
+   yend = -2500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = 0.4
+  ) +
+  annotate("text", 
+         x = min(df$tarih) + 3*60*60*24*30, 
+         y = -2700, 
+         label = "Ocak 2014\n Açlık Sınırı:1089 TL \n Asgari Ücret: 846 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0)$tarih) - 60*60*24*30, 
+  y = -8000,
+   xend = max(df$tarih) - 5*60*60*24*30, 
+   yend = -8500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = -0.4
+  )+
+  
+  annotate("text", 
+         x = max(df$tarih) - 25*60*60*24*30, 
+         y = -8500, 
+         label = "Kasım 2025\n Açlık Sınırı:29898 TL \n Asgari Ücret: 22104 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0) +
+  
+  geom_curve(aes(x = min(df$tarih) - 60*60*24*30, 
+  y = -200,
+   xend = min(df$tarih) + 3*60*60*24*30, 
+   yend = -2500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = 0.4
+  ) +
+  annotate("text", 
+         x = min(df$tarih) + 3*60*60*24*30, 
+         y = -2700, 
+         label = "Ocak 2014\n Açlık Sınırı:1089 TL \n Asgari Ücret: 846 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0) + 
+  labs(title ="Asgari Ücret ile Açlık Sınırı Arasındaki Farkın Son 11 Senede Aylara Göre Dağılımı",
+subtitle = "**Açlık Sınırı**: 4 kişilik bir ailenin sağlıklı beslenmesi için gereken asgari gıda harcamasıdır.",
+x = "",y="",caption  = "Net asgari ücret değeri dikkate alınmıştır.  
+\n Açlık Sınırı için TÜRK-İŞ, asgari ücret için haberler kullanılmıştır.
+ \n @OzancanOzdemir") 
+```
+
+If you check the code above carefully, you can realize that I used ** sign in subtitle to use bold text. However, it does not work directly, but don't worry! We will handle this in ```theme``` section. However, before that, I would like make one more modification on the x axis. On the x axis, I would like to show months and years rather than 3 year points. Therefore, I will use ```scale_x_datetime``` function to customize the x axis.
+
+```
+df |>     
+  ggplot(aes(x = tarih, y = fark, fill = color)) + 
+  geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
+  scale_fill_identity() + geom_text(data = df_text,
+    aes(x=tarih,y=fark,label = paste(label,"TL")),
+    fontface = "bold",
+    size =4,
+    angle =90,
+    hjust= ifelse(df$fark<0,1,-0.1),
+    family="Commissioner") +
+    geom_hline(yintercept=0, size = 1) +
+    scale_y_continuous(
+    breaks = 0,
+    labels = "0",
+    limits = c(min(df$fark) - 1000, max(df$fark) + 1000)
+  ) +
+  ## arrow for below
+  annotate("segment", 
+         x = min(df$tarih) + 60*60*24*30, 
+         xend = min(df$tarih) + 60*60*24*30,
+         y = -500, yend = -1000,
+         arrow = arrow(length = unit(0.3, "cm")),
+         color = "#E3120B", size = 1) +
+annotate("text", 
+         x = min(df$tarih) + 60*60*24*60, 
+         y = -1500, 
+         label = "Asgari ücret, açlık sınırının altında.", 
+         color = "#E3120B", fontface = "bold", 
+         family = "Commissioner", size = 6, hjust = 0) +
+### arrow for upper 
+annotate("segment", 
+         x = min(df$tarih) + 60*60*24*30, 
+         xend = min(df$tarih) + 60*60*24*30,
+         y = 300, yend = 900,
+         arrow = arrow(length = unit(0.3, "cm")),
+         color = "forestgreen", size = 1) +
+annotate("text", 
+         x = min(df$tarih) + 60*60*24*60, 
+         y = 1500, 
+         label = "Asgari ücret, açlık sınırından fazla.", 
+         color = "forestgreen", fontface = "bold", 
+         family = "Commissioner", size = 6, hjust = 0) + 
+         geom_curve(aes(x = max(dfgeom_curve(aes(x = max(df$tarih) - 60*60*24*30, 
+  y = -8000,
+   xend = max(df$tarih) - 5*60*60*24*30, 
+   yend = -8500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = -0.4
+  )+
+  annotate("text", 
+         x = max(df$tarih) - 25*60*60*24*30, 
+         y = -8500, 
+         label = "Kasım 2025\n Açlık Sınırı:29898 TL \n Asgari Ücret: 22104 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0) +
+  
+  geom_curve(aes(x = min(df$tarih) - 60*60*24*30, 
+  y = -200,
+   xend = min(df$tarih) + 3*60*60*24*30, 
+   yend = -2500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = 0.4
+  ) +
+  annotate("text", 
+         x = min(df$tarih) + 3*60*60*24*30, 
+         y = -2700, 
+         label = "Ocak 2014\n Açlık Sınırı:1089 TL \n Asgari Ücret: 846 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0)$tarih) - 60*60*24*30, 
+  y = -8000,
+   xend = max(df$tarih) - 5*60*60*24*30, 
+   yend = -8500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = -0.4
+  )+
+  
+  annotate("text", 
+         x = max(df$tarih) - 25*60*60*24*30, 
+         y = -8500, 
+         label = "Kasım 2025\n Açlık Sınırı:29898 TL \n Asgari Ücret: 22104 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0) +
+  
+  geom_curve(aes(x = min(df$tarih) - 60*60*24*30, 
+  y = -200,
+   xend = min(df$tarih) + 3*60*60*24*30, 
+   yend = -2500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = 0.4
+  ) +
+  annotate("text", 
+         x = min(df$tarih) + 3*60*60*24*30, 
+         y = -2700, 
+         label = "Ocak 2014\n Açlık Sınırı:1089 TL \n Asgari Ücret: 846 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0) + 
+  labs(title ="Asgari Ücret ile Açlık Sınırı Arasındaki Farkın Son 11 Senede Aylara Göre Dağılımı",
+subtitle = "**Açlık Sınırı**: 4 kişilik bir ailenin sağlıklı beslenmesi için gereken asgari gıda harcamasıdır.",
+x = "",y="",caption  = "Net asgari ücret değeri dikkate alınmıştır.  
+\n Açlık Sınırı için TÜRK-İŞ, asgari ücret için haberler kullanılmıştır.
+ \n @OzancanOzdemir")  + 
+  scale_x_datetime(date_breaks = "8 months", 
+                   date_labels = "%m %Y",
+                   expand = expansion(mult = c(0.01, 0.01)))
+```
+
+Now, it is time to finalize this plot by setting up theme settings. I will use ```theme_fivethirtyeight``` first, then I will update these theme settings. 
+
+```
+df |>     
+  ggplot(aes(x = tarih, y = fark, fill = color)) + 
+  geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
+  scale_fill_identity() + geom_text(data = df_text,
+    aes(x=tarih,y=fark,label = paste(label,"TL")),
+    fontface = "bold",
+    size =4,
+    angle =90,
+    hjust= ifelse(df$fark<0,1,-0.1),
+    family="Commissioner") +
+    geom_hline(yintercept=0, size = 1) +
+    scale_y_continuous(
+    breaks = 0,
+    labels = "0",
+    limits = c(min(df$fark) - 1000, max(df$fark) + 1000)
+  ) +
+  ## arrow for below
+  annotate("segment", 
+         x = min(df$tarih) + 60*60*24*30, 
+         xend = min(df$tarih) + 60*60*24*30,
+         y = -500, yend = -1000,
+         arrow = arrow(length = unit(0.3, "cm")),
+         color = "#E3120B", size = 1) +
+annotate("text", 
+         x = min(df$tarih) + 60*60*24*60, 
+         y = -1500, 
+         label = "Asgari ücret, açlık sınırının altında.", 
+         color = "#E3120B", fontface = "bold", 
+         family = "Commissioner", size = 6, hjust = 0) +
+### arrow for upper 
+annotate("segment", 
+         x = min(df$tarih) + 60*60*24*30, 
+         xend = min(df$tarih) + 60*60*24*30,
+         y = 300, yend = 900,
+         arrow = arrow(length = unit(0.3, "cm")),
+         color = "forestgreen", size = 1) +
+annotate("text", 
+         x = min(df$tarih) + 60*60*24*60, 
+         y = 1500, 
+         label = "Asgari ücret, açlık sınırından fazla.", 
+         color = "forestgreen", fontface = "bold", 
+         family = "Commissioner", size = 6, hjust = 0) + 
+         geom_curve(aes(x = max(dfgeom_curve(aes(x = max(df$tarih) - 60*60*24*30, 
+  y = -8000,
+   xend = max(df$tarih) - 5*60*60*24*30, 
+   yend = -8500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = -0.4
+  )+
+  annotate("text", 
+         x = max(df$tarih) - 25*60*60*24*30, 
+         y = -8500, 
+         label = "Kasım 2025\n Açlık Sınırı:29898 TL \n Asgari Ücret: 22104 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0) +
+  
+  geom_curve(aes(x = min(df$tarih) - 60*60*24*30, 
+  y = -200,
+   xend = min(df$tarih) + 3*60*60*24*30, 
+   yend = -2500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = 0.4
+  ) +
+  annotate("text", 
+         x = min(df$tarih) + 3*60*60*24*30, 
+         y = -2700, 
+         label = "Ocak 2014\n Açlık Sınırı:1089 TL \n Asgari Ücret: 846 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0)$tarih) - 60*60*24*30, 
+  y = -8000,
+   xend = max(df$tarih) - 5*60*60*24*30, 
+   yend = -8500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = -0.4
+  )+
+  
+  annotate("text", 
+         x = max(df$tarih) - 25*60*60*24*30, 
+         y = -8500, 
+         label = "Kasım 2025\n Açlık Sınırı:29898 TL \n Asgari Ücret: 22104 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0) +
+  
+  geom_curve(aes(x = min(df$tarih) - 60*60*24*30, 
+  y = -200,
+   xend = min(df$tarih) + 3*60*60*24*30, 
+   yend = -2500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = 0.4
+  ) +
+  annotate("text", 
+         x = min(df$tarih) + 3*60*60*24*30, 
+         y = -2700, 
+         label = "Ocak 2014\n Açlık Sınırı:1089 TL \n Asgari Ücret: 846 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0) + 
+  labs(title ="Asgari Ücret ile Açlık Sınırı Arasındaki Farkın Son 11 Senede Aylara Göre Dağılımı",
+subtitle = "**Açlık Sınırı**: 4 kişilik bir ailenin sağlıklı beslenmesi için gereken asgari gıda harcamasıdır.",
+x = "",y="",caption  = "Net asgari ücret değeri dikkate alınmıştır.  
+\n Açlık Sınırı için TÜRK-İŞ, asgari ücret için haberler kullanılmıştır.
+ \n @OzancanOzdemir")  + 
+  scale_x_datetime(date_breaks = "8 months", 
+                   date_labels = "%m %Y",
+                   expand = expansion(mult = c(0.01, 0.01))) + theme_fivethirtyeight() 
+```
+
+Now, let's use theme function.
+
+
+```
+df |>     
+  ggplot(aes(x = tarih, y = fark, fill = color)) + 
+  geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
+  scale_fill_identity() + geom_text(data = df_text,
+    aes(x=tarih,y=fark,label = paste(label,"TL")),
+    fontface = "bold",
+    size =4,
+    angle =90,
+    hjust= ifelse(df$fark<0,1,-0.1),
+    family="Commissioner") +
+    geom_hline(yintercept=0, size = 1) +
+    scale_y_continuous(
+    breaks = 0,
+    labels = "0",
+    limits = c(min(df$fark) - 1000, max(df$fark) + 1000)
+  ) +
+  ## arrow for below
+  annotate("segment", 
+         x = min(df$tarih) + 60*60*24*30, 
+         xend = min(df$tarih) + 60*60*24*30,
+         y = -500, yend = -1000,
+         arrow = arrow(length = unit(0.3, "cm")),
+         color = "#E3120B", size = 1) +
+annotate("text", 
+         x = min(df$tarih) + 60*60*24*60, 
+         y = -1500, 
+         label = "Asgari ücret, açlık sınırının altında.", 
+         color = "#E3120B", fontface = "bold", 
+         family = "Commissioner", size = 6, hjust = 0) +
+### arrow for upper 
+annotate("segment", 
+         x = min(df$tarih) + 60*60*24*30, 
+         xend = min(df$tarih) + 60*60*24*30,
+         y = 300, yend = 900,
+         arrow = arrow(length = unit(0.3, "cm")),
+         color = "forestgreen", size = 1) +
+annotate("text", 
+         x = min(df$tarih) + 60*60*24*60, 
+         y = 1500, 
+         label = "Asgari ücret, açlık sınırından fazla.", 
+         color = "forestgreen", fontface = "bold", 
+         family = "Commissioner", size = 6, hjust = 0) + 
+         geom_curve(aes(x = max(dfgeom_curve(aes(x = max(df$tarih) - 60*60*24*30, 
+  y = -8000,
+   xend = max(df$tarih) - 5*60*60*24*30, 
+   yend = -8500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = -0.4
+  )+
+  annotate("text", 
+         x = max(df$tarih) - 25*60*60*24*30, 
+         y = -8500, 
+         label = "Kasım 2025\n Açlık Sınırı:29898 TL \n Asgari Ücret: 22104 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0) +
+  
+  geom_curve(aes(x = min(df$tarih) - 60*60*24*30, 
+  y = -200,
+   xend = min(df$tarih) + 3*60*60*24*30, 
+   yend = -2500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = 0.4
+  ) +
+  annotate("text", 
+         x = min(df$tarih) + 3*60*60*24*30, 
+         y = -2700, 
+         label = "Ocak 2014\n Açlık Sınırı:1089 TL \n Asgari Ücret: 846 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0)$tarih) - 60*60*24*30, 
+  y = -8000,
+   xend = max(df$tarih) - 5*60*60*24*30, 
+   yend = -8500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = -0.4
+  )+
+  
+  annotate("text", 
+         x = max(df$tarih) - 25*60*60*24*30, 
+         y = -8500, 
+         label = "Kasım 2025\n Açlık Sınırı:29898 TL \n Asgari Ücret: 22104 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0) +
+  
+  geom_curve(aes(x = min(df$tarih) - 60*60*24*30, 
+  y = -200,
+   xend = min(df$tarih) + 3*60*60*24*30, 
+   yend = -2500),
+    arrow = arrow(length = unit(0.3, "cm"), type = "closed"),
+    color = "black",
+    size = 1,
+    curvature = 0.4
+  ) +
+  annotate("text", 
+         x = min(df$tarih) + 3*60*60*24*30, 
+         y = -2700, 
+         label = "Ocak 2014\n Açlık Sınırı:1089 TL \n Asgari Ücret: 846 TL ", 
+         color = "black", fontface = "bold", 
+         family = "Commissioner", size = 5, hjust = 0) + 
+  labs(title ="Asgari Ücret ile Açlık Sınırı Arasındaki Farkın Son 11 Senede Aylara Göre Dağılımı",
+subtitle = "**Açlık Sınırı**: 4 kişilik bir ailenin sağlıklı beslenmesi için gereken asgari gıda harcamasıdır.",
+x = "",y="",caption  = "Net asgari ücret değeri dikkate alınmıştır.  
+\n Açlık Sınırı için TÜRK-İŞ, asgari ücret için haberler kullanılmıştır.
+ \n @OzancanOzdemir")  + 
+  scale_x_datetime(date_breaks = "8 months", 
+                   date_labels = "%m %Y",
+                   expand = expansion(mult = c(0.01, 0.01))) + theme_fivethirtyeight() +  theme(plot.subtitle=element_markdown(family="Commissioner",size =18),
+axis.title = element_blank(),
+axis.text.y = element_text(face = "bold",family ="Commissioner"),
+plot.background = element_rect(fill = "#f5f4ef", color = NA),
+panel.background = element_rect(fill = "#f5f4ef", color = NA),
+axis.text.x = element_text(face="bold",size = 12, family ="Comissioner"),
+plot.title=element_text(family ="Commissioner",size = 28, face ="bold"),
+plot.caption = element_markdown(color = "grey",family ="Commissioner",hjust = 0.05),
+plot.margin = margin(t = 50, r = 10, b = 10, l = 10),
+axis.line.x = element_line(size = 0.75,color="black"),
+axis.ticks.x = element_line(size = 0.75,color="black")) 
+```
+
+Since I customized the subtitle text, remember the usage of bold text, I use ```element_markdown()``` from ```ggtext``` package. With family argument, I set the font to "Commissioner" which is the Economist style font. For the main title, I use element_text() to establish a strong visual hierarchy, setting the size to 28 and the face to bold so it stands out as the primary headline. To style the caption at the bottom, I use ```element_markdown()``` again so I can include links or styling. I set the color to grey and use hjust = 0.05 to align it toward the bottom-left corner.
+
+I use ```plot.background``` to fill the entire image area with a specific off-white hex code ```(#f5f4ef)```, which reduces the harsh contrast of a pure white background and the color that the Economist prefers. To make the plot area blend in perfectly with the rest of the image, I set the ```panel.background``` to the exact same color, ensuring there are no distracting borders (color = NA).
+
+Since the title and subtitle need room at the top for the red line of the Economist,  I use ```plot.margin``` to set a large 50-unit top margin, while keeping the other sides tight at 10 units. Because I want a clean, minimalist look, I use ```element_blank()``` on the axis titles to remove labels like "x" or "y" entirely, letting the data speak for itself.
+
+For the Y-axis text, I apply the "Commissioner" font and set the face to bold to make the categories or values easy to read against the background. I do the same for the X-axis text, but I explicitly set the size to 12 to ensure the horizontal scale is clear and legible. To ground the chart visually, I use ```axis.line.x``` to draw a solid black line across the bottom and ```axis.ticks.x``` to add matching black marks, both with a consistent thickness of 0.75.
+
+And, one last signature; red line at the top. You can use ```grid.lines``` function from ```grid``` package. 
+
+
+Then, you can share your plots! 
