@@ -73,6 +73,7 @@ df |>
 
 It is necessary to use ```identity``` in ```geom_bar``` since we already have the values in the dataset. Also, I set the width of the bars to 25 days in seconds to avoid overlapping.
 
+<img width="1095" height="758" alt="p1" src="https://github.com/user-attachments/assets/2dd79b1a-5c0b-4007-af0f-289469538d8e" />
 
 
 As you see, even if we use ```fill``` argument, the bars are filled by the default colors of ggplot2. To activate this argument, use ```scale_fill_identity()```
@@ -83,6 +84,9 @@ df |>
   geom_bar(stat = "identity", width = 25 * 24 * 60 * 60) +
   scale_fill_identity()
 ```
+
+![Uploading p2.png…]()
+
 
 Now, let's add our text labels on the bars by using ```geom_text``` function. I will use the ```df_text``` dataset that we created before for this purpose. 
 
@@ -99,10 +103,12 @@ df |>
     family="Commissioner") 
 ```
 
+<img width="1193" height="858" alt="p3" src="https://github.com/user-attachments/assets/951596ad-6c94-447e-8197-41e060e2d5e1" />
+
+
 Here, I would like to particularly mention about the usage of ```hjust``` argument. Since I have both positive and negative values, I would like to position the labels differently according to the sign of the values. Therefore, I used ```ifelse``` function to set the ```hjust``` value conditionally.
 
 Now, I would like to emphasize the 0 line by using ```geom_hline``` function.
-
 
 ```
 df |>     
@@ -118,7 +124,10 @@ df |>
     geom_hline(yintercept=0, size = 1) 
 ```
 
-When you use label on your plot, i.e you use some or all values of your y axis, it is better to your y axis text to reduce crowd in your design. However, I aim to emphasize the 0 line. For doing both, I can use ```scale_y_continuous``` function with ```breaks``` argument.
+<img width="1192" height="858" alt="p4" src="https://github.com/user-attachments/assets/49222338-f493-4014-8819-47aa634f71cf" />
+
+
+When you use the label on your plot, i.e you use some or all values of your y axis, it is better to your y axis text to reduce crowd in your design. However, I aim to emphasize the 0 line. For doing both, I can use ```scale_y_continuous``` function with ```breaks``` argument.
 
 ```
 df |>     
@@ -138,6 +147,9 @@ df |>
     limits = c(min(df$fark) - 1000, max(df$fark) + 1000)
   )
 ```
+
+<img width="1192" height="858" alt="p5" src="https://github.com/user-attachments/assets/991e5272-903a-426d-b93f-b77104c6c55f" />
+
 
 We can make our design more informative by adding arrows that represents the area where the poverty line is above the minimum wage or vice versa. In doing so, I can get use of ```annotate``` command to add arrows and texts on the plot.
 
@@ -185,6 +197,9 @@ annotate("text",
          color = "forestgreen", fontface = "bold", 
          family = "Commissioner", size = 6, hjust = 0)
 ```
+
+<img width="1192" height="858" alt="p6" src="https://github.com/user-attachments/assets/ccbc2b05-03bb-49c5-806f-3c5810c7754b" />
+
 
 Let's add more information! I will also show the poverty line and minimum age at the first and last time points. Again, I employ annotate to add text on the plot, but I will use ```geom_curve``` to add arrows since I want to draw curved arrows. 
 
@@ -296,12 +311,14 @@ annotate("text",
          family = "Commissioner", size = 5, hjust = 0)
 ```
 
+<img width="1192" height="858" alt="p7" src="https://github.com/user-attachments/assets/a647136b-b9bf-4596-b5db-3d3a1ed28c99" />
+
+
 Here, we add two curved arrows pointing to the first and last time points, along with text annotations providing the poverty line and minimum wage values for those months.
 
 Finally, we can enhance the overall appearance of the plot by customizing the theme to match the Economist style. This includes adjusting text sizes, colors, and removing unnecessary grid lines. 
 
 Let's start with adding title, subtitle and caption. 
-
 
 
 ```
@@ -415,6 +432,9 @@ x = "",y="",caption  = "Net asgari ücret değeri dikkate alınmıştır.
 \n Açlık Sınırı için TÜRK-İŞ, asgari ücret için haberler kullanılmıştır.
  \n @OzancanOzdemir") 
 ```
+
+<img width="1192" height="858" alt="p8" src="https://github.com/user-attachments/assets/e1f8f984-5dd5-4dda-a0f6-dee482c8d475" />
+
 
 If you check the code above carefully, you can realize that I used ** sign in subtitle to use bold text. However, it does not work directly, but don't worry! We will handle this in ```theme``` section. However, before that, I would like make one more modification on the x axis. On the x axis, I would like to show months and years rather than 3 year points. Therefore, I will use ```scale_x_datetime``` function to customize the x axis.
 
@@ -533,6 +553,7 @@ x = "",y="",caption  = "Net asgari ücret değeri dikkate alınmıştır.
                    expand = expansion(mult = c(0.01, 0.01)))
 ```
 
+
 Now, it is time to finalize this plot by setting up theme settings. I will use ```theme_fivethirtyeight``` first, then I will update these theme settings. 
 
 ```
@@ -649,6 +670,9 @@ x = "",y="",caption  = "Net asgari ücret değeri dikkate alınmıştır.
                    date_labels = "%m %Y",
                    expand = expansion(mult = c(0.01, 0.01))) + theme_fivethirtyeight() 
 ```
+
+<img width="1192" height="858" alt="p9" src="https://github.com/user-attachments/assets/06893b74-2ffe-43fe-90c9-b308a8ea6baf" />
+
 
 Now, let's use theme function.
 
@@ -788,5 +812,7 @@ For the Y-axis text, I apply the "Commissioner" font and set the face to bold to
 
 And, one last signature; red line at the top. You can use ```grid.lines``` function from ```grid``` package. 
 
+<img width="1564" height="967" alt="p10" src="https://github.com/user-attachments/assets/dfc370ab-d72f-4d20-a206-4ac3d0472eac" />
 
-Then, you can share your plots! 
+
+Then, you are ready to share your Economist-style plot! 
