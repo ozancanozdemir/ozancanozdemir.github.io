@@ -1,5 +1,4 @@
-import json
-import re
+import json, re
 from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
@@ -18,19 +17,16 @@ def main():
 
     items = []
     for a in soup.select('a[href*="/yazarlar/ozancan-ozdemir/"]'):
-        href = a.get("href") or ""
         title = clean(a.get_text(" ", strip=True))
-        if not title:
+        href = a.get("href") or ""
+        if not title or not href:
             continue
-
         url = href if href.startswith("http") else f"https://t24.com.tr{href}"
-        # T24 yazı linkleri genelde %2C içeriyor ama her zaman şart koşmayalım
         if "/yazarlar/ozancan-ozdemir/" in url:
             items.append({"title": title, "url": url})
 
-    # URL’e göre tekilleştir + ilk LIMIT
-    seen = set()
-    uniq = []
+    # dedupe
+    seen, uniq = set(), []
     for it in items:
         if it["url"] in seen:
             continue
@@ -39,11 +35,7 @@ def main():
         if len(uniq) >= LIMIT:
             break
 
-    payload = {
-        "source": AUTHOR_URL,
-        "fetched_at": datetime.utcnow().isoformat() + "Z",
-        "items": uniq,
-    }
+    payload = {"source": AUTHOR_URL, "fetched_at": datetime.utcnow().isoformat() + "Z", "items": uniq}
 
     with open(OUT_PATH, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
