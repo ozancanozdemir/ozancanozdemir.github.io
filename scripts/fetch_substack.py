@@ -3,32 +3,30 @@ from datetime import datetime
 import requests
 import xml.etree.ElementTree as ET
 
-# Eğer bu URL çalışmazsa, Substack yayın adresini yaz:
-# örn: https://YOURPUBLICATION.substack.com/feed
-FEED_URL = "https://ozancanozdemir.substack.com/feed"
+# BURAYA kendi publication feed URL’ini yaz:
+# örn: https://<publication>.substack.com/feed
+FEED_URL = "https://YOUR_PUBLICATION.substack.com/feed"
+
 OUT_PATH = "_data/substack.json"
 LIMIT = 6
 
 def strip(tag: str) -> str:
-    return tag.split("}", 1)[-1]  # namespaced tag'leri temizler
+    return tag.split("}", 1)[-1]
 
 def main():
     r = requests.get(FEED_URL, timeout=30, headers={"User-Agent": "Mozilla/5.0"})
     r.raise_for_status()
 
     root = ET.fromstring(r.text)
-    channel = None
-    for child in root:
-        if strip(child.tag) == "channel":
-            channel = child
-            break
+    channel = next((c for c in root if strip(c.tag) == "channel"), None)
     if channel is None:
-        raise RuntimeError("RSS channel not found. Feed URL doğru mu?")
+        raise RuntimeError("RSS channel not found. FEED_URL doğru mu?")
 
     items = []
     for item in channel:
         if strip(item.tag) != "item":
             continue
+
         title = link = pubDate = None
         for x in item:
             t = strip(x.tag)
@@ -41,14 +39,13 @@ def main():
 
         if title and link:
             items.append({"title": title, "url": link, "date": pubDate})
-
         if len(items) >= LIMIT:
             break
 
     payload = {
         "source": FEED_URL,
         "fetched_at": datetime.utcnow().isoformat() + "Z",
-        "items": items
+        "items": items,
     }
 
     with open(OUT_PATH, "w", encoding="utf-8") as f:
