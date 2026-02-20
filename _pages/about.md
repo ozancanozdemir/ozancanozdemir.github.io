@@ -29,37 +29,26 @@ Alongside academia, I write and speak about **AI as a social and institutional f
 
 ## Latest writing (T24)
 
+## Latest writing (T24)
 {% assign t24 = site.data.t24 %}
 {% if t24 and t24.items %}
-<ul class="latest-list">
+<ul>
   {% for item in t24.items %}
     <li><a href="{{ item.url }}">{{ item.title }}</a></li>
   {% endfor %}
 </ul>
-<div class="latest-meta">Updated: {{ t24.fetched_at }}</div>
-{% else %}
-<p><em>T24 list is not available yet.</em></p>
 {% endif %}
-
 ---
 
 ## Latest posts (Substack)
-
 {% assign ss = site.data.substack %}
 {% if ss and ss.items %}
-<ul class="latest-list">
+<ul>
   {% for item in ss.items %}
-    <li>
-      <a href="{{ item.url }}">{{ item.title }}</a>
-      {% if item.date %}<small> — {{ item.date }}</small>{% endif %}
-    </li>
+    <li><a href="{{ item.url }}">{{ item.title }}</a></li>
   {% endfor %}
 </ul>
-<div class="latest-meta">Updated: {{ ss.fetched_at }}</div>
-{% else %}
-<p><em>Substack list is not available yet.</em></p>
 {% endif %}
-
 ---
 
 ## What I’m currently focused on
