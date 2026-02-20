@@ -68,6 +68,36 @@ Alongside academia, I write and speak about **AI as a social and institutional f
 - **Evaluation in the wild:** distribution shift, robustness, metric design  
 - **Public scholarship:** AI literacy, governance, and the politics of optimization
 
+
+---
+
+## Recent talks
+
+A few highlights from recent presentations (full list on the talks page):
+
+- **APPIS 2026 (Las Palmas)** — *Predicting Excess Returns: A Comparative ML Study with Novel Feature Selection and Fundamental Indicators*  
+- **AMALEA 2025 (Cetraro)** — *Predicting Stock Excess Returns Using Fundamental Analysis and Machine Learning*  
+- **APPIS 2025** — *A Comprehensive Review of Fundamental Indicators and ML Techniques for Stock Market Forecasting*
+
+➡️ See all talks: **/talks/**
+
+---
+
+## Short bio (for speaker pages)
+
+**Ozancan Ozdemir** is a PhD Candidate at the University of Groningen (Bernoulli Institute). His work focuses on machine learning for sequential data—especially time series forecasting and robust evaluation. He also writes and speaks about AI’s societal impacts, with an emphasis on metrics, incentives, and governance.
+
+---
+## Find me
+
+- **T24:** https://t24.com.tr/yazarlar/ozancan-ozdemir  
+- **Substack:** https://substack.com/@ozancanozdemir  
+- **Talks:** /talks/  
+- **Publications:** /publications/  
+
+<a class="twitter-timeline" data-width="420" data-height="320" data-theme="light" href="https://twitter.com/OzancanOzdemir?ref_src=twsrc%5Etfw">Tweets by OzancanOzdemir</a>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 <style>
   .latest-list { margin-top: .6rem; }
   .latest-list li { margin: .35rem 0; line-height: 1.35; }
