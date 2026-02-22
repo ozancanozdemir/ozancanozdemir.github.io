@@ -28,8 +28,6 @@ Alongside academia, I write and speak about **AI as a social and institutional f
 ---
 
 ## Latest writing (T24)
-
-## Latest writing (T24)
 {% assign t24 = site.data.t24 %}
 {% if t24 and t24.items %}
 <ul>
@@ -37,6 +35,8 @@ Alongside academia, I write and speak about **AI as a social and institutional f
     <li><a href="{{ item.url }}">{{ item.title }}</a></li>
   {% endfor %}
 </ul>
+{% else %}
+<p>not loaded</p>
 {% endif %}
 ---
 
