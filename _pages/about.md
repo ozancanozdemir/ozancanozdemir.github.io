@@ -1,6 +1,6 @@
 ---
 permalink: /
-title: "Ozancan Ozdemir"
+title: ""
 excerpt: "PhD Candidate • ML for Time Series • Stock Market Forecasting • R Developer • Public Writing"
 author_profile: true
 redirect_from:
