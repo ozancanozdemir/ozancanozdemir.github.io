@@ -1,9 +1,9 @@
-name: Update T24 + Substack data
+name: Update T24 + Substack data (debug)
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 6 * * *"   # daily
+    - cron: "0 6 * * *"
   push:
     branches: ["main"]
 
@@ -14,9 +14,20 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout (with credentials)
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
 
-      - uses: actions/setup-python@v5
+      - name: Show branch + repo status (pre)
+        run: |
+          echo "REF_NAME=${{ github.ref_name }}"
+          git status --porcelain || true
+          ls -la
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
@@ -26,32 +37,44 @@ jobs:
 
       - name: Ensure folders exist
         run: |
-          mkdir -p scripts
           mkdir -p _data
+          mkdir -p scripts
+          ls -la
+          ls -la scripts || true
 
-      - name: Fetch T24
-        run: python scripts/fetch_t24.py
+      - name: Run fetch scripts (and fail hard if missing)
+        run: |
+          test -f scripts/fetch_t24.py
+          test -f scripts/fetch_substack.py
+          python scripts/fetch_t24.py
+          python scripts/fetch_substack.py
 
-      - name: Fetch Substack
-        run: python scripts/fetch_substack.py
-
-      - name: Debug output
+      - name: Show generated files (post)
         run: |
           echo "---- ls _data ----"
-          ls -la _data
+          ls -la _data || true
           echo "---- t24.json ----"
           cat _data/t24.json || true
           echo "---- substack.json ----"
           cat _data/substack.json || true
 
-     - name: Commit changes
+      # Bu dosya her run’da değişsin diye: commit tetiklemeyi garantiler.
+      - name: Stamp build marker
         run: |
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > _data/.last_feed_update.txt
+          cat _data/.last_feed_update.txt
+
+      - name: Stage (force) + commit if changed
+        run: |
+          git add -A
+          git add -f _data/t24.json _data/substack.json _data/.last_feed_update.txt || true
+          echo "---- git status ----"
+          git status --porcelain
+          if git diff --cached --quiet; then
+            echo "No staged changes. (This means files were not created/changed or are on another branch.)"
+            exit 0
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          # _data ignored ise bile zorla stage et
-          git add -f _data/t24.json _data/substack.json
-
-          git status --porcelain
-          git diff --cached --quiet || git commit -m "Update latest posts"
-          git push
+          git commit -m "Update latest posts (T24/Substack)"
+          git push origin HEAD:${{ github.ref_name }}
