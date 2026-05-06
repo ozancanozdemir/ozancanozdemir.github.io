@@ -1,17 +1,36 @@
 ---
 title: "turkeyelections: The Most Comprehensive Initial R Package Developed on Election Results in Turkey"
 collection: publications
-permalink: /publication/2024-06-30-paper-title-number-7
-date: June 2024
-venue: 'Journal of Statistics and Applied Sciences'
-paperurl: 'https://dergipark.org.tr/tr/pub/jsas/issue/85489/1456233'
-citation: 'O. Özdemir, “turkeyelections: The Most Comprehensive Initial R Package Developed on Election Results in Turkey”, JSAS, sy. 9, ss. 67–76, Haziran 2024, doi: 10.52693/jsas.1456233.'
+permalink: /publication/turkeyelections-r-package-election-results-turkey
+excerpt: "An R package paper introducing turkeyelections, a comprehensive package for working with election results in Turkey."
+date: 2024-06-30
+venue: "Journal of Statistics and Applied Sciences"
+paperurl: "https://dergipark.org.tr/tr/download/article-file/3810011"
+articleurl: "https://dergipark.org.tr/tr/pub/jsas/issue/85489/1456233"
+citation: "Özdemir, O. (2024). turkeyelections: The Most Comprehensive Initial R Package Developed on Election Results in Turkey. Journal of Statistics and Applied Sciences, 9, 67–76. https://doi.org/10.52693/jsas.1456233"
+pub_type: "Journal article"
+topic_code: "R"
+topic_class: "r"
+short_summary: "An R package paper introducing turkeyelections, a comprehensive package for working with election results in Turkey."
+tags:
+  - "R programming"
+  - "Election data"
+  - "Open source"
+  - "Turkey"
 ---
 
-<img width="473" alt="image" src="https://github.com/user-attachments/assets/11e7c35c-9a1d-40ec-9964-cec7526b30f5" />
+## Overview
 
+This article introduces **turkeyelections**, an R package developed to make election results in Turkey more accessible, structured, and reusable for researchers, journalists, analysts, and students. The package reflects my interest in open-source tools, reproducible data workflows, and the use of statistical programming for political and social science research.
 
-[Download paper here](https://dergipark.org.tr/tr/download/article-file/3810011)
+{% if page.paperurl %}
+[Download the paper]({{ page.paperurl }})
+{% endif %}
 
+{% if page.articleurl %}
+[Journal page]({{ page.articleurl }})
+{% endif %}
 
+## Citation
 
+> {{ page.citation }}
