@@ -413,6 +413,9 @@ author_profile: true
     .publication-tile.viz {
   background: rgba(170, 115, 55, .10);
 }
+    .publication-tile.fcst {
+  background: rgba(95, 120, 170, .10);
+}
     .publication-tile.clim {
   background: rgba(73, 130, 120, .10);
 }
