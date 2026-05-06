@@ -424,7 +424,9 @@ author_profile: true
 }.publication-tile.soc {
   background: rgba(120, 95, 140, .10);
 }
-
+.publication-tile.ai {
+  background: rgba(80, 110, 170, .10);
+}
     .research-snapshot {
       gap: 1.1rem;
     }
