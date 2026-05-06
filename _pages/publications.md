@@ -17,15 +17,15 @@ author_profile: true
 
   <div class="research-snapshot">
     <div class="snapshot-item">
-      <span class="snapshot-number">XX</span>
+      <span class="snapshot-number">81</span>
       <span class="snapshot-label">Citations</span>
     </div>
     <div class="snapshot-item">
-      <span class="snapshot-number">X</span>
+      <span class="snapshot-number">4</span>
       <span class="snapshot-label">h-index</span>
     </div>
     <div class="snapshot-item">
-      <span class="snapshot-number">X</span>
+      <span class="snapshot-number">2</span>
       <span class="snapshot-label">i10-index</span>
     </div>
   </div>
