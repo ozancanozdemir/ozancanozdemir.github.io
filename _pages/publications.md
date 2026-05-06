@@ -17,15 +17,15 @@ author_profile: true
 
   <div class="research-snapshot">
     <div class="snapshot-item">
-      <span class="snapshot-number">81</span>
+      <span class="snapshot-number">XX</span>
       <span class="snapshot-label">Citations</span>
     </div>
     <div class="snapshot-item">
-      <span class="snapshot-number">4</span>
+      <span class="snapshot-number">X</span>
       <span class="snapshot-label">h-index</span>
     </div>
     <div class="snapshot-item">
-      <span class="snapshot-number">2</span>
+      <span class="snapshot-number">X</span>
       <span class="snapshot-label">i10-index</span>
     </div>
   </div>
@@ -53,10 +53,52 @@ author_profile: true
   forecasting, time series, stock market prediction, and applied statistical modeling.
 </div>
 
-<div class="academic-publications">
+<div class="publication-list">
+
   {% for post in site.publications reversed %}
-    {% include archive-single.html %}
+    <div class="publication-row">
+
+      <div class="publication-tile {{ post.topic_class | default: 'pub' }}">
+        {{ post.topic_code | default: 'PUB' }}
+      </div>
+
+      <div class="publication-main">
+
+        <h3>
+          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        </h3>
+
+        <div class="publication-meta">
+          {% if post.venue %}{{ post.venue }}{% endif %}
+          {% if post.date %} · {{ post.date | date: "%Y" }}{% endif %}
+          {% if post.pub_type %} · {{ post.pub_type }}{% endif %}
+        </div>
+
+        {% if post.short_summary %}
+          <p>{{ post.short_summary }}</p>
+        {% elsif post.excerpt %}
+          <p>{{ post.excerpt }}</p>
+        {% endif %}
+
+        {% if post.tags %}
+          <div class="publication-tags">
+            {% for tag in post.tags %}
+              <span>{{ tag }}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <div class="publication-actions">
+          <a href="{{ post.url | relative_url }}">Details</a>
+          {% if post.paperurl %}
+            <a href="{{ post.paperurl }}">Paper</a>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
   {% endfor %}
+
 </div>
 
 ## Public writing
@@ -78,27 +120,21 @@ author_profile: true
 
   <div class="simple-item">
     <div class="simple-title">
-      <a href="https://ayrancim.org.tr/?p=9234">
-        Yoksullaşıyoruz
-      </a>
+      <a href="https://ayrancim.org.tr/?p=9234">Yoksullaşıyoruz</a>
     </div>
     <div class="simple-meta">Ayrancım Gazetesi · 16 September 2021 · Data essay</div>
   </div>
 
   <div class="simple-item">
     <div class="simple-title">
-      <a href="https://ayrancim.org.tr/?p=8915">
-        Ankara Siyasetinde Kadının Adı Yok
-      </a>
+      <a href="https://ayrancim.org.tr/?p=8915">Ankara Siyasetinde Kadının Adı Yok</a>
     </div>
     <div class="simple-meta">Ayrancım Gazetesi · April 2021 · Politics and representation</div>
   </div>
 
   <div class="simple-item">
     <div class="simple-title">
-      <a href="https://ayrancim.org.tr/?p=8626">
-        2020’yi Geride Bırakırken: Verilerle Ankara
-      </a>
+      <a href="https://ayrancim.org.tr/?p=8626">2020’yi Geride Bırakırken: Verilerle Ankara</a>
     </div>
     <div class="simple-meta">Ayrancım Gazetesi · January 2021 · Urban data</div>
   </div>
@@ -115,27 +151,21 @@ author_profile: true
 
   <div class="simple-item">
     <div class="simple-title">
-      <a href="https://spektif.wordpress.com/2019/08/16/babamin-defteri/">
-        Babamın Defteri
-      </a>
+      <a href="https://spektif.wordpress.com/2019/08/16/babamin-defteri/">Babamın Defteri</a>
     </div>
     <div class="simple-meta">Short story · 2019</div>
   </div>
 
   <div class="simple-item">
     <div class="simple-title">
-      <a href="https://spektif.wordpress.com/2018/11/05/hafiza/">
-        Hafıza
-      </a>
+      <a href="https://spektif.wordpress.com/2018/11/05/hafiza/">Hafıza</a>
     </div>
     <div class="simple-meta">Short story · 2018</div>
   </div>
 
   <div class="simple-item">
     <div class="simple-title">
-      <a href="https://spektif.wordpress.com/2017/02/26/bir-ruya/">
-        Bir Rüya
-      </a>
+      <a href="https://spektif.wordpress.com/2017/02/26/bir-ruya/">Bir Rüya</a>
     </div>
     <div class="simple-meta">Short story · 2017</div>
   </div>
@@ -217,36 +247,120 @@ author_profile: true
     color: rgba(0,0,0,.60);
   }
 
-  .academic-publications {
-    margin-bottom: 2.2rem;
+  .publication-list {
+    margin: .5rem 0 2.2rem 0;
   }
 
-  .academic-publications .archive__item {
-    padding: 1rem 0;
-    margin: 0;
+  .publication-row {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 14px;
+    padding: 1.05rem 0;
     border-bottom: 1px solid rgba(0,0,0,.08);
   }
 
-  .academic-publications .archive__item:first-child {
+  .publication-row:first-child {
     border-top: 1px solid rgba(0,0,0,.08);
   }
 
-  .academic-publications .archive__item-title {
-    margin-top: 0;
-    margin-bottom: .35rem;
-    font-size: 1.05rem;
+  .publication-tile {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: .78rem;
+    letter-spacing: .04em;
+    color: rgba(0,0,0,.72);
+    border: 1px solid rgba(0,0,0,.10);
+    background: rgba(0,0,0,.035);
+  }
+
+  .publication-tile.env {
+    background: rgba(62, 125, 91, .10);
+  }
+
+  .publication-tile.fin {
+    background: rgba(70, 90, 140, .10);
+  }
+
+  .publication-tile.ml {
+    background: rgba(120, 90, 160, .10);
+  }
+
+  .publication-tile.ts {
+    background: rgba(90, 120, 150, .10);
+  }
+
+  .publication-tile.stat {
+    background: rgba(150, 110, 70, .10);
+  }
+
+  .publication-tile.ai {
+    background: rgba(80, 110, 170, .10);
+  }
+
+  .publication-main h3 {
+    margin: 0;
+    font-size: 1.02rem;
     line-height: 1.35;
   }
 
-  .academic-publications .archive__item-excerpt {
-    margin-top: .35rem;
-    color: rgba(0,0,0,.66);
-    line-height: 1.55;
+  .publication-main h3 a {
+    text-decoration: none;
   }
 
-  .academic-publications .page__meta {
-    font-size: .82rem;
-    color: rgba(0,0,0,.52);
+  .publication-main h3 a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .publication-meta {
+    margin-top: .25rem;
+    font-size: .86rem;
+    color: rgba(0,0,0,.55);
+  }
+
+  .publication-main p {
+    margin: .45rem 0 0 0;
+    font-size: .92rem;
+    line-height: 1.5;
+    color: rgba(0,0,0,.68);
+  }
+
+  .publication-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: .55rem;
+  }
+
+  .publication-tags span {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: .78rem;
+    background: rgba(0,0,0,.04);
+    color: rgba(0,0,0,.62);
+  }
+
+  .publication-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .7rem;
+    margin-top: .6rem;
+    font-size: .86rem;
+  }
+
+  .publication-actions a {
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0,0,0,.22);
+  }
+
+  .publication-actions a:hover {
+    border-bottom-color: rgba(0,0,0,.65);
   }
 
   .simple-list {
@@ -280,9 +394,16 @@ author_profile: true
     color: rgba(0,0,0,.55);
   }
 
-  @media (max-width: 720px) {
-    .pub-lead {
-      font-size: 1rem;
+  @media (max-width: 640px) {
+    .publication-row {
+      grid-template-columns: 1fr;
+    }
+
+    .publication-tile {
+      width: fit-content;
+      height: auto;
+      padding: 6px 10px;
+      border-radius: 999px;
     }
 
     .research-snapshot {
@@ -291,10 +412,6 @@ author_profile: true
 
     .snapshot-number {
       font-size: 1.35rem;
-    }
-
-    .pub-links {
-      gap: .45rem .75rem;
     }
   }
 </style>
