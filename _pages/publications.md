@@ -318,7 +318,7 @@ author_profile: true
   }
 
   .profile-link.t24 .profile-logo {
-    background: rgba(0,0,0,.88);
+    background: rgba(51,153,255,.88);
     color: #fff;
   }
 
