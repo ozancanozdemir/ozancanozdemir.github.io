@@ -16,3 +16,15 @@ tags:
   - Community
   - Conference report
 ---
+
+## Overview
+
+This conference report documents **Why R? Turkey 2021**, highlighting the event, its talks, and the growing R programming community in Turkey. It reflects my involvement in the R ecosystem and my interest in building bridges between statistical programming, open-source communities, and applied data science.
+
+{% if page.paperurl %}
+[Read the report]({{ page.paperurl }})
+{% endif %}
+
+## Citation
+
+> {{ page.citation }}
