@@ -1,6 +1,3 @@
-
-
-
 ---
 title: "From Perceptions to Evidence: Detecting AI-Generated Content in Turkish News Media with a Fine-Tuned BERT Classifier"
 collection: publications
