@@ -11,21 +11,21 @@ author_profile: true
 
   <p class="pub-lead">
     My publications and essays reflect my work across machine learning, time series analysis,
-    stock market forecasting, public-facing data writing, and broader questions around technology,
+    stock market forecasting, computational social science, public-facing data writing, and broader questions around technology,
     politics, and society.
   </p>
 
   <div class="research-snapshot">
     <div class="snapshot-item">
-      <span class="snapshot-number">XX</span>
+      <span class="snapshot-number">81</span>
       <span class="snapshot-label">Citations</span>
     </div>
     <div class="snapshot-item">
-      <span class="snapshot-number">X</span>
+      <span class="snapshot-number">4</span>
       <span class="snapshot-label">h-index</span>
     </div>
     <div class="snapshot-item">
-      <span class="snapshot-number">X</span>
+      <span class="snapshot-number">2</span>
       <span class="snapshot-label">i10-index</span>
     </div>
   </div>
@@ -34,14 +34,48 @@ author_profile: true
     Citation metrics are shown according to Google Scholar and updated manually.
   </div>
 
-  <div class="pub-links">
+  <div class="profile-links">
     {% if author.googlescholar %}
-      <a href="{{ author.googlescholar }}">Google Scholar</a>
+      <a class="profile-link scholar" href="{{ author.googlescholar }}">
+        <span class="profile-logo">G</span>
+        <span>
+          <strong>Google Scholar</strong>
+          <small>Academic profile</small>
+        </span>
+      </a>
     {% endif %}
-    <a href="https://ozancanozdemir.github.io/cv/">CV</a>
-    <a href="https://medium.com/@ozancanozdemir">Medium</a>
-    <a href="https://t24.com.tr/yazarlar/ozancan-ozdemir">T24</a>
-    <a href="https://substack.com/@ozancanozdemir">Substack</a>
+
+    <a class="profile-link cv" href="https://ozancanozdemir.github.io/cv/">
+      <span class="profile-logo">CV</span>
+      <span>
+        <strong>Curriculum Vitae</strong>
+        <small>Academic CV</small>
+      </span>
+    </a>
+
+    <a class="profile-link t24" href="https://t24.com.tr/yazarlar/ozancan-ozdemir">
+      <span class="profile-logo">T24</span>
+      <span>
+        <strong>T24</strong>
+        <small>Public essays in Turkish</small>
+      </span>
+    </a>
+
+    <a class="profile-link medium" href="https://medium.com/@ozancanozdemir">
+      <span class="profile-logo">M</span>
+      <span>
+        <strong>Medium</strong>
+        <small>Blog posts and essays</small>
+      </span>
+    </a>
+
+    <a class="profile-link substack" href="https://yapaygundemler.substack.com/subscribe?utm_source=menu&simple=true&next=https%3A%2F%2Fyapaygundemler.substack.com%2Fp%2Fyapay-gundemler-no-55-20266">
+      <span class="profile-logo">YG</span>
+      <span>
+        <strong>Yapay Gündemler</strong>
+        <small>Mail bülteni · Abone olmak için tıklayın</small>
+      </span>
+    </a>
   </div>
 
 </div>
@@ -49,8 +83,8 @@ author_profile: true
 ## Academic publications
 
 <div class="pub-section-note">
-  Peer-reviewed articles, conference papers, and academic work related to machine learning,
-  forecasting, time series, stock market prediction, and applied statistical modeling.
+  Peer-reviewed articles, conference papers, preprints, book chapters, and academic work related to machine learning,
+  forecasting, time series, stock market prediction, computational social science, and applied statistical modeling.
 </div>
 
 <div class="publication-list">
@@ -92,6 +126,12 @@ author_profile: true
           <a href="{{ post.url | relative_url }}">Details</a>
           {% if post.paperurl %}
             <a href="{{ post.paperurl }}">Paper</a>
+          {% endif %}
+          {% if post.pdfurl %}
+            <a href="{{ post.pdfurl }}">PDF</a>
+          {% endif %}
+          {% if post.articleurl %}
+            <a href="{{ post.articleurl }}">Journal page</a>
           {% endif %}
         </div>
 
@@ -220,23 +260,88 @@ author_profile: true
     color: rgba(0,0,0,.52);
   }
 
-  .pub-links {
+  /* Profile / writing links */
+  .profile-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .65rem;
+    margin-top: 1.2rem;
+    max-width: 860px;
+  }
+
+  .profile-link {
     display: flex;
-    flex-wrap: wrap;
-    gap: .55rem .9rem;
-    margin-top: 1rem;
-    font-size: .92rem;
-  }
-
-  .pub-links a {
+    align-items: center;
+    gap: .7rem;
+    padding: .72rem .78rem;
+    border: 1px solid rgba(0,0,0,.10);
+    border-radius: 14px;
     text-decoration: none;
-    border-bottom: 1px solid rgba(0,0,0,.25);
-    color: rgba(0,0,0,.78);
+    background: rgba(255,255,255,.72);
   }
 
-  .pub-links a:hover {
-    color: rgba(0,0,0,1);
-    border-bottom-color: rgba(0,0,0,.65);
+  .profile-link:hover {
+    border-color: rgba(0,0,0,.22);
+    transform: translateY(-1px);
+    transition: transform .12s ease, border-color .12s ease;
+  }
+
+  .profile-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    font-size: .86rem;
+    font-weight: 800;
+    letter-spacing: -.01em;
+    border: 1px solid rgba(0,0,0,.08);
+    color: rgba(0,0,0,.76);
+    background: rgba(0,0,0,.035);
+  }
+
+  .profile-link strong {
+    display: block;
+    font-size: .95rem;
+    line-height: 1.2;
+    color: rgba(0,0,0,.82);
+  }
+
+  .profile-link small {
+    display: block;
+    margin-top: .15rem;
+    font-size: .78rem;
+    line-height: 1.3;
+    color: rgba(0,0,0,.56);
+  }
+
+  .profile-link.t24 .profile-logo {
+    background: rgba(0,0,0,.88);
+    color: #fff;
+  }
+
+  .profile-link.medium .profile-logo {
+    background: rgba(0,0,0,.06);
+    color: rgba(0,0,0,.86);
+    font-family: Georgia, serif;
+    font-size: 1.05rem;
+  }
+
+  .profile-link.substack .profile-logo {
+    background: rgba(255,103,26,.12);
+    color: rgba(145,60,15,.95);
+  }
+
+  .profile-link.scholar .profile-logo {
+    background: rgba(66,133,244,.10);
+    color: rgba(36,91,180,.95);
+  }
+
+  .profile-link.cv .profile-logo {
+    background: rgba(0,0,0,.045);
+    color: rgba(0,0,0,.80);
   }
 
   .pub-section-note {
@@ -300,6 +405,30 @@ author_profile: true
 
   .publication-tile.ai {
     background: rgba(80, 110, 170, .10);
+  }
+
+  .publication-tile.r {
+    background: rgba(39, 95, 160, .10);
+  }
+
+  .publication-tile.viz {
+    background: rgba(170, 115, 55, .10);
+  }
+
+  .publication-tile.clim {
+    background: rgba(73, 130, 120, .10);
+  }
+
+  .publication-tile.fcst {
+    background: rgba(95, 120, 170, .10);
+  }
+
+  .publication-tile.edu {
+    background: rgba(110, 130, 80, .10);
+  }
+
+  .publication-tile.soc {
+    background: rgba(120, 95, 140, .10);
   }
 
   .publication-main h3 {
@@ -394,39 +523,22 @@ author_profile: true
     color: rgba(0,0,0,.55);
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 760px) {
+    .profile-links {
+      grid-template-columns: 1fr;
+    }
+
     .publication-row {
       grid-template-columns: 1fr;
     }
-.publication-tile.clim {
-  background: rgba(73, 130, 120, .10);
-}
+
     .publication-tile {
       width: fit-content;
       height: auto;
       padding: 6px 10px;
       border-radius: 999px;
     }
-    .publication-tile.edu {
-  background: rgba(110, 130, 80, .10);
-}
-    .publication-tile.viz {
-  background: rgba(170, 115, 55, .10);
-}
-    .publication-tile.fcst {
-  background: rgba(95, 120, 170, .10);
-}
-    .publication-tile.clim {
-  background: rgba(73, 130, 120, .10);
-}
-    .publication-tile.ai {
-  background: rgba(80, 110, 170, .10);
-}.publication-tile.soc {
-  background: rgba(120, 95, 140, .10);
-}
-.publication-tile.ai {
-  background: rgba(80, 110, 170, .10);
-}
+
     .research-snapshot {
       gap: 1.1rem;
     }
