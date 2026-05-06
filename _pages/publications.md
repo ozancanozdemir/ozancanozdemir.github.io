@@ -411,6 +411,9 @@ author_profile: true
     .publication-tile.viz {
   background: rgba(170, 115, 55, .10);
 }
+    .publication-tile.clim {
+  background: rgba(73, 130, 120, .10);
+}
 
     .research-snapshot {
       gap: 1.1rem;
