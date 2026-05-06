@@ -408,6 +408,9 @@ author_profile: true
     .publication-tile.edu {
   background: rgba(110, 130, 80, .10);
 }
+    .publication-tile.viz {
+  background: rgba(170, 115, 55, .10);
+}
 
     .research-snapshot {
       gap: 1.1rem;
