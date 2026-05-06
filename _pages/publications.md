@@ -398,7 +398,9 @@ author_profile: true
     .publication-row {
       grid-template-columns: 1fr;
     }
-
+.publication-tile.clim {
+  background: rgba(73, 130, 120, .10);
+}
     .publication-tile {
       width: fit-content;
       height: auto;
