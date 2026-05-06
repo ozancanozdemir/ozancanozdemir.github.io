@@ -419,6 +419,9 @@ author_profile: true
     .publication-tile.clim {
   background: rgba(73, 130, 120, .10);
 }
+    .publication-tile.ai {
+  background: rgba(80, 110, 170, .10);
+}
 
     .research-snapshot {
       gap: 1.1rem;
