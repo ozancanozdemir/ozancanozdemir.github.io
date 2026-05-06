@@ -405,6 +405,9 @@ author_profile: true
       padding: 6px 10px;
       border-radius: 999px;
     }
+    .publication-tile.edu {
+  background: rgba(110, 130, 80, .10);
+}
 
     .research-snapshot {
       gap: 1.1rem;
