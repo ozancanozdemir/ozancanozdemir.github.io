@@ -69,13 +69,13 @@ author_profile: true
       </span>
     </a>
 
-    <a class="profile-link substack" href="https://yapaygundemler.substack.com/subscribe?utm_source=menu&simple=true&next=https%3A%2F%2Fyapaygundemler.substack.com%2Fp%2Fyapay-gundemler-no-55-20266">
-      <span class="profile-logo">YG</span>
-      <span>
-        <strong>Yapay Gündemler</strong>
-        <small>Mail bülteni · Abone olmak için tıklayın</small>
-      </span>
-    </a>
+   <a class="profile-link substack" href="https://yapaygundemler.substack.com/subscribe?utm_source=menu&simple=true&next=https%3A%2F%2Fyapaygundemler.substack.com%2Fp%2Fyapay-gundemler-no-55-20266">
+  <span class="profile-logo">YG</span>
+  <span>
+    <strong>Yapay Gündemler</strong>
+    <small>Mail bülteni · Abone olmak için tıklayın</small>
+  </span>
+</a>
   </div>
 
 </div>
