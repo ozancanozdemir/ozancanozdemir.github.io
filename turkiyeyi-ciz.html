@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Türkiye'yi Çiz — 10 Veri 10 Tahmin</title>
+  <meta name="description" content="On konuda Türkiye verisini önce sen çiz, sonra gerçekle karşılaştır." />
+  <style>
+    html,body{margin:0;padding:0;background:#F4F6F1;}
+    #boot{font-family:system-ui,sans-serif;color:#5C665C;padding:48px 24px;max-width:560px;margin:0 auto;}
+    #err{display:none;font-family:ui-monospace,monospace;white-space:pre-wrap;
+      background:#fff;border:1px solid #B23A48;color:#B23A48;border-radius:6px;
+      padding:16px;margin:24px;font-size:13px;line-height:1.5;}
+  </style>
+  <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"><div id="boot">Yükleniyor…<br><br>
+    Bu yazı kaybolmuyorsa: dosya, JavaScript çalıştıran bir ortamda açılmıyor demektir.
+    Google Drive önizlemesi ya da GitHub ham dosya görünümü script çalıştırmaz.
+    Dosyayı bilgisayarına indirip çift tıklayarak bir tarayıcıda aç,
+    ya da Netlify/Cloudflare Pages gibi bir yere yükle. (İnternet bağlantısı gerekli.)
+  </div></div>
+  <pre id="err"></pre>
+  <script>
+    window.addEventListener("error", function (e) {
+      var box = document.getElementById("err");
+      if (box) { box.style.display = "block";
+        box.textContent = "Bir hata oluştu:\n" + (e.message || e.error || e); }
+    });
+  </script>
+  <script type="text/babel" data-presets="react">
+const { useState, useRef, useEffect, useMemo, useCallback } = React;
+
+/* ------------------------------------------------------------------ */
+/*  VERİ  —  yuvarlanmış / yaklaşık değerler (TÜİK, TCMB, ÇSGB)        */
+/* ------------------------------------------------------------------ */
+
+const TOPICS = [
+  {
+    id: "asgari",
+    title: "Net asgari ücret",
+    question: "Aylık net asgari ücret 2022'den sonra nereye gitti?",
+    kind: "money",
+    revealCount: 8,
+    source: "ÇSGB, yıllık net asgari ücret",
+    insight:
+      "2021'e kadar yatay görünen çizgi, yüksek enflasyonla birlikte dikey bir duvara dönüşüyor. 2022–2026 arasında net asgari ücret yaklaşık 10 katına çıktı.",
+    note: "2026 değeri ilan edilen tutardır.",
+    data: [
+      { year: 2014, value: 891 }, { year: 2015, value: 1000 },
+      { year: 2016, value: 1300 }, { year: 2017, value: 1404 },
+      { year: 2018, value: 1603 }, { year: 2019, value: 2020 },
+      { year: 2020, value: 2324 }, { year: 2021, value: 2826 },
+      { year: 2022, value: 4253 }, { year: 2023, value: 8506 },
+      { year: 2024, value: 17002 }, { year: 2025, value: 22104 },
+      { year: 2026, value: 28076 },
+    ],
+  },
+  {
+    id: "dolar",
+    title: "Dolar / TL kuru",
+    question: "Bir dolar kaç lira oldu? 2021'den sonrasını çiz.",
+    kind: "rate2",
+    revealCount: 7,
+    source: "TCMB, yıl sonu USD/TRY",
+    insight:
+      "2020 sonunda 7,4 lira olan dolar, dört yılda yaklaşık altı katına çıktı. En sert kırılma 2021 sonundaki kur şokunda yaşandı.",
+    note: "2025 değeri yıl sonu yaklaşığıdır.",
+    data: [
+      { year: 2014, value: 2.33 }, { year: 2015, value: 2.92 },
+      { year: 2016, value: 3.52 }, { year: 2017, value: 3.79 },
+      { year: 2018, value: 5.29 }, { year: 2019, value: 5.95 },
+      { year: 2020, value: 7.43 }, { year: 2021, value: 13.32 },
+      { year: 2022, value: 18.70 }, { year: 2023, value: 29.48 },
+      { year: 2024, value: 35.36 }, { year: 2025, value: 42.30 },
+    ],
+  },
+  {
+    id: "enflasyon",
+    title: "Yıllık enflasyon (TÜFE)",
+    question: "Yıl sonu enflasyon oranı nasıl hareket etti?",
+    kind: "pct",
+    revealCount: 7,
+    source: "TÜİK, yıl sonu TÜFE yıllık değişim",
+    insight:
+      "Tek haneden başlayan oran, 2021'de aniden yükselip 2022–2023'te %64 bandında zirve yaptı, sonra yavaşça gerilemeye başladı. Düz bir tahmin burada nadiren tutar.",
+    note: "2025 değeri yaklaşıktır.",
+    data: [
+      { year: 2014, value: 8.2 }, { year: 2015, value: 8.8 },
+      { year: 2016, value: 8.5 }, { year: 2017, value: 11.9 },
+      { year: 2018, value: 20.3 }, { year: 2019, value: 11.8 },
+      { year: 2020, value: 14.6 }, { year: 2021, value: 36.1 },
+      { year: 2022, value: 64.3 }, { year: 2023, value: 64.8 },
+      { year: 2024, value: 44.4 }, { year: 2025, value: 32.0 },
+    ],
+  },
+  {
+    id: "nufus",
+    title: "Türkiye nüfusu",
+    question: "Nüfus artmaya aynı hızla devam etti mi?",
+    kind: "mn1",
+    revealCount: 7,
+    source: "TÜİK, ADNKS yıl sonu",
+    insight:
+      "Çoğu kişi çizgiyi yukarı doğru uzatır. Oysa nüfus artışı son yıllarda neredeyse durdu; 85 milyon civarında bir platoya oturdu.",
+    note: "2025 değeri yaklaşıktır.",
+    data: [
+      { year: 2014, value: 77.7 }, { year: 2015, value: 78.7 },
+      { year: 2016, value: 79.8 }, { year: 2017, value: 80.8 },
+      { year: 2018, value: 82.0 }, { year: 2019, value: 83.2 },
+      { year: 2020, value: 83.6 }, { year: 2021, value: 84.7 },
+      { year: 2022, value: 85.3 }, { year: 2023, value: 85.4 },
+      { year: 2024, value: 85.7 }, { year: 2025, value: 85.6 },
+    ],
+  },
+  {
+    id: "turist",
+    title: "Yabancı ziyaretçi sayısı",
+    question: "2020'de turizme ne oldu? Gerisini çiz.",
+    kind: "mn1",
+    revealCount: 6,
+    source: "Kültür ve Turizm Bakanlığı, milyon kişi",
+    insight:
+      "2019'da rekor kıran ziyaretçi sayısı 2020'de pandemiyle dibe vurdu, ardından beklenenden hızlı toparlanıp eski zirveyi de aştı. V harfini yakalamak kolay değil.",
+    note: "Yabancı ziyaretçi, yaklaşık değerler.",
+    data: [
+      { year: 2014, value: 36.8 }, { year: 2015, value: 36.2 },
+      { year: 2016, value: 25.3 }, { year: 2017, value: 32.4 },
+      { year: 2018, value: 39.5 }, { year: 2019, value: 45.1 },
+      { year: 2020, value: 12.7 }, { year: 2021, value: 24.7 },
+      { year: 2022, value: 44.6 }, { year: 2023, value: 49.2 },
+      { year: 2024, value: 52.5 },
+    ],
+  },
+  {
+    id: "internet",
+    title: "İnternet kullanım oranı",
+    question: "16–74 yaş internet kullanımı nereye yöneldi?",
+    kind: "pct",
+    revealCount: 6,
+    source: "TÜİK, bireylerde internet kullanımı (%)",
+    insight:
+      "Hızla tırmanan çizgi 2020'den sonra doygunluğa yaklaştı. Artık dik bir yükseliş değil, %90'a doğru yumuşayan bir eğri var.",
+    note: "Yaklaşık değerler.",
+    data: [
+      { year: 2014, value: 53.8 }, { year: 2015, value: 55.9 },
+      { year: 2016, value: 61.2 }, { year: 2017, value: 66.8 },
+      { year: 2018, value: 72.9 }, { year: 2019, value: 75.3 },
+      { year: 2020, value: 79.0 }, { year: 2021, value: 82.6 },
+      { year: 2022, value: 85.0 }, { year: 2023, value: 87.3 },
+      { year: 2024, value: 88.8 },
+    ],
+  },
+  {
+    id: "dogurganlik",
+    title: "Toplam doğurganlık hızı",
+    question: "Kadın başına düşen çocuk sayısı ne yöne gitti?",
+    kind: "rate2",
+    revealCount: 6,
+    source: "TÜİK, çocuk / kadın",
+    insight:
+      "Yenilenme sınırı olan 2,1'in altına çoktan inen doğurganlık hızı düşmeye devam etti. 2024'te 1,5'in de altına sarktı; bu, Türkiye'nin uzun vadeli en kritik eğrilerinden biri.",
+    note: "Son yıl yaklaşıktır.",
+    data: [
+      { year: 2014, value: 2.17 }, { year: 2015, value: 2.14 },
+      { year: 2016, value: 2.10 }, { year: 2017, value: 2.07 },
+      { year: 2018, value: 1.99 }, { year: 2019, value: 1.88 },
+      { year: 2020, value: 1.76 }, { year: 2021, value: 1.70 },
+      { year: 2022, value: 1.62 }, { year: 2023, value: 1.51 },
+      { year: 2024, value: 1.48 },
+    ],
+  },
+  {
+    id: "gsyih",
+    title: "Kişi başı gelir (USD)",
+    question: "Dolar cinsinden kişi başı gelir nasıl seyretti?",
+    kind: "usd",
+    revealCount: 6,
+    source: "TÜİK, cari fiyatlarla kişi başı GSYİH ($)",
+    insight:
+      "Uzun süre gerileyen kişi başı dolar geliri 2020'de dibi gördü, sonra hızla sıçradı. İnişi ve çıkışı birlikte tahmin etmek zordur.",
+    note: "Yaklaşık değerler.",
+    data: [
+      { year: 2014, value: 12112 }, { year: 2015, value: 11006 },
+      { year: 2016, value: 10895 }, { year: 2017, value: 10590 },
+      { year: 2018, value: 9633 }, { year: 2019, value: 9213 },
+      { year: 2020, value: 8612 }, { year: 2021, value: 9658 },
+      { year: 2022, value: 10655 }, { year: 2023, value: 13383 },
+      { year: 2024, value: 15463 },
+    ],
+  },
+  {
+    id: "tasit",
+    title: "Trafiğe kayıtlı taşıt",
+    question: "Yollardaki taşıt sayısı artışını sürdürdü mü?",
+    kind: "mn1",
+    revealCount: 6,
+    source: "TÜİK, toplam kayıtlı taşıt (milyon)",
+    insight:
+      "Bu çizgi sürprizsiz: istikrarlı, neredeyse doğrusal bir tırmanış. Bazen en kolay tahmin, doğru olandır.",
+    note: "Yaklaşık değerler.",
+    data: [
+      { year: 2014, value: 18.8 }, { year: 2015, value: 19.9 },
+      { year: 2016, value: 21.1 }, { year: 2017, value: 22.2 },
+      { year: 2018, value: 22.9 }, { year: 2019, value: 23.2 },
+      { year: 2020, value: 24.1 }, { year: 2021, value: 25.2 },
+      { year: 2022, value: 26.5 }, { year: 2023, value: 28.0 },
+      { year: 2024, value: 29.5 },
+    ],
+  },
+  {
+    id: "yasam",
+    title: "Ortalama yaşam süresi",
+    question: "Doğuşta beklenen yaşam süresi nasıl değişti?",
+    kind: "year1",
+    revealCount: 6,
+    source: "TÜİK, doğuşta beklenen yaşam süresi (yıl)",
+    insight:
+      "Yıllarca yavaşça yükselen çizgi 2020–2021'de pandemiyle geri çekildi, sonra yeniden toparlandı. Küçük ama anlamlı bir çukur.",
+    note: "Yaklaşık değerler.",
+    data: [
+      { year: 2014, value: 77.8 }, { year: 2015, value: 78.0 },
+      { year: 2016, value: 78.0 }, { year: 2017, value: 78.1 },
+      { year: 2018, value: 78.3 }, { year: 2019, value: 78.6 },
+      { year: 2020, value: 77.7 }, { year: 2021, value: 77.0 },
+      { year: 2022, value: 77.5 }, { year: 2023, value: 77.9 },
+    ],
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Biçimlendirme                                                      */
+/* ------------------------------------------------------------------ */
+
+const tr = (n, d = 0) =>
+  n.toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d });
+
+function formatValue(v, kind) {
+  switch (kind) {
+    case "money": return tr(Math.round(v)) + " ₺";
+    case "rate2": return tr(v, 2);
+    case "pct": return "%" + tr(v, 1);
+    case "mn1": return tr(v, 1) + " mn";
+    case "usd": return "$" + tr(Math.round(v));
+    case "year1": return tr(v, 1) + " yıl";
+    default: return tr(v, 1);
+  }
+}
+function formatAxis(v, kind) {
+  switch (kind) {
+    case "money": return v >= 1000 ? tr(Math.round(v / 1000)) + "b" : tr(Math.round(v));
+    case "rate2": return tr(v, v < 10 ? 1 : 0);
+    case "pct": return "%" + tr(Math.round(v));
+    case "mn1": return tr(v, 0);
+    case "usd": return tr(Math.round(v / 1000)) + "b";
+    case "year1": return tr(v, 0);
+    default: return tr(v, 0);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Çizim alanı                                                        */
+/* ------------------------------------------------------------------ */
+
+const W = 760, H = 460;
+const M = { l: 66, r: 28, t: 28, b: 46 };
+const IW = W - M.l - M.r;
+const IH = H - M.t - M.b;
+
+function ChartCanvas({ topic, onScore }) {
+  const data = topic.data;
+  const n = data.length;
+  const anchor = topic.revealCount - 1;
+
+  const { yMin, yMax } = useMemo(() => {
+    const vals = data.map((d) => d.value);
+    let lo = Math.min(...vals), hi = Math.max(...vals);
+    const pad = (hi - lo) * 0.12 || hi * 0.1;
+    lo = lo - pad; hi = hi + pad;
+    if (topic.kind === "pct" || topic.kind === "mn1") lo = Math.max(0, lo);
+    if (topic.kind === "money" || topic.kind === "usd") lo = Math.max(0, lo);
+    return { yMin: lo, yMax: hi };
+  }, [topic]);
+
+  const x = useCallback((i) => M.l + (i / (n - 1)) * IW, [n]);
+  const y = useCallback(
+    (v) => M.t + IH - ((v - yMin) / (yMax - yMin)) * IH,
+    [yMin, yMax]
+  );
+  const valFromPy = useCallback(
+    (py) => {
+      const c = Math.max(M.t, Math.min(M.t + IH, py));
+      return yMin + ((M.t + IH - c) / IH) * (yMax - yMin);
+    },
+    [yMin, yMax]
+  );
+
+  // serbest el çizimi: kalemin gerçek izini sakla
+  const seedStroke = useCallback(
+    () => [{ x: x(anchor), y: y(data[anchor].value) }],
+    [x, y, anchor, data]
+  );
+  const [stroke, setStroke] = useState([]);
+  const [sampled, setSampled] = useState(null);
+  const [revealed, setRevealed] = useState(false);
+  const [dash, setDash] = useState(1);
+  const touched = stroke.length > 1;
+
+  const svgRef = useRef(null);
+  const drawing = useRef(false);
+
+  useEffect(() => {
+    setStroke([]);
+    setSampled(null);
+    setRevealed(false);
+    setDash(1);
+  }, [topic]);
+
+  const toLocal = (e) => {
+    const r = svgRef.current.getBoundingClientRect();
+    return {
+      px: ((e.clientX - r.left) / r.width) * W,
+      py: ((e.clientY - r.top) / r.height) * H,
+    };
+  };
+
+  const minX = x(anchor), maxX = x(n - 1);
+
+  // kalem ucunu kaydet: soldan sağa ilerler, küçük titreşimleri yutar
+  const addPoint = (px, py) => {
+    const cy = Math.max(M.t, Math.min(M.t + IH, py));
+    let cx = Math.max(minX, Math.min(maxX, px));
+    setStroke((cur) => {
+      const last = cur[cur.length - 1];
+      if (last) {
+        cx = Math.max(cx, last.x); // çizgi geri sarmasın
+        const dx = cx - last.x, dy = cy - last.y;
+        if (dx * dx + dy * dy < 5 && dx === 0) return cur;
+      }
+      return [...cur, { x: cx, y: cy }];
+    });
+  };
+
+  const down = (e) => {
+    if (revealed) return;
+    drawing.current = true;
+    svgRef.current.setPointerCapture(e.pointerId);
+    setStroke(seedStroke());
+    const { px, py } = toLocal(e);
+    addPoint(px, py);
+  };
+  const move = (e) => {
+    if (!drawing.current || revealed) return;
+    const { px, py } = toLocal(e);
+    addPoint(px, py);
+  };
+  const up = (e) => {
+    drawing.current = false;
+    try { svgRef.current.releasePointerCapture(e.pointerId); } catch (_) {}
+  };
+
+  // serbest çizginin belirli bir x'teki yüksekliği (skorlama için örnekleme)
+  const yAtX = (pts, tx) => {
+    if (!pts.length) return null;
+    if (tx <= pts[0].x) return pts[0].y;
+    for (let k = 0; k < pts.length - 1; k++) {
+      const a = pts[k], b = pts[k + 1];
+      if (tx >= a.x && tx <= b.x) {
+        const t = b.x - a.x ? (tx - a.x) / (b.x - a.x) : 0;
+        return a.y + (b.y - a.y) * t;
+      }
+    }
+    return pts[pts.length - 1].y;
+  };
+
+  const compare = () => {
+    if (revealed || !touched) return;
+    const range = yMax - yMin;
+    const vals = data.map((d) => d.value);
+    let err = 0, cnt = 0;
+    for (let i = anchor + 1; i < n; i++) {
+      const v = valFromPy(yAtX(stroke, x(i)));
+      vals[i] = v;
+      err += Math.abs(v - data[i].value) / range;
+      cnt++;
+    }
+    const e = cnt ? err / cnt : 0;
+    const score = Math.round(100 * Math.max(0, 1 - Math.min(1, e / 0.45)));
+    setSampled(vals);
+    setRevealed(true);
+    onScore(score);
+    const reduce = window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) setDash(0);
+    else requestAnimationFrame(() => requestAnimationFrame(() => setDash(0)));
+  };
+
+  const reset = () => {
+    setStroke([]);
+    setSampled(null);
+    setRevealed(false);
+    setDash(1);
+  };
+
+  // path yardımcıları
+  const lineP = (idxs, getV) =>
+    idxs.map((i, k) => `${k ? "L" : "M"}${x(i).toFixed(1)} ${y(getV(i)).toFixed(1)}`).join(" ");
+
+  // kalem izini yumuşat (Catmull-Rom -> Bézier)
+  const smoothPath = (pts) => {
+    if (pts.length < 2) return "";
+    if (pts.length === 2)
+      return `M${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)} L${pts[1].x.toFixed(1)} ${pts[1].y.toFixed(1)}`;
+    let d = `M${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[i - 1] || pts[i];
+      const p1 = pts[i];
+      const p2 = pts[i + 1];
+      const p3 = pts[i + 2] || p2;
+      const c1x = p1.x + (p2.x - p0.x) / 6, c1y = p1.y + (p2.y - p0.y) / 6;
+      const c2x = p2.x - (p3.x - p1.x) / 6, c2y = p2.y - (p3.y - p1.y) / 6;
+      d += ` C${c1x.toFixed(1)} ${c1y.toFixed(1)} ${c2x.toFixed(1)} ${c2y.toFixed(1)} ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+    }
+    return d;
+  };
+
+  const knownIdx = Array.from({ length: topic.revealCount }, (_, i) => i);
+  const drawIdx = Array.from({ length: n - anchor }, (_, k) => anchor + k);
+
+  const knownPath = lineP(knownIdx, (i) => data[i].value);
+  const userPath = smoothPath(stroke);
+  const realPath = lineP(drawIdx, (i) => data[i].value);
+
+  // hata bandı (örneklenen kullanıcı değerleri ile)
+  const bandPath = useMemo(() => {
+    if (!revealed || !sampled) return "";
+    let p = `M${x(anchor).toFixed(1)} ${y(data[anchor].value).toFixed(1)} `;
+    for (let i = anchor + 1; i < n; i++) p += `L${x(i).toFixed(1)} ${y(sampled[i]).toFixed(1)} `;
+    for (let i = n - 1; i >= anchor; i--) p += `L${x(i).toFixed(1)} ${y(data[i].value).toFixed(1)} `;
+    return p + "Z";
+  }, [revealed, sampled, x, y, n, anchor, data]);
+
+  const yTicks = useMemo(() => {
+    const t = [];
+    for (let k = 0; k <= 4; k++) t.push(yMin + ((yMax - yMin) * k) / 4);
+    return t;
+  }, [yMin, yMax]);
+
+  return (
+    <div className="ct-chartwrap">
+      <svg
+        ref={svgRef}
+        viewBox={`0 0 ${W} ${H}`}
+        className="ct-svg"
+        style={{ touchAction: "none" }}
+        onPointerDown={down}
+        onPointerMove={move}
+        onPointerUp={up}
+        onPointerCancel={up}
+        onPointerLeave={up}
+      >
+        <defs>
+          <filter id="pencil">
+            <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="7" result="t" />
+            <feDisplacementMap in="SourceGraphic" in2="t" scale="1.6" />
+          </filter>
+        </defs>
+
+        {/* milimetrik ızgara */}
+        <g>
+          {yTicks.map((tv, i) => (
+            <line key={"h" + i} x1={M.l} x2={M.l + IW} y1={y(tv)} y2={y(tv)}
+              className={i === 0 ? "ct-grid-base" : "ct-grid"} />
+          ))}
+          {data.map((d, i) => (
+            <line key={"v" + i} x1={x(i)} x2={x(i)} y1={M.t} y2={M.t + IH}
+              className="ct-grid" />
+          ))}
+        </g>
+
+        {/* tahmin başlangıç sınırı */}
+        <line x1={x(anchor)} x2={x(anchor)} y1={M.t - 6} y2={M.t + IH}
+          className="ct-divider" />
+        {!revealed && (
+          <text x={x(anchor) + 6} y={M.t + 4} className="ct-hint-label">
+            buradan sonrasını sen çiz →
+          </text>
+        )}
+
+        {/* eksen etiketleri */}
+        {yTicks.map((tv, i) => (
+          <text key={"yl" + i} x={M.l - 10} y={y(tv) + 4} className="ct-axis ct-axis-y">
+            {formatAxis(tv, topic.kind)}
+          </text>
+        ))}
+        {data.map((d, i) => (
+          <text key={"xl" + i} x={x(i)} y={M.t + IH + 22} className="ct-axis ct-axis-x">
+            {String(d.year).slice(2)}
+          </text>
+        ))}
+
+        {/* hata bandı */}
+        {revealed && <path d={bandPath} className="ct-band" />}
+
+        {/* bilinen (mürekkep) kısım */}
+        <path d={knownPath} className="ct-known" />
+
+        {/* kullanıcının kalem izi */}
+        {userPath && <path d={userPath} className="ct-user" filter="url(#pencil)" />}
+
+        {/* gerçek çizgi (karşılaştırınca açılır) */}
+        {revealed && (
+          <path
+            d={realPath}
+            className="ct-real"
+            pathLength="1"
+            style={{ strokeDasharray: 1, strokeDashoffset: dash }}
+          />
+        )}
+        {revealed &&
+          drawIdx.slice(1).map((i) => (
+            <circle key={"r" + i} cx={x(i)} cy={y(data[i].value)} r={3.4} className="ct-real-dot" />
+          ))}
+
+        {/* anchor noktası */}
+        <circle cx={x(anchor)} cy={y(data[anchor].value)} r={4} className="ct-anchor" />
+
+        {/* son değer etiketleri */}
+        {revealed && (
+          <>
+            <g>
+              <rect x={x(n - 1) - 2} y={y(data[n - 1].value) - 26} rx="4"
+                className="ct-tag-real-bg" width="2" height="2" />
+              <text x={x(n - 1)} y={y(data[n - 1].value) - 12} className="ct-tag ct-tag-real" textAnchor="end">
+                gerçek {formatValue(data[n - 1].value, topic.kind)}
+              </text>
+            </g>
+            {sampled && (
+              <text x={x(n - 1)} y={y(sampled[n - 1]) + 18} className="ct-tag ct-tag-user" textAnchor="end">
+                senin {formatValue(sampled[n - 1], topic.kind)}
+              </text>
+            )}
+          </>
+        )}
+      </svg>
+
+      <div className="ct-controls">
+        {!revealed ? (
+          <>
+            <button
+              className="ct-btn ct-btn-primary"
+              onClick={compare}
+              disabled={!touched}
+            >
+              Karşılaştır
+            </button>
+            {touched && (
+              <button className="ct-btn ct-btn-ghost" onClick={reset}>
+                Çizimi sil
+              </button>
+            )}
+            <span className="ct-tip">
+              Çizginin bittiği yerden başla, kağıda çizer gibi sağa doğru elinle çiz.
+            </span>
+          </>
+        ) : (
+          <button className="ct-btn ct-btn-ghost" onClick={reset}>
+            Tekrar dene
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Konu ikonları (ince çizgi, mürekkep)                               */
+/* ------------------------------------------------------------------ */
+
+const ICONS = {
+  // net asgari ücret — banknot
+  asgari: (
+    <>
+      <rect x="2.5" y="6" width="19" height="12" rx="2" />
+      <circle cx="12" cy="12" r="2.6" />
+      <path d="M5.5 9.5h.01M18.5 14.5h.01" />
+    </>
+  ),
+  // dolar/TL — takas okları
+  dolar: (
+    <>
+      <path d="M4 9h14" />
+      <path d="M15 6l3 3-3 3" />
+      <path d="M20 15H6" />
+      <path d="M9 12l-3 3 3 3" />
+    </>
+  ),
+  // enflasyon — yükselen eğri
+  enflasyon: (
+    <>
+      <path d="M3 17l6-6 4 4 8-8" />
+      <path d="M15 7h6v6" />
+    </>
+  ),
+  // nüfus — insanlar
+  nufus: (
+    <>
+      <circle cx="9" cy="8" r="3" />
+      <path d="M3.5 19a5.5 5.5 0 0 1 11 0" />
+      <circle cx="17.5" cy="9" r="2.3" />
+      <path d="M16 14.4a4.6 4.6 0 0 1 4.5 4.6" />
+    </>
+  ),
+  // turist — kağıt uçak
+  turist: (
+    <>
+      <path d="M21 4 3 10.8l6 2.4 2.4 6L21 4z" />
+      <path d="M9 13.2 21 4" />
+    </>
+  ),
+  // internet — küre
+  internet: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18" />
+      <path d="M12 3c2.6 2.8 4 6.3 4 9s-1.4 6.2-4 9c-2.6-2.8-4-6.3-4-9s1.4-6.2 4-9z" />
+    </>
+  ),
+  // doğurganlık — biberon
+  dogurganlik: (
+    <>
+      <path d="M10.5 2.5h3v1.6h-3z" />
+      <path d="M9.4 5.5h5.2" />
+      <rect x="8.6" y="6.6" width="6.8" height="12.8" rx="2.6" />
+      <path d="M11 10.5h2M11 13.5h2" />
+    </>
+  ),
+  // kişi başı gelir — para silindiri
+  gsyih: (
+    <>
+      <ellipse cx="12" cy="7" rx="6" ry="2.4" />
+      <path d="M6 7v4c0 1.3 2.7 2.4 6 2.4s6-1.1 6-2.4V7" />
+      <path d="M6 11v4c0 1.3 2.7 2.4 6 2.4s6-1.1 6-2.4v-4" />
+    </>
+  ),
+  // taşıt — otomobil
+  tasit: (
+    <>
+      <path d="M4 14l1.7-4.3A2 2 0 0 1 7.6 8.4h8.8a2 2 0 0 1 1.9 1.3L20 14" />
+      <rect x="3" y="14" width="18" height="4" rx="1.2" />
+      <circle cx="7.5" cy="18.5" r="1.6" />
+      <circle cx="16.5" cy="18.5" r="1.6" />
+    </>
+  ),
+  // yaşam süresi — kum saati
+  yasam: (
+    <>
+      <path d="M7 3h10M7 21h10" />
+      <path d="M8 3c0 3.5 4 4.5 4 9s-4 5.5-4 9" />
+      <path d="M16 3c0 3.5-4 4.5-4 9s4 5.5 4 9" />
+    </>
+  ),
+};
+
+function Icon({ id }) {
+  return (
+    <svg viewBox="0 0 24 24" className="ct-icon" aria-hidden="true">
+      {ICONS[id]}
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Uygulama                                                           */
+/* ------------------------------------------------------------------ */
+
+function feedback(score) {
+  if (score >= 85) return { t: "Neredeyse birebir.", s: "Sezgilerin oldukça kuvvetli." };
+  if (score >= 65) return { t: "Yönü ve eğimi iyi yakaladın.", s: "Detayda küçük sapmalar var." };
+  if (score >= 40) return { t: "Gidişatı tutturdun.", s: "Ama eğri seni biraz şaşırttı." };
+  if (score >= 15) return { t: "Gerçek başka yol izlemiş.", s: "Beklenti ile veri ayrışıyor." };
+  return { t: "Gerçeklik tamamen şaşırttı.", s: "İşte tam da bu yüzden veriye bakıyoruz." };
+}
+
+function App() {
+  const [view, setView] = useState("home"); // home | play
+  const [idx, setIdx] = useState(0);
+  const [results, setResults] = useState({}); // id -> score
+  const [lastScore, setLastScore] = useState(null);
+
+  const topic = TOPICS[idx];
+
+  const open = (i) => { setIdx(i); setLastScore(null); setView("play"); };
+  const onScore = (score) => {
+    setLastScore(score);
+    setResults((r) => ({ ...r, [topic.id]: score }));
+  };
+  const nextTopic = () => {
+    const ni = (idx + 1) % TOPICS.length;
+    setIdx(ni); setLastScore(null);
+  };
+
+  const solved = Object.keys(results).length;
+  const avg = solved
+    ? Math.round(Object.values(results).reduce((a, b) => a + b, 0) / solved)
+    : null;
+
+  const fb = lastScore != null ? feedback(lastScore) : null;
+
+  return (
+    <div className="ct-root">
+      <style>{CSS}</style>
+
+      {view === "home" && (
+        <div className="ct-home">
+          <header className="ct-head">
+            <div className="ct-eyebrow">interaktif veri denemesi</div>
+            <h1 className="ct-title">Türkiye'yi Çiz</h1>
+            <div className="ct-subtitle">10 Veri 10 Tahmin</div>
+            <p className="ct-lede">
+              On konuda Türkiye'nin son on yılına bakacaksın. Her grafiğin yalnızca
+              ilk kısmı çizili. Gerisinin nasıl gittiğini önce sen elinle çiz,
+              sonra gerçek veriyle karşılaştır. Sezgin ile rakamların arasındaki
+              farkı görmek bazen şaşırtıcı oluyor.
+            </p>
+            {solved > 0 && (
+              <div className="ct-progress">
+                <span><b>{solved}</b>/{TOPICS.length} konu denendi</span>
+                <span className="ct-dot-sep">·</span>
+                <span>ortalama isabet <b>{avg}</b></span>
+              </div>
+            )}
+          </header>
+
+          <div className="ct-grid-cards">
+            {TOPICS.map((t, i) => {
+              const sc = results[t.id];
+              return (
+                <button key={t.id} className="ct-card" onClick={() => open(i)}>
+                  <div className="ct-card-top">
+                    <span className="ct-card-icon"><Icon id={t.id} /></span>
+                    <span className="ct-card-num">{String(i + 1).padStart(2, "0")}</span>
+                    {sc != null && (
+                      <span className={"ct-badge " + (sc >= 65 ? "good" : sc >= 40 ? "mid" : "off")}>
+                        {sc}
+                      </span>
+                    )}
+                  </div>
+                  <div className="ct-card-body">
+                    <h3 className="ct-card-title">{t.title}</h3>
+                    <p className="ct-card-q">{t.question}</p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          <footer className="ct-foot">
+            Veriler TÜİK, TCMB ve ÇSGB kaynaklarından derlenmiş, yuvarlanmış
+            yaklaşık değerlerdir. Amaç kesin rakam değil, eğrinin biçimidir.
+          </footer>
+        </div>
+      )}
+
+      {view === "play" && (
+        <div className="ct-play">
+          <div className="ct-play-top">
+            <button className="ct-back" onClick={() => setView("home")}>
+              ← tüm konular
+            </button>
+            <div className="ct-counter">
+              {String(idx + 1).padStart(2, "0")} / {TOPICS.length}
+            </div>
+          </div>
+
+          <div className="ct-play-head">
+            <div className="ct-eyebrow">{topic.source}</div>
+            <h2 className="ct-play-title">{topic.title}</h2>
+            <p className="ct-play-q">{topic.question}</p>
+          </div>
+
+          <ChartCanvas key={topic.id} topic={topic} onScore={onScore} />
+
+          {lastScore != null && fb && (
+            <div className="ct-result">
+              <div className="ct-result-score">
+                <div className={"ct-score-num " + (lastScore >= 65 ? "good" : lastScore >= 40 ? "mid" : "off")}>
+                  {lastScore}
+                </div>
+                <div className="ct-score-label">isabet</div>
+              </div>
+              <div className="ct-result-text">
+                <strong>{fb.t}</strong> {fb.s}
+                <p className="ct-insight">{topic.insight}</p>
+                <p className="ct-note">{topic.note}</p>
+              </div>
+              <button className="ct-btn ct-btn-primary ct-next" onClick={nextTopic}>
+                Sıradaki konu →
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Stil                                                               */
+/* ------------------------------------------------------------------ */
+
+const CSS = `
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap');
+
+.ct-root{
+  --paper:#F4F6F1; --card:#FBFCF9; --grid:#E2E8DF; --grid-base:#C7D2C4;
+  --ink:#172019; --ink-soft:#5C665C; --hair:#D9E0D6;
+  --accent:#2747E8; --accent-soft:rgba(39,71,232,0.10);
+  --good:#1F7A4D; --mid:#9A6B12; --off:#B23A48;
+  background:var(--paper); color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif; min-height:100vh;
+  -webkit-font-smoothing:antialiased; line-height:1.5;
+}
+.ct-root *{box-sizing:border-box;}
+
+.ct-home{max-width:980px; margin:0 auto; padding:54px 24px 64px;}
+.ct-head{max-width:620px; margin-bottom:40px;}
+.ct-eyebrow{
+  font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:14px;
+}
+.ct-title{
+  font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:64px;
+  line-height:.96; letter-spacing:-.02em; margin:0 0 10px;
+}
+.ct-subtitle{
+  font-family:'Space Mono',monospace; font-size:14px; letter-spacing:.04em;
+  color:var(--ink-soft); margin:0 0 20px;
+}
+.ct-lede{font-size:17px; color:var(--ink-soft); max-width:560px; margin:0;}
+.ct-progress{
+  margin-top:22px; font-family:'Space Mono',monospace; font-size:13px;
+  color:var(--ink-soft); display:flex; align-items:center; gap:10px;
+}
+.ct-progress b{color:var(--ink);}
+.ct-dot-sep{color:var(--hair);}
+
+.ct-grid-cards{
+  display:grid; grid-template-columns:repeat(2,1fr); gap:14px;
+}
+@media(max-width:680px){ .ct-grid-cards{grid-template-columns:1fr;} }
+.ct-card{
+  position:relative; text-align:left; cursor:pointer;
+  background:var(--card); border:1px solid var(--hair); border-radius:3px;
+  padding:20px 20px 18px; display:flex; flex-direction:column; gap:14px;
+  transition:border-color .18s, transform .18s, box-shadow .18s; font:inherit;
+}
+.ct-card:hover{
+  border-color:var(--accent); transform:translateY(-2px);
+  box-shadow:0 10px 28px -18px rgba(23,32,25,.4);
+}
+.ct-card-num{
+  font-family:'Space Mono',monospace; font-size:12px; color:var(--ink-soft);
+  letter-spacing:.1em;
+}
+.ct-card-title{
+  font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:22px;
+  margin:0 0 6px; letter-spacing:-.01em;
+}
+.ct-card-q{margin:0; font-size:14px; color:var(--ink-soft);}
+.ct-card-top{display:flex; align-items:center; gap:11px;}
+.ct-card-icon{
+  width:42px; height:42px; flex:none; border:1px solid var(--hair);
+  border-radius:3px; background:var(--paper);
+  display:flex; align-items:center; justify-content:center; color:var(--ink);
+  transition:border-color .18s, color .18s, background .18s;
+}
+.ct-card:hover .ct-card-icon{border-color:var(--accent); color:var(--accent); background:#fff;}
+.ct-icon{
+  width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:1.6;
+  stroke-linecap:round; stroke-linejoin:round;
+}
+.ct-card-top .ct-badge{margin-left:auto;}
+.ct-badge{
+  font-family:'Space Mono',monospace; font-size:13px; font-weight:700;
+  padding:3px 9px; border-radius:2px; border:1px solid currentColor;
+}
+.ct-badge.good{color:var(--good);}
+.ct-badge.mid{color:var(--mid);}
+.ct-badge.off{color:var(--off);}
+
+.ct-foot{
+  margin-top:38px; padding-top:18px; border-top:1px solid var(--hair);
+  font-size:12.5px; color:var(--ink-soft); max-width:560px;
+}
+
+/* OYUN */
+.ct-play{max-width:840px; margin:0 auto; padding:28px 24px 70px;}
+.ct-play-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:26px;}
+.ct-back{
+  background:none; border:none; cursor:pointer; font:inherit; color:var(--ink-soft);
+  font-size:14px; padding:6px 0; transition:color .15s;
+}
+.ct-back:hover{color:var(--accent);}
+.ct-counter{font-family:'Space Mono',monospace; font-size:13px; color:var(--ink-soft);}
+.ct-play-head{margin-bottom:22px;}
+.ct-play-title{
+  font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:38px;
+  letter-spacing:-.015em; margin:8px 0 8px; line-height:1.02;
+}
+.ct-play-q{margin:0; font-size:16px; color:var(--ink-soft);}
+
+.ct-chartwrap{
+  background:var(--card); border:1px solid var(--hair); border-radius:4px;
+  padding:14px 14px 18px;
+}
+.ct-svg{width:100%; height:auto; display:block; cursor:crosshair; user-select:none;}
+
+.ct-grid{stroke:var(--grid); stroke-width:1;}
+.ct-grid-base{stroke:var(--grid-base); stroke-width:1;}
+.ct-divider{stroke:var(--ink); stroke-width:1; stroke-dasharray:3 4; opacity:.45;}
+.ct-hint-label{
+  font-family:'Space Mono',monospace; font-size:11px; fill:var(--ink-soft);
+}
+.ct-axis{font-family:'Space Mono',monospace; font-size:11px; fill:var(--ink-soft);}
+.ct-axis-y{text-anchor:end;}
+.ct-axis-x{text-anchor:middle;}
+
+.ct-known{fill:none; stroke:var(--ink); stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round;}
+.ct-user{fill:none; stroke:var(--accent); stroke-width:3; stroke-linecap:round; stroke-linejoin:round;}
+.ct-anchor{fill:var(--ink); stroke:var(--card); stroke-width:2;}
+
+.ct-band{fill:var(--accent-soft); stroke:none;}
+.ct-real{fill:none; stroke:var(--ink); stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round;
+  transition:stroke-dashoffset .95s ease;}
+.ct-real-dot{fill:var(--ink);}
+.ct-tag{font-family:'Space Mono',monospace; font-size:12px; font-weight:700;}
+.ct-tag-real{fill:var(--ink);}
+.ct-tag-user{fill:var(--accent);}
+
+.ct-controls{
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:16px;
+  padding:0 4px;
+}
+.ct-btn{
+  font:inherit; font-size:14px; font-weight:500; cursor:pointer;
+  padding:10px 20px; border-radius:3px; border:1px solid transparent;
+  transition:background .15s, color .15s, border-color .15s;
+}
+.ct-btn-primary{background:var(--accent); color:#fff;}
+.ct-btn-primary:hover{background:#1d39c4;}
+.ct-btn:disabled{opacity:.4; cursor:not-allowed;}
+.ct-btn-primary:disabled:hover{background:var(--accent);}
+.ct-btn-ghost{background:none; color:var(--ink-soft); border-color:var(--hair);}
+.ct-btn-ghost:hover{border-color:var(--ink-soft); color:var(--ink);}
+.ct-tip{font-size:13px; color:var(--ink-soft);}
+
+.ct-result{
+  margin-top:24px; background:var(--card); border:1px solid var(--hair);
+  border-radius:4px; padding:24px; display:grid;
+  grid-template-columns:auto 1fr; gap:22px; align-items:start;
+}
+.ct-result-score{text-align:center; padding-right:22px; border-right:1px solid var(--hair);}
+.ct-score-num{font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:54px; line-height:1;}
+.ct-score-num.good{color:var(--good);}
+.ct-score-num.mid{color:var(--mid);}
+.ct-score-num.off{color:var(--off);}
+.ct-score-label{font-family:'Space Mono',monospace; font-size:11px; color:var(--ink-soft);
+  text-transform:uppercase; letter-spacing:.12em; margin-top:6px;}
+.ct-result-text{font-size:15px;}
+.ct-result-text strong{font-family:'Fraunces',Georgia,serif; font-weight:600;}
+.ct-insight{margin:12px 0 0; color:var(--ink-soft); font-size:14.5px;}
+.ct-note{margin:8px 0 0; font-family:'Space Mono',monospace; font-size:11.5px; color:var(--ink-soft); opacity:.85;}
+.ct-next{grid-column:1 / -1; justify-self:start; margin-top:4px;}
+
+@media(max-width:560px){
+  .ct-title{font-size:46px;}
+  .ct-play-title{font-size:30px;}
+  .ct-result{grid-template-columns:1fr; gap:16px;}
+  .ct-result-score{display:flex; align-items:baseline; gap:10px; border-right:none;
+    border-bottom:1px solid var(--hair); padding:0 0 14px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .ct-card,.ct-real{transition:none;}
+}
+`;
+
+try {
+  ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+} catch (e) {
+  var box = document.getElementById("err");
+  box.style.display = "block";
+  box.textContent = "Render hatası:\n" + (e && e.stack ? e.stack : e);
+}
+  </script>
+</body>
+</html>
