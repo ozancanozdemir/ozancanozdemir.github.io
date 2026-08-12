@@ -8,476 +8,576 @@ author_profile: true
 {% include base_path %}
 
 <p class="page-lead">
-  I list selected publicly available projects below. / Kamuyla paylaştığım seçili projeleri aşağıda bulabilirsiniz.
+I list selected publicly available projects below. / Kamuyla paylaştığım seçili projeleri aşağıda bulabilirsiniz.
 </p>
 
 <style>
-  :root{
-    --card-bg: #ffffff;
-    --card-border: rgba(0,0,0,.08);
-    --card-shadow: 0 10px 25px rgba(0,0,0,.08);
-    --muted: rgba(0,0,0,.65);
-    --link: #0b63ce;
-  }
+:root{
+--card-bg: #ffffff;
+--card-border: rgba(0,0,0,.08);
+--card-shadow: 0 10px 25px rgba(0,0,0,.08);
+--muted: rgba(0,0,0,.65);
+--link: #0b63ce;
+}
 
-  .page-lead{
-    margin-top: .5rem;
-    color: var(--muted);
-    font-size: 1.02rem;
-    line-height: 1.6;
-  }
+.page-lead{
+margin-top: .5rem;
+color: var(--muted);
+font-size: 1.02rem;
+line-height: 1.6;
+}
 
-  .projects-section{
-    margin-top: 2.25rem;
-    margin-bottom: 3rem;
-  }
+.projects-section{
+margin-top: 2.25rem;
+margin-bottom: 3rem;
+}
 
-  .projects-section h2{
-    margin-bottom: 1rem;
-    padding-bottom: .5rem;
-    border-bottom: 2px solid rgba(0,0,0,.06);
-  }
+.projects-section h2{
+margin-bottom: 1rem;
+padding-bottom: .5rem;
+border-bottom: 2px solid rgba(0,0,0,.06);
+}
 
-  .grid{
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 18px;
-  }
+.grid{
+display: grid;
+grid-template-columns: repeat(12, 1fr);
+gap: 18px;
+}
 
-  /* responsive */
-  @media (max-width: 1100px){
-    .grid{ grid-template-columns: repeat(8, 1fr); }
-  }
-  @media (max-width: 760px){
-    .grid{ grid-template-columns: repeat(4, 1fr); }
-  }
+@media (max-width: 1100px){
+.grid{ grid-template-columns: repeat(8, 1fr); }
+}
+@media (max-width: 760px){
+.grid{ grid-template-columns: repeat(4, 1fr); }
+}
 
-  .card{
-    grid-column: span 4;
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: var(--card-shadow);
-    transition: transform .18s ease, box-shadow .18s ease;
-    display: flex;
-    flex-direction: column;
-    min-height: 290px;
-  }
+.card{
+grid-column: span 4;
+background: var(--card-bg);
+border: 1px solid var(--card-border);
+border-radius: 16px;
+overflow: hidden;
+box-shadow: var(--card-shadow);
+transition: transform .18s ease, box-shadow .18s ease;
+display: flex;
+flex-direction: column;
+min-height: 290px;
+}
 
-  .card:hover{
-    transform: translateY(-3px);
-    box-shadow: 0 14px 34px rgba(0,0,0,.10);
-  }
+.card:hover{
+transform: translateY(-3px);
+box-shadow: 0 14px 34px rgba(0,0,0,.10);
+}
 
-  .card-media{
-    position: relative;
-    width: 100%;
-    height: 150px;
-    background: linear-gradient(135deg, rgba(11,99,206,.08), rgba(0,0,0,.03));
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
+.card-media{
+position: relative;
+width: 100%;
+height: 150px;
+background: linear-gradient(135deg, rgba(11,99,206,.08), rgba(0,0,0,.03));
+display:flex;
+align-items:center;
+justify-content:center;
+}
 
-  .card-media img{
-    height: 120px;
-    width: auto;
-    max-width: 92%;
-    border-radius: 12px;
-    object-fit: cover;
-    background: #fff;
-  }
+.card-media img{
+height: 120px;
+width: auto;
+max-width: 92%;
+border-radius: 12px;
+object-fit: cover;
+background: #fff;
+}
 
-  .card-body{
-    padding: 14px 16px 16px 16px;
-    display:flex;
-    flex-direction: column;
-    gap: 10px;
-    flex: 1;
-  }
+.card-body{
+padding: 14px 16px 16px 16px;
+display:flex;
+flex-direction: column;
+gap: 10px;
+flex: 1;
+}
 
-  .card-title{
-    margin: 0;
-    font-size: 1.05rem;
-    line-height: 1.35;
-  }
+.card-title{
+margin: 0;
+font-size: 1.05rem;
+line-height: 1.35;
+}
 
-  .meta{
-    color: var(--muted);
-    font-size: .92rem;
-  }
+.meta{
+color: var(--muted);
+font-size: .92rem;
+}
 
-  .desc{
-    margin: 0;
-    color: rgba(0,0,0,.75);
-    font-size: .95rem;
-    line-height: 1.55;
-  }
+.desc{
+margin: 0;
+color: rgba(0,0,0,.75);
+font-size: .95rem;
+line-height: 1.55;
+}
 
-  .lang-block{
-    display: grid;
-    gap: 8px;
-    border-top: 1px solid rgba(0,0,0,.06);
-    padding-top: 10px;
-  }
-  .lang-label{
-    font-weight: 600;
-    font-size: .9rem;
-    color: rgba(0,0,0,.75);
-  }
+.lang-block{
+display: grid;
+gap: 8px;
+border-top: 1px solid rgba(0,0,0,.06);
+padding-top: 10px;
+}
+.lang-label{
+font-weight: 600;
+font-size: .9rem;
+color: rgba(0,0,0,.75);
+}
 
-  .links{
-    display:flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: auto;
-  }
+.links{
+display:flex;
+flex-wrap: wrap;
+gap: 10px;
+margin-top: auto;
+}
 
-  .btnlink{
-    display:inline-flex;
-    align-items:center;
-    gap: 8px;
-    text-decoration:none;
-    color: var(--link);
-    font-weight: 600;
-    font-size: .92rem;
-    padding: 8px 10px;
-    border: 1px solid rgba(11,99,206,.25);
-    border-radius: 999px;
-    transition: background .15s ease, border-color .15s ease;
-  }
-  .btnlink:hover{
-    background: rgba(11,99,206,.06);
-    border-color: rgba(11,99,206,.45);
-    text-decoration:none;
-  }
+.btnlink{
+display:inline-flex;
+align-items:center;
+gap: 8px;
+text-decoration:none;
+color: var(--link);
+font-weight: 600;
+font-size: .92rem;
+padding: 8px 10px;
+border: 1px solid rgba(11,99,206,.25);
+border-radius: 999px;
+transition: background .15s ease, border-color .15s ease;
+}
+.btnlink:hover{
+background: rgba(11,99,206,.06);
+border-color: rgba(11,99,206,.45);
+text-decoration:none;
+}
 
-  /* smaller cards for packages grid */
-  .card.pkg{ min-height: 240px; }
-  .card.pkg .card-media{ height: 140px; }
-  .card.pkg .card-media img{ height: 105px; }
+.card.pkg{ min-height: 240px; }
+.card.pkg .card-media{ height: 140px; }
+.card.pkg .card-media img{ height: 105px; }
 
-  /* utilities */
-  .muted{ color: var(--muted); }
+.muted{ color: var(--muted); }
+
+.view-toggle{
+display:flex;
+flex-wrap: wrap;
+gap: 10px;
+margin: 1.5rem 0 .5rem 0;
+}
+
+.tab-btn{
+padding: 10px 18px;
+border-radius: 999px;
+border: 1px solid rgba(11,99,206,.25);
+background: #fff;
+color: var(--link);
+font-weight: 600;
+cursor: pointer;
+font-size: .95rem;
+transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+
+.tab-btn:hover{
+background: rgba(11,99,206,.06);
+}
+
+.tab-btn.active{
+background: var(--link);
+color: #fff;
+border-color: var(--link);
+}
+
+.viz-media{
+height: 180px;
+padding: 0;
+}
+
+.viz-media img{
+width: 100%;
+height: 100%;
+max-width: 100%;
+object-fit: cover;
+border-radius: 0;
+background: #fff;
+}
+
+.empty-note{
+grid-column: 1 / -1;
+color: var(--muted);
+font-size: .95rem;
+padding: 18px 4px;
+}
 </style>
 
-<!-- =========================
-     R PACKAGES
-========================== -->
+<div class="view-toggle">
+<button type="button" id="btn-tab-projects" class="tab-btn active" onclick="showProjectsTab('projects')">Projects</button>
+<button type="button" id="btn-tab-dataviz" class="tab-btn" onclick="showProjectsTab('dataviz')">Data Visualization Portfolio</button>
+</div>
+
+<div id="tab-projects">
+
 <section class="projects-section">
-  <h2>R Packages</h2>
+<h2>R Packages</h2>
 
-  <div class="grid">
+<div class="grid">
 
-    <article class="card pkg">
-      <div class="card-media">
-        <img src="https://private-user-images.githubusercontent.com/33122288/476568849-2fae4c12-3db9-4ddb-86bf-375b6fc265c9.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzMyNjExMzUsIm5iZiI6MTc3MzI2MDgzNSwicGF0aCI6Ii8zMzEyMjI4OC80NzY1Njg4NDktMmZhZTRjMTItM2RiOS00ZGRiLTg2YmYtMzc1YjZmYzI2NWM5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjAzMTElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwMzExVDIwMjcxNVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWM5MjcyMzBlYWRkNWQ0MmIwNmQ5NjA3ZDg0YmUwOTU3MWRhYzk2ZTMyZDcwM2MyZDQ0Y2I5YzExYWVkNWRmZjQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.w1GnfR2o8GMhQ-VUBT3dr0IT4plTQNqjcYfLeyy5TN8" alt="bddkR hex" />
-      </div>
-      <div class="card-body">
-        <h3 class="card-title">bddkR</h3>
-        <p class="desc">
-          <span class="muted">TR:</span> BDDK verileriyle çalışmayı kolaylaştıran yardımcı fonksiyonlar.<br>
-          <span class="muted">EN:</span> Utilities that simplify working with publicly available BDDK data.
-        </p>
-        <div class="links">
-          <a class="btnlink" href="https://cran.r-project.org/web/packages/bddkR" target="_blank" rel="noopener">CRAN</a>
-        </div>
-      </div>
-    </article>
+<article class="card pkg">
+<div class="card-media">
+<img src="https://private-user-images.githubusercontent.com/33122288/476568849-2fae4c12-3db9-4ddb-86bf-375b6fc265c9.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzMyNjExMzUsIm5iZiI6MTc3MzI2MDgzNSwicGF0aCI6Ii8zMzEyMjI4OC80NzY1Njg4NDktMmZhZTRjMTItM2RiOS00ZGRiLTg2YmYtMzc1YjZmYzI2NWM5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjAzMTElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwMzExVDIwMjcxNVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWM5MjcyMzBlYWRkNWQ0MmIwNmQ5NjA3ZDg0YmUwOTU3MWRhYzk2ZTMyZDcwM2MyZDQ0Y2I5YzExYWVkNWRmZjQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.w1GnfR2o8GMhQ-VUBT3dr0IT4plTQNqjcYfLeyy5TN8" alt="bddkR hex" />
+</div>
+<div class="card-body">
+<h3 class="card-title">bddkR</h3>
+<p class="desc">
+<span class="muted">TR:</span> BDDK verileriyle çalışmayı kolaylaştıran yardımcı fonksiyonlar.<br>
+<span class="muted">EN:</span> Utilities that simplify working with publicly available BDDK data.
+</p>
+<div class="links">
+<a class="btnlink" href="https://cran.r-project.org/web/packages/bddkR" target="_blank" rel="noopener">CRAN</a>
+</div>
+</div>
+</article>
 
-    <article class="card pkg">
-      <div class="card-media">
-        <img src="https://private-user-images.githubusercontent.com/33122288/437849281-73d1a505-64c0-4329-9bf3-01c203412662.png" alt="ggsegmentedtotalbar hex" />
-      </div>
-      <div class="card-body">
-        <h3 class="card-title">ggsegmentedtotalbar</h3>
-        <p class="desc">
-          <span class="muted">TR:</span> Toplamı koruyan segmentli bar görselleştirmeleri için ggplot eklentisi.<br>
-          <span class="muted">EN:</span> A ggplot extension for segmented bars that retain the total context.
-        </p>
-        <div class="links">
-          <a class="btnlink" href="https://cran.r-project.org/web/packages/ggsegmentedtotalbar/index.html" target="_blank" rel="noopener">CRAN</a>
-        </div>
-      </div>
-    </article>
+<article class="card pkg">
+<div class="card-media">
+<img src="https://private-user-images.githubusercontent.com/33122288/437849281-73d1a505-64c0-4329-9bf3-01c203412662.png" alt="ggsegmentedtotalbar hex" />
+</div>
+<div class="card-body">
+<h3 class="card-title">ggsegmentedtotalbar</h3>
+<p class="desc">
+<span class="muted">TR:</span> Toplamı koruyan segmentli bar görselleştirmeleri için ggplot eklentisi.<br>
+<span class="muted">EN:</span> A ggplot extension for segmented bars that retain the total context.
+</p>
+<div class="links">
+<a class="btnlink" href="https://cran.r-project.org/web/packages/ggsegmentedtotalbar/index.html" target="_blank" rel="noopener">CRAN</a>
+</div>
+</div>
+</article>
 
-    <article class="card pkg">
-      <div class="card-media">
-        <img src="https://github.com/ozancanozdemir/turkeyelections/assets/33122288/68f73024-fbf5-4316-bda4-00d055cc6eaa" alt="turkeyelections hex" />
-      </div>
-      <div class="card-body">
-        <h3 class="card-title">turkeyelections</h3>
-        <p class="desc">
-          <span class="muted">TR:</span> Türkiye seçim verilerini analiz/raporlama amaçlı derleyen R paketi.<br>
-          <span class="muted">EN:</span> An R package that compiles Turkish election data for analysis and reporting.
-        </p>
-        <div class="links">
-          <a class="btnlink" href="https://cran.r-project.org/web/packages/turkeyelections/index.html" target="_blank" rel="noopener">CRAN</a>
-        </div>
-      </div>
-    </article>
+<article class="card pkg">
+<div class="card-media">
+<img src="https://github.com/ozancanozdemir/turkeyelections/assets/33122288/68f73024-fbf5-4316-bda4-00d055cc6eaa" alt="turkeyelections hex" />
+</div>
+<div class="card-body">
+<h3 class="card-title">turkeyelections</h3>
+<p class="desc">
+<span class="muted">TR:</span> Türkiye seçim verilerini analiz/raporlama amaçlı derleyen R paketi.<br>
+<span class="muted">EN:</span> An R package that compiles Turkish election data for analysis and reporting.
+</p>
+<div class="links">
+<a class="btnlink" href="https://cran.r-project.org/web/packages/turkeyelections/index.html" target="_blank" rel="noopener">CRAN</a>
+</div>
+</div>
+</article>
 
-    <article class="card pkg">
-      <div class="card-media">
-        <img src="https://user-images.githubusercontent.com/33122288/221560558-b9bf8ad0-003f-44c3-8a18-0366ab195663.png" alt="izmir hex" />
-      </div>
-      <div class="card-body">
-        <h3 class="card-title">izmir</h3>
-        <p class="desc">
-          <span class="muted">TR:</span> Yerel veri/haritalama odaklı yardımcı işlevler.<br>
-          <span class="muted">EN:</span> Helper functions geared toward local data and mapping workflows.
-        </p>
-        <div class="links">
-          <a class="btnlink" href="https://cran.r-project.org/web/packages/izmir/index.html" target="_blank" rel="noopener">CRAN</a>
-        </div>
-      </div>
-    </article>
+<article class="card pkg">
+<div class="card-media">
+<img src="https://user-images.githubusercontent.com/33122288/221560558-b9bf8ad0-003f-44c3-8a18-0366ab195663.png" alt="izmir hex" />
+</div>
+<div class="card-body">
+<h3 class="card-title">izmir</h3>
+<p class="desc">
+<span class="muted">TR:</span> Yerel veri/haritalama odaklı yardımcı işlevler.<br>
+<span class="muted">EN:</span> Helper functions geared toward local data and mapping workflows.
+</p>
+<div class="links">
+<a class="btnlink" href="https://cran.r-project.org/web/packages/izmir/index.html" target="_blank" rel="noopener">CRAN</a>
+</div>
+</div>
+</article>
 
-    <article class="card pkg">
-      <div class="card-media">
-        <img src="https://github.com/ozancanozdemir/bursa/assets/33122288/da50adfe-0778-49c2-8660-b75c0dc57014" alt="bursa hex" />
-      </div>
-      <div class="card-body">
-        <h3 class="card-title">bursa</h3>
-        <p class="desc">
-          <span class="muted">TR:</span> Bölgesel veri hazırlama ve görselleştirme için araçlar.<br>
-          <span class="muted">EN:</span> Tools for regional data preparation and visualization.
-        </p>
-        <div class="links">
-          <a class="btnlink" href="https://cran.r-project.org/web/packages/bursa/index.html" target="_blank" rel="noopener">CRAN</a>
-        </div>
-      </div>
-    </article>
+<article class="card pkg">
+<div class="card-media">
+<img src="https://github.com/ozancanozdemir/bursa/assets/33122288/da50adfe-0778-49c2-8660-b75c0dc57014" alt="bursa hex" />
+</div>
+<div class="card-body">
+<h3 class="card-title">bursa</h3>
+<p class="desc">
+<span class="muted">TR:</span> Bölgesel veri hazırlama ve görselleştirme için araçlar.<br>
+<span class="muted">EN:</span> Tools for regional data preparation and visualization.
+</p>
+<div class="links">
+<a class="btnlink" href="https://cran.r-project.org/web/packages/bursa/index.html" target="_blank" rel="noopener">CRAN</a>
+</div>
+</div>
+</article>
 
-    <article class="card pkg">
-      <div class="card-media">
-        <img src="https://github.com/ozancanozdemir/konya/assets/33122288/3a0fc3a9-8411-4e6a-9bbb-6cc729a980cb" alt="konya hex" />
-      </div>
-      <div class="card-body">
-        <h3 class="card-title">konya</h3>
-        <p class="desc">
-          <span class="muted">TR:</span> Veri toplama/temizleme süreçlerini hızlandıran yardımcı fonksiyonlar.<br>
-          <span class="muted">EN:</span> Helper functions that streamline data collection and cleaning.
-        </p>
-        <div class="links">
-          <a class="btnlink" href="https://cran.r-project.org/web/packages/konya/index.html" target="_blank" rel="noopener">CRAN</a>
-        </div>
-      </div>
-    </article>
+<article class="card pkg">
+<div class="card-media">
+<img src="https://github.com/ozancanozdemir/konya/assets/33122288/3a0fc3a9-8411-4e6a-9bbb-6cc729a980cb" alt="konya hex" />
+</div>
+<div class="card-body">
+<h3 class="card-title">konya</h3>
+<p class="desc">
+<span class="muted">TR:</span> Veri toplama/temizleme süreçlerini hızlandıran yardımcı fonksiyonlar.<br>
+<span class="muted">EN:</span> Helper functions that streamline data collection and cleaning.
+</p>
+<div class="links">
+<a class="btnlink" href="https://cran.r-project.org/web/packages/konya/index.html" target="_blank" rel="noopener">CRAN</a>
+</div>
+</div>
+</article>
 
-    <article class="card pkg">
-      <div class="card-media">
-        <img src="https://www.r-project.org/logo/Rlogo.png" alt="ggpowerbi logo" />
-      </div>
-      <div class="card-body">
-        <h3 class="card-title">ggpowerbi</h3>
-        <p class="desc">
-          <span class="muted">TR:</span> Power BI görsel diline yakın ggplot temaları/çıktıları için denemeler.<br>
-          <span class="muted">EN:</span> Experiments around ggplot styling aligned with a Power BI-like visual language.
-        </p>
-        <div class="links">
-          <a class="btnlink" href="https://github.com/ozancanozdemir/ggpowerbi" target="_blank" rel="noopener">GitHub</a>
-        </div>
-      </div>
-    </article>
+<article class="card pkg">
+<div class="card-media">
+<img src="https://www.r-project.org/logo/Rlogo.png" alt="ggpowerbi logo" />
+</div>
+<div class="card-body">
+<h3 class="card-title">ggpowerbi</h3>
+<p class="desc">
+<span class="muted">TR:</span> Power BI görsel diline yakın ggplot temaları/çıktıları için denemeler.<br>
+<span class="muted">EN:</span> Experiments around ggplot styling aligned with a Power BI-like visual language.
+</p>
+<div class="links">
+<a class="btnlink" href="https://github.com/ozancanozdemir/ggpowerbi" target="_blank" rel="noopener">GitHub</a>
+</div>
+</div>
+</article>
 
-  </div>
+</div>
 </section>
 
-<!-- =========================
-     R SHINY APPLICATIONS
-========================== -->
 <section class="projects-section">
-  <h2>R Shiny Applications</h2>
+<h2>R Shiny Applications</h2>
 
-  <div class="grid">
+<div class="grid">
 
-    <!-- Seçim 2028 -->
-    <article class="card">
-      <div class="card-media">
-        <!-- Görselin varsa buraya koyabilirsin. Şimdilik nötr bir kapak -->
-        <img src="https://ozancanozdemir.github.io/Gemini_Generated_Image_tdddkltdddkltddd.png" alt="Turkey Election tracking cover" />
-        
-      </div>
-      <div class="card-body">
-        <h3 class="card-title">Seçim 2028 — Anket Takip Portalı</h3>
-        <div class="meta">Shiny app + public website</div>
+<article class="card">
+<div class="card-media">
+<img src="https://ozancanozdemir.github.io/Gemini_Generated_Image_tdddkltdddkltddd.png" alt="Turkey Election tracking cover" />
 
-        <div class="lang-block">
-          <div>
-            <div class="lang-label">TR</div>
-            <p class="desc">
-              Türkiye’de 2028 seçim sürecine yönelik anketleri tek bir yerde takip etmeyi amaçlayan,
-              güncel veri görünümü ve karşılaştırma odaklı bir izleme portalı.
-            </p>
-          </div>
-          <div>
-            <div class="lang-label">EN</div>
-            <p class="desc">
-              A monitoring portal that brings together polling results related to Türkiye’s 2028 election cycle,
-              with a focus on up-to-date views and comparisons.
-            </p>
-          </div>
-        </div>
+</div>
+<div class="card-body">
+<h3 class="card-title">Seçim 2028 — Anket Takip Portalı</h3>
+<div class="meta">Shiny app + public website</div>
 
-        <div class="links">
-          <a class="btnlink" href="https://secim2028.shinyapps.io/secim2028/" target="_blank" rel="noopener">Open Shiny App</a>
-          <a class="btnlink" href="https://secimtakip2028.com.tr/" target="_blank" rel="noopener">Website</a>
-        </div>
-      </div>
-    </article>
+<div class="lang-block">
+<div>
+<div class="lang-label">TR</div>
+<p class="desc">
+Türkiye’de 2028 seçim sürecine yönelik anketleri tek bir yerde takip etmeyi amaçlayan,
+güncel veri görünümü ve karşılaştırma odaklı bir izleme portalı.
+</p>
+</div>
+<div>
+<div class="lang-label">EN</div>
+<p class="desc">
+A monitoring portal that brings together polling results related to Türkiye’s 2028 election cycle,
+with a focus on up-to-date views and comparisons.
+</p>
+</div>
+</div>
 
-    <!-- Turkey Local Election Prediction Games -->
-    <article class="card">
-      <div class="card-media">
-        <img src="https://www.r-project.org/logo/Rlogo.png" alt="Election prediction cover" />
-      </div>
-      <div class="card-body">
-        <h3 class="card-title">Turkey Local Election Prediction Games</h3>
-        <div class="meta">Interactive forecasting/prediction experience</div>
+<div class="links">
+<a class="btnlink" href="https://secim2028.shinyapps.io/secim2028/" target="_blank" rel="noopener">Open Shiny App</a>
+<a class="btnlink" href="https://secimtakip2028.com.tr/" target="_blank" rel="noopener">Website</a>
+</div>
+</div>
+</article>
 
-        <div class="lang-block">
-          <div>
-            <div class="lang-label">TR</div>
-            <p class="desc">
-              Kullanıcı etkileşimiyle tahmin/oyunlaştırma mantığını birleştiren, yerel seçim senaryolarını keşfetmeye
-              yönelik deneysel bir uygulama.
-            </p>
-          </div>
-          <div>
-            <div class="lang-label">EN</div>
-            <p class="desc">
-              An experimental app that combines user interaction with prediction/game mechanics to explore local election scenarios.
-            </p>
-          </div>
-        </div>
+<article class="card">
+<div class="card-media">
+<img src="https://www.r-project.org/logo/Rlogo.png" alt="Election prediction cover" />
+</div>
+<div class="card-body">
+<h3 class="card-title">Turkey Local Election Prediction Games</h3>
+<div class="meta">Interactive forecasting/prediction experience</div>
 
-        <div class="links">
-          <a class="btnlink" href="https://secimtahmin2024.shinyapps.io/secimtahmin2024/" target="_blank" rel="noopener">Open App</a>
-        </div>
-      </div>
-    </article>
+<div class="lang-block">
+<div>
+<div class="lang-label">TR</div>
+<p class="desc">
+Kullanıcı etkileşimiyle tahmin/oyunlaştırma mantığını birleştiren, yerel seçim senaryolarını keşfetmeye
+yönelik deneysel bir uygulama.
+</p>
+</div>
+<div>
+<div class="lang-label">EN</div>
+<p class="desc">
+An experimental app that combines user interaction with prediction/game mechanics to explore local election scenarios.
+</p>
+</div>
+</div>
 
-    <!-- Turkey Election 2023 Tracking -->
-    <article class="card">
-      <div class="card-media">
-        <img src="https://www.r-project.org/logo/Rlogo.png" alt="Seçim 2023 cover" />
-      </div>
-      <div class="card-body">
-        <h3 class="card-title">Turkey Election 2023 Tracking</h3>
-        <div class="meta">Dashboard (Turkish)</div>
+<div class="links">
+<a class="btnlink" href="https://secimtahmin2024.shinyapps.io/secimtahmin2024/" target="_blank" rel="noopener">Open App</a>
+</div>
+</div>
+</article>
 
-        <div class="lang-block">
-          <div>
-            <div class="lang-label">TR</div>
-            <p class="desc">
-              2023 seçim sürecine ilişkin göstergeleri ve gelişmeleri takip etmeye yönelik, Türkçe hazırlanmış izleme paneli.
-            </p>
-          </div>
-          <div>
-            <div class="lang-label">EN</div>
-            <p class="desc">
-              A Turkish-language tracking dashboard focused on key indicators and updates during the 2023 election period.
-            </p>
-          </div>
-        </div>
+<article class="card">
+<div class="card-media">
+<img src="https://www.r-project.org/logo/Rlogo.png" alt="Seçim 2023 cover" />
+</div>
+<div class="card-body">
+<h3 class="card-title">Turkey Election 2023 Tracking</h3>
+<div class="meta">Dashboard (Turkish)</div>
 
-        <div class="links">
-          <a class="btnlink" href="https://ozancanozdemir.shinyapps.io/turkiyeninsecimi/" target="_blank" rel="noopener">Open App</a>
-        </div>
-      </div>
-    </article>
+<div class="lang-block">
+<div>
+<div class="lang-label">TR</div>
+<p class="desc">
+2023 seçim sürecine ilişkin göstergeleri ve gelişmeleri takip etmeye yönelik, Türkçe hazırlanmış izleme paneli.
+</p>
+</div>
+<div>
+<div class="lang-label">EN</div>
+<p class="desc">
+A Turkish-language tracking dashboard focused on key indicators and updates during the 2023 election period.
+</p>
+</div>
+</div>
 
-    <!-- TUIK Sepet -->
-    <article class="card">
-      <div class="card-media">
-        <img src="https://www.r-project.org/logo/Rlogo.png" alt="TUIK Sepet cover" />
-      </div>
-      <div class="card-body">
-        <h3 class="card-title">TÜİK Sepet</h3>
-        <div class="meta">Data exploration app</div>
+<div class="links">
+<a class="btnlink" href="https://ozancanozdemir.shinyapps.io/turkiyeninsecimi/" target="_blank" rel="noopener">Open App</a>
+</div>
+</div>
+</article>
 
-        <div class="lang-block">
-          <div>
-            <div class="lang-label">TR</div>
-            <p class="desc">
-              TÜİK sepet/veri bileşenlerini daha anlaşılır şekilde keşfetmeye ve hızlı analiz etmeye yardımcı bir uygulama.
-            </p>
-          </div>
-          <div>
-            <div class="lang-label">EN</div>
-            <p class="desc">
-              A small exploration app to make TÜİK basket/components easier to browse and analyze quickly.
-            </p>
-          </div>
-        </div>
+<article class="card">
+<div class="card-media">
+<img src="https://www.r-project.org/logo/Rlogo.png" alt="TUIK Sepet cover" />
+</div>
+<div class="card-body">
+<h3 class="card-title">TÜİK Sepet</h3>
+<div class="meta">Data exploration app</div>
 
-        <div class="links">
-          <a class="btnlink" href="https://ozancanozdemir.shinyapps.io/sepet/" target="_blank" rel="noopener">Open App</a>
-        </div>
-      </div>
-    </article>
+<div class="lang-block">
+<div>
+<div class="lang-label">TR</div>
+<p class="desc">
+TÜİK sepet/veri bileşenlerini daha anlaşılır şekilde keşfetmeye ve hızlı analiz etmeye yardımcı bir uygulama.
+</p>
+</div>
+<div>
+<div class="lang-label">EN</div>
+<p class="desc">
+A small exploration app to make TÜİK basket/components easier to browse and analyze quickly.
+</p>
+</div>
+</div>
 
-    <!-- COVID-19 Dashboard -->
-    <article class="card">
-      <div class="card-media">
-        <img src="https://www.r-project.org/logo/Rlogo.png" alt="COVID-19 Dashboard cover" />
-      </div>
-      <div class="card-body">
-        <h3 class="card-title">COVID-19 Dashboard for Turkey</h3>
-        <div class="meta">Web dashboard</div>
+<div class="links">
+<a class="btnlink" href="https://ozancanozdemir.shinyapps.io/sepet/" target="_blank" rel="noopener">Open App</a>
+</div>
+</div>
+</article>
 
-        <div class="lang-block">
-          <div>
-            <div class="lang-label">TR</div>
-            <p class="desc">
-              Türkiye için COVID-19 verilerinin görselleştirilmesine odaklanan, hızlı durum takibi sağlayan bir panel.
-            </p>
-          </div>
-          <div>
-            <div class="lang-label">EN</div>
-            <p class="desc">
-              A dashboard for monitoring and visualizing COVID-19 data for Turkey.
-            </p>
-          </div>
-        </div>
+<article class="card">
+<div class="card-media">
+<img src="https://www.r-project.org/logo/Rlogo.png" alt="COVID-19 Dashboard cover" />
+</div>
+<div class="card-body">
+<h3 class="card-title">COVID-19 Dashboard for Turkey</h3>
+<div class="meta">Web dashboard</div>
 
-        <div class="links">
-          <a class="btnlink" href="https://users.metu.edu.tr/home402/ozancan/wwwhome/corona_ilil.html" target="_blank" rel="noopener">Open Page</a>
-        </div>
-      </div>
-    </article>
+<div class="lang-block">
+<div>
+<div class="lang-label">TR</div>
+<p class="desc">
+Türkiye için COVID-19 verilerinin görselleştirilmesine odaklanan, hızlı durum takibi sağlayan bir panel.
+</p>
+</div>
+<div>
+<div class="lang-label">EN</div>
+<p class="desc">
+A dashboard for monitoring and visualizing COVID-19 data for Turkey.
+</p>
+</div>
+</div>
 
-    <!-- Ankara Yemek Rehberi -->
-    <article class="card">
-      <div class="card-media">
-        <img src="https://www.r-project.org/logo/Rlogo.png" alt="Ankara Food Guide cover" />
-      </div>
-      <div class="card-body">
-        <h3 class="card-title">Ankara Yemek Rehberi</h3>
-        <div class="meta">Guide / directory</div>
+<div class="links">
+<a class="btnlink" href="https://users.metu.edu.tr/home402/ozancan/wwwhome/corona_ilil.html" target="_blank" rel="noopener">Open Page</a>
+</div>
+</div>
+</article>
 
-        <div class="lang-block">
-          <div>
-            <div class="lang-label">TR</div>
-            <p class="desc">
-              Ankara’daki yemek mekânlarını pratik biçimde listeleyen ve keşfi kolaylaştıran bir rehber sayfası.
-            </p>
-          </div>
-          <div>
-            <div class="lang-label">EN</div>
-            <p class="desc">
-              A lightweight guide page that helps discover and browse food places in Ankara.
-            </p>
-          </div>
-        </div>
+<article class="card">
+<div class="card-media">
+<img src="https://www.r-project.org/logo/Rlogo.png" alt="Ankara Food Guide cover" />
+</div>
+<div class="card-body">
+<h3 class="card-title">Ankara Yemek Rehberi</h3>
+<div class="meta">Guide / directory</div>
 
-        <div class="links">
-          <a class="btnlink" href="https://users.metu.edu.tr/home402/ozancan/wwwhome/ankarayemekleri.html" target="_blank" rel="noopener">Open Page</a>
-        </div>
-      </div>
-    </article>
+<div class="lang-block">
+<div>
+<div class="lang-label">TR</div>
+<p class="desc">
+Ankara’daki yemek mekânlarını pratik biçimde listeleyen ve keşfi kolaylaştıran bir rehber sayfası.
+</p>
+</div>
+<div>
+<div class="lang-label">EN</div>
+<p class="desc">
+A lightweight guide page that helps discover and browse food places in Ankara.
+</p>
+</div>
+</div>
 
-  </div>
+<div class="links">
+<a class="btnlink" href="https://users.metu.edu.tr/home402/ozancan/wwwhome/ankarayemekleri.html" target="_blank" rel="noopener">Open Page</a>
+</div>
+</div>
+</article>
+
+</div>
 </section>
+
+</div>
+
+<div id="tab-dataviz" style="display:none;">
+<section class="projects-section">
+<h2>Data Visualization Portfolio</h2>
+
+<div class="grid">
+{% assign viz_items = site.portfolio | where: "category", "dataviz" %}
+{% for item in viz_items %}
+<article class="card">
+<div class="card-media viz-media">
+{% if item.image %}
+<img src="{{ item.image }}" alt="{{ item.title }}" />
+{% endif %}
+</div>
+<div class="card-body">
+<h3 class="card-title">{{ item.title }}</h3>
+{% if item.meta %}<div class="meta">{{ item.meta }}</div>{% endif %}
+<div class="lang-block">
+{% if item.description_tr %}
+<div>
+<div class="lang-label">TR</div>
+<p class="desc">{{ item.description_tr }}</p>
+</div>
+{% endif %}
+{% if item.description_en %}
+<div>
+<div class="lang-label">EN</div>
+<p class="desc">{{ item.description_en }}</p>
+</div>
+{% endif %}
+</div>
+{% if item.link %}
+<div class="links">
+<a class="btnlink" href="{{ item.link }}" target="_blank" rel="noopener">{{ item.link_label | default: "Open" }}</a>
+</div>
+{% endif %}
+</div>
+</article>
+{% endfor %}
+
+{% if viz_items.size == 0 %}
+<p class="empty-note">
+TR: Bu bölüm henüz doldurulmadı — yakında eklenecek. / EN: This section hasn't been filled in yet — coming soon.
+</p>
+{% endif %}
+</div>
+</section>
+</div>
+
+<script>
+function showProjectsTab(name){
+document.getElementById('tab-projects').style.display = (name === 'projects') ? '' : 'none';
+document.getElementById('tab-dataviz').style.display = (name === 'dataviz') ? '' : 'none';
+document.getElementById('btn-tab-projects').classList.toggle('active', name === 'projects');
+document.getElementById('btn-tab-dataviz').classList.toggle('active', name === 'dataviz');
+}
+</script>
