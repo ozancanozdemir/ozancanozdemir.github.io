@@ -17,21 +17,21 @@ author_profile: true
 
   <div class="research-snapshot">
     <div class="snapshot-item">
-      <span class="snapshot-number">93</span>
+      <span class="snapshot-number">{{ site.data.scholar.citations }}</span>
       <span class="snapshot-label">Citations</span>
     </div>
     <div class="snapshot-item">
-      <span class="snapshot-number">4</span>
+      <span class="snapshot-number">{{ site.data.scholar.h_index }}</span>
       <span class="snapshot-label">h-index</span>
     </div>
     <div class="snapshot-item">
-      <span class="snapshot-number">2</span>
+      <span class="snapshot-number">{{ site.data.scholar.i10_index }}</span>
       <span class="snapshot-label">i10-index</span>
     </div>
   </div>
 
   <div class="metric-note">
-    Citation metrics are shown according to Google Scholar and updated manually.
+    Citation metrics are shown according to Google Scholar, updated automatically (last: {{ site.data.scholar.updated }}).
   </div>
 
   <div class="profile-links">
