@@ -17,7 +17,7 @@ author_profile: true
 
   <div class="research-snapshot">
     <div class="snapshot-item">
-      <span class="snapshot-number">85</span>
+      <span class="snapshot-number">93</span>
       <span class="snapshot-label">Citations</span>
     </div>
     <div class="snapshot-item">
