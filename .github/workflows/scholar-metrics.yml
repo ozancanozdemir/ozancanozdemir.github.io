@@ -1,0 +1,45 @@
+name: Update Google Scholar metrics
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"     # every Monday at 06:00 UTC
+  workflow_dispatch: {}       # lets you run it manually from the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: scholar-metrics
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install scholarly
+
+      - name: Fetch metrics
+        env:
+          SCHOLAR_ID: JnC6fesAAAAJ
+        run: python scripts/fetch_scholar.py
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- _data/scholar.yml; then
+            echo "No change in metrics."
+          else
+            git add _data/scholar.yml
+            git commit -m "chore: update Google Scholar metrics"
+            git push
+          fi
