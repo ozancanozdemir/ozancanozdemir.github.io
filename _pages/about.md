@@ -80,16 +80,7 @@ redirect_from:
 
 <div class="grid2">
   <a class="linkcard t24" href="https://t24.com.tr/yazarlar/ozancan-ozdemir">
-    <div class="brand">
-      <!-- T24 badge/wordmark (stylized, not official asset) -->
-      <svg viewBox="0 0 92 28" aria-hidden="true">
-        <rect x="0" y="0" width="92" height="28" rx="10" fill="currentColor" opacity="0.10"/>
-        <text x="12" y="19" font-size="14" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto" font-weight="800" fill="currentColor">T24</text>
-        <path d="M48 8h30" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.55"/>
-        <path d="M48 14h24" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.40"/>
-        <path d="M48 20h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.25"/>
-      </svg>
-    </div>
+    <div class="brand"><img src="/images/t24-logo.png" alt="T24"></div>
     <div>
       <div class="label">T24 Column</div>
       <div class="desc">Public essays on AI, society, and democratic life (Turkish).</div>
@@ -97,17 +88,10 @@ redirect_from:
     </div>
   </a>
 
-  <a class="linkcard ss" href="https://substack.com/@ozancanozdemir">
-    <div class="brand">
-      <!-- Substack badge/wordmark (stylized, not official asset) -->
-      <svg viewBox="0 0 120 28" aria-hidden="true">
-        <rect x="0" y="0" width="120" height="28" rx="10" fill="currentColor" opacity="0.10"/>
-        <path d="M12 9h16M12 14h16M12 19h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
-        <text x="36" y="19" font-size="12.5" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto" font-weight="800" fill="currentColor">Substack</text>
-      </svg>
-    </div>
+  <a class="linkcard ss" href="https://yapaygundemler.substack.com/">
+    <div class="brand"><img src="https://substackcdn.com/image/fetch/$s_!A48L!,w_600,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F62dd56ca-9368-442a-a4c0-c90fbaba293c_2172x724.png" alt="Yapay Gündemler"></div>
     <div>
-      <div class="label">Substack</div>
+      <div class="label">Yapay Gündemler · Substack</div>
       <div class="desc">Notes, drafts, and ongoing thinking — more informal.</div>
       <div class="hint">Open Substack →</div>
     </div>
@@ -207,7 +191,13 @@ redirect_from:
   .linkcard:hover { transform: translateY(-1px); transition: transform .12s ease; }
   .brand { width: 120px; height: 40px; border-radius: 14px; display:flex; align-items:center; justify-content:center;
            border: 1px solid rgba(0,0,0,.08); background: rgba(0,0,0,.03); color: rgba(0,0,0,.78); flex: 0 0 auto; }
-  .brand svg { width: 100%; height: 100%; padding: 6px 8px; }
+  .brand { overflow:hidden; }
+  .brand img { width: 100%; height: 100%; object-fit: contain; display:block; }
+  .t24 .brand { background:#027fc5; border-color: transparent; }
+  .ss .brand { background:#f4f1ea; position:relative; }
+  /* show only the red "YG" bubble from the wide Yapay Gündemler logo */
+  .ss .brand img { position:absolute; width:400px; max-width:none; height:auto; left:calc(50% - 99px); top:calc(50% - 66px); clip-path: inset(46px 280px 49px 79px); }
+  .linkcard, .linkcard:hover, .linkcard:focus { text-decoration:none !important; }
 
   .label { font-weight: 900; color: rgba(0,0,0,.88); letter-spacing: .1px; }
   .desc { color: rgba(0,0,0,.72); margin-top: 2px; line-height: 1.35; }
