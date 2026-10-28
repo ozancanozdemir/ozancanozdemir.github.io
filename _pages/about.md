@@ -1,6 +1,5 @@
 ---
 permalink: /
-title: ""
 excerpt: "PhD Candidate • ML for Time Series • Stock Market Forecasting • R Developer • Public Writing"
 author_profile: true
 redirect_from:
@@ -13,7 +12,7 @@ redirect_from:
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
-    <div class="kicker">PhD Candidate · University of Groningen (Bernoulli Institute)</div>
+    <div class="kicker">PhD Candidate · University of Groningen (Bernoulli Institute) · Supervised by Prof. Michael Biehl &amp; Prof. Nicolai Petkov</div>
     <h1 class="title">Ozancan Ozdemir</h1>
 
     <p class="subtitle">
@@ -58,6 +57,21 @@ redirect_from:
     <div class="stat-main">R Developer</div>
     <div class="stat-sub">Reproducible analysis · data pipelines · visualization</div>
   </div>
+</div>
+
+---
+
+## Selected publications
+
+<div class="selpubs">
+{% assign selected = site.publications | where: "selected", true | sort: "date" | reverse %}
+{% for pub in selected %}
+  <div class="selpub">
+    <a class="selpub-title" href="{{ pub.url | relative_url }}">{{ pub.title }}</a>
+    <div class="selpub-meta"><em>{{ pub.venue }}</em> · {{ pub.date | date: "%Y" }}{% if pub.paperurl %} · <a href="{{ pub.paperurl }}">Paper</a>{% endif %}</div>
+  </div>
+{% endfor %}
+  <div class="selpub-all"><a href="/publications/">All publications →</a></div>
 </div>
 
 ---
@@ -146,10 +160,10 @@ redirect_from:
 
 <style>
   /* HERO */
-  .hero { position: relative; border-radius: 18px; overflow: hidden; margin: 0 0 1.1rem 0; }
-  .hero-img { width: 100%; height: 360px; object-fit: cover; display:block; }
-  .hero-overlay { position:absolute; inset:0; background: linear-gradient(90deg, rgba(0,0,0,.74), rgba(0,0,0,.25)); }
-  .hero-content { position:absolute; inset:0; padding: 28px; display:flex; flex-direction:column; justify-content:flex-end; gap: 10px; }
+  .hero { position: relative; border-radius: 18px; overflow: hidden; margin: 0 0 1.1rem 0; min-height: 360px; display:flex; }
+  .hero-img { position:absolute; inset:0; width: 100%; height: 100%; object-fit: cover; display:block; }
+  .hero-overlay { position:absolute; inset:0; background: linear-gradient(90deg, rgba(0,0,0,.82), rgba(0,0,0,.45)); }
+  .hero-content { position:relative; z-index:1; width:100%; padding: 28px; display:flex; flex-direction:column; justify-content:flex-end; gap: 10px; }
   .kicker { color: rgba(255,255,255,.88); font-size: .95rem; letter-spacing: .2px; }
   .title { color:#fff; margin:0; font-size: 2.25rem; line-height:1.1; }
   .subtitle { color: rgba(255,255,255,.90); margin: 0; max-width: 980px; font-size: 1.05rem; }
@@ -177,6 +191,13 @@ redirect_from:
   .stat-top { font-size: .85rem; opacity: .75; }
   .stat-main { font-size: 1.08rem; font-weight: 800; margin-top: 4px; }
   .stat-sub { font-size: .92rem; opacity: .75; margin-top: 6px; line-height: 1.35; }
+
+  /* SELECTED PUBLICATIONS */
+  .selpubs { display:flex; flex-direction:column; gap: 10px; margin-top: 6px; }
+  .selpub { border: 1px solid rgba(0,0,0,.10); border-radius: 14px; padding: 12px 14px; background: rgba(255,255,255,.85); }
+  .selpub-title { font-weight: 800; text-decoration:none; line-height: 1.35; }
+  .selpub-meta { font-size: .92rem; opacity: .78; margin-top: 4px; }
+  .selpub-all { font-weight: 800; margin-top: 2px; }
 
   /* WRITING CARDS */
   .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -206,7 +227,8 @@ redirect_from:
     .stats { grid-template-columns: 1fr; }
     .grid { grid-template-columns: 1fr; }
     .grid2 { grid-template-columns: 1fr; }
-    .hero-img { height: 320px; }
+    .hero { min-height: 320px; }
+    .hero-content { padding: 22px; }
     .title { font-size: 2.0rem; }
     .brand { width: 140px; }
   }
