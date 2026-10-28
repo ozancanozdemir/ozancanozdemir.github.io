@@ -1,6 +1,7 @@
 ---
 title: "Forecasting performance of machine learning, time series, and hybrid methods for low- and high-frequency time series"
 collection: publications
+selected: true
 permalink: /publication/forecasting-performance-ml-time-series-hybrid-methods
 excerpt: "A comparative study of machine learning, classical time series, and hybrid methods for low- and high-frequency forecasting tasks."
 date: 2023-09-30
