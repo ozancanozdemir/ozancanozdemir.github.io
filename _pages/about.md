@@ -193,8 +193,11 @@ redirect_from:
            border: 1px solid rgba(0,0,0,.08); background: rgba(0,0,0,.03); color: rgba(0,0,0,.78); flex: 0 0 auto; }
   .brand { overflow:hidden; }
   .brand img { width: 100%; height: 100%; object-fit: contain; display:block; }
-  .t24 .brand { background:#377dbf; border-color: transparent; }
-  .ss .brand { background:#f4f1ea; }
+  .t24 .brand { background:#027fc5; border-color: transparent; }
+  .ss .brand { background:#f4f1ea; position:relative; }
+  /* show only the red "YG" bubble from the wide Yapay Gündemler logo */
+  .ss .brand img { position:absolute; width:400px; max-width:none; height:auto; left:calc(50% - 99px); top:calc(50% - 66px); clip-path: inset(46px 280px 49px 79px); }
+  .linkcard, .linkcard:hover, .linkcard:focus { text-decoration:none !important; }
 
   .label { font-weight: 900; color: rgba(0,0,0,.88); letter-spacing: .1px; }
   .desc { color: rgba(0,0,0,.72); margin-top: 2px; line-height: 1.35; }
