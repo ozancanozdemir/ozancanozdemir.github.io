@@ -10,7 +10,7 @@ locale                   : "en-US"
 title                    : "Ozancan Ozdemir"
 title_separator          : "-"
 name                     : &name "Ozancan Ozdemir"
-description              : &description "personal description"
+description              : &description "Ozancan Ozdemir, PhD candidate at the University of Groningen (Bernoulli Institute). Machine learning for time series and stock market forecasting, R developer, and public writer on AI."
 url                      : https://ozancanozdemir.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "academicpages/academicpages.github.io"
@@ -73,7 +73,7 @@ social:
 
 # Analytics
 analytics:
-  provider               :  "google-universal" # false (default), "google", "google-universal", "custom"
+  provider               :  false # false (default), "google", "google-universal", "custom"
   google:
     tracking_id          :
 
@@ -82,7 +82,7 @@ analytics:
 author:
   name             : "Ozancan Ozdemir"
   avatar           : "oz.png"
-  bio              : "PhD Candidate at Bernoulli Institute for for Mathematics, Computer Science and Artificial Intelligence. Machine Learning and Deep Learning Enthisuasist."
+  bio              : "PhD Candidate at Bernoulli Institute for Mathematics, Computer Science and Artificial Intelligence, University of Groningen. Machine learning for time series and stock market forecasting."
   location         : "Groningen / Netherlands"
   employer         :
   pubmed           : 

@@ -1,6 +1,7 @@
 ---
 title: "Forecasting Drought Phenomena Using a Statistical and Machine Learning-Based Analysis for the Central Anatolia Region, Turkey"
 collection: publications
+selected: true
 permalink: /publication/forecasting-drought-central-anatolia-statistical-machine-learning
 excerpt: "A statistical and machine learning-based study on forecasting drought phenomena in the Central Anatolia Region of Turkey."
 date: 2024-12-31

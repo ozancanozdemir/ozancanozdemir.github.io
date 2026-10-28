@@ -10,7 +10,8 @@ citation: "Ozdemir, O., Biehl, M. & Petkov, N. A survey of fundamental indicator
 pub_type: "Article"
 topic_code: "Finance"
 topic_class: "fin"
-short_summary: "A book chapter on open data sources in Turkey and the use of tree-based machine learning models for election-related social science research."
+short_summary: "A survey of how fundamental financial indicators, machine learning models and feature extraction techniques are combined for stock price prediction."
+selected: true
 tags:
   - "Stock price forecasting"
   - "Machine learning"
@@ -23,7 +24,7 @@ tags:
 This article analyzes the stock market literature from the intersection of fundamental indicators and a machine learning standpoint. It aims to enrich the limited fundamental analysis-related stock market literature. 
 
 {% if page.paperurl %}
-[Book page]({{ page.paperurl }})
+[Journal page]({{ page.paperurl }})
 {% endif %}
 
 ## Citation

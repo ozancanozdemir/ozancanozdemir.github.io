@@ -1,6 +1,7 @@
 ---
 title: "Leveraging Ensemble and Hybrid Forecasting Tools to Increase Accuracy: Turkey COVID-19 Case Study"
 collection: publications
+selected: true
 permalink: /publication/ensemble-hybrid-forecasting-turkey-covid-19-case-study
 excerpt: "A forecasting study comparing ensemble and hybrid tools to improve prediction accuracy in a Turkey COVID-19 case study."
 date: 2025-02-07
